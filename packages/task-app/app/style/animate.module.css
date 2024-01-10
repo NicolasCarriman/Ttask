@@ -1,0 +1,123 @@
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(5%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fontSlideY {
+  0% {
+    transform: translateY(100%);
+  }
+  70% {
+    transform: translateY(-2%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideysmooth {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  30% {
+    transform: translateY(-5%);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(10%);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes appearSlideDown {
+  0% {
+  transform: translateY(-100%);
+  opacity: 0;
+  }
+  30% {
+  transform: translateY(10%);
+  opacity: 0.7;
+  }
+  70% {
+  transform: translateY(-5%);
+  opacity: 1;
+  }
+  100% {
+  transform: translateY(0);
+  opacity: 1;
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.slideY {
+  animation-name: slideysmooth;
+  animation-duration: 2s;
+  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  animation-iteration-count: 1;
+  transform: translateY(-100%);
+}
+
+.slideInAnimation {
+  width: 100%;
+  animation: slideIn 1.25s ease;
+}
+
+.slideAppearAnimation {
+  animation: appearSlideDown 2.75s ease;
+}
+
+.slideOutAnimation {
+  animation: slideOut 0.5s ease-in-out;
+}
+
+.appearAnimation {
+  animation-name: appear;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.fontSlide {
+  animation-name: fontSlideY;
+  animation-duration: 1.75s;
+  animation-timing-function: ease-in-out;
+}
+input[type="text"]:focus ~ .input-text,
+input[type="text"]:not(:placeholder-shown) ~ .input-text{
+  @apply text-blue-500 transform -translate-y-9 -translate-x-4 scale-75;
+}
+
