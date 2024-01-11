@@ -1,3 +1,4 @@
+import { ITeam } from "./team.model";
 import { userId } from "./user.model";
 
 export type statusType = 'done' | 'stuck' | 'inProgress';
@@ -69,7 +70,6 @@ type automatizationReport = AutomatizationBase & {
   output?: string; //pdft jxl
   destination: string[];
   access: string[];//users access
-  
 }
 
 interface TaskSettings {
@@ -81,7 +81,6 @@ interface TaskSettings {
 interface Statics {
   issues: number;
   time: number;
-
 }
 
 interface TaskData {
@@ -93,3 +92,63 @@ export interface ITask2 {
   taskSettings: TaskSettings;
   taskData: TaskData;
 }
+
+interface RequerimentTypes {
+  maxElements: number,
+  endDate: Date,
+}
+
+export interface TaskList {
+  targetValue: number;
+  host?: string;
+  permissions?: string[];
+  team?: ITeam['id'];
+  name: string;
+  fields: (Fields | FieldsTracker )[];
+  metadata: Record<string, string[]>
+  relatedLists?: RelatedList[];
+  template?: string[];
+  requirements?: Partial<RequerimentTypes>[]; //ids
+  automatization?: AutomatizationBase;
+  isqueue?: boolean;
+}
+
+export interface TaskQueue extends Omit<TaskList, "isqueue"> {
+  isqueue: true;
+  steps: string | number [];
+  step: string | number;
+  exec: () => void;
+}
+
+type RelatedList = {
+  listName: string;
+  relationType: string;
+}
+
+type Fields = Record<string, string | boolean> & {
+  href?: string,
+  team?: ITeam['id'],
+  isRequired: boolean,
+  type: string,
+  value: string | boolean | number,
+  attachments?: string[];
+};
+
+type HistoryType = {
+  timeStamp: Date,
+  value: string | boolean | number;
+}
+
+type ChangesList = {
+  currentTime: Date,
+  history: HistoryType[];
+}
+
+type FieldsTracker = Record<string, {
+  isChanged: boolean,
+  status?: string,
+  changes: ChangesList,
+  isValidated?: boolean,
+} & Fields>
+
+//probar crear lista de tarea mutable, cuando ocurra un evento ejemplo se alcanzo a cierto tipo de ventas de producto, disparar un evento ej: campañas de marketing
