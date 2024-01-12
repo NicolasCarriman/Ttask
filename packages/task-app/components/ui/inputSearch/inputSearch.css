@@ -1,0 +1,13 @@
+
+.selector-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: auto;
+}
+
+.selector-container > svg {
+  cursor: pointer;
+}

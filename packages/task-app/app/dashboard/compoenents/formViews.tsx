@@ -4,7 +4,7 @@ import FloatingLabelInput from '@app/components/common/inputLabel';
 import List from '@app/components/common/list';
 import ListItem from '@app/components/common/listItem';
 import { TaskPriority, TaskTags } from '@app/components/common/taskItem';
-import InputSearch, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
+import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
 import useTaskBuilder from '../hooks/useTaskBuilder';
 import { IUser, ProjectTeam, category, priorityType } from '@core/models';
 import useValidateTaskForm from '../hooks/useValidateTaskForm';
@@ -63,7 +63,7 @@ export const FirstInputView: React.FC<IFirstInputView> = (props) => {
           onChange={(e) => handleChangeInput(e, setTaskDescription)}
         />
 
-        <InputSearch
+        <InputSelector
           placeHolder="Priority"
           data={priorities}
           render={(priority, fn) => (
@@ -162,7 +162,7 @@ export const SecondInputView: React.FC<ISecondInputView> = (props) => {
           />
         </div>
   
-        <InputSearch
+        <InputSelector
           type='userPicker'
           placeHolder="Users"
           data={users}
@@ -177,7 +177,7 @@ export const SecondInputView: React.FC<ISecondInputView> = (props) => {
 
         {
           !isNewTeam ?
-          <InputSearch
+          <InputSelector
           name="team"
           placeHolder="Team"
           data={teams}
@@ -197,7 +197,7 @@ export const SecondInputView: React.FC<ISecondInputView> = (props) => {
         }
 
         {!(isNewCategory())  ? (
-          <InputSearch
+          <InputSelector
             name="teamcategory"
             placeHolder="Category"
             data={categories ? categories : []}

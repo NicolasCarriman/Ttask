@@ -36,6 +36,7 @@ module.exports = {
       boxShadow: {
         custom: '-5px -1px 64px #bebebe, -32px -32px 64px #ffffff',
         hover: 'inset 200px 2px #17354E',
+        input: '0px 1px 3px #00000033',
         out: 'inset 0 0 0 0 #66668d',
       },
       transformStyle: {

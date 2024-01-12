@@ -2,9 +2,6 @@ html {
   --border-color: #d8d8d8;
 }
 
-.taskContainer {
-}
-
 .task-section {
   display: flex;
   justify-content: start;
@@ -63,4 +60,60 @@ html {
 
 .task-footer > button {
   height: 42px;
+}
+
+.task-layer > .rounded-box:first-child > .dymanic-selector:nth-child(2) {
+  flex: 1;
+}
+
+.userpicker-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.userpicker-header > h3 {
+  font-weight: 600;
+  opacity: .8;
+}
+
+.userpicker-container {
+  overflow: auto;
+}
+
+.accordion-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 12px;
+}
+
+.accordion-header > h3 {
+  font-weight: 600;
+  opacity: .7;
+}
+
+.accordion-desactive {
+  cursor: pointer;
+  transform: rotate(180deg);
+}
+
+.accordion-active {
+  cursor: pointer;
+  transform: rotate(0deg);
+}
+
+.accordion-visible {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-hide {
+  display: none;
+}
+
+.accordion-container {
+  height: auto;
 }

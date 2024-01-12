@@ -21,6 +21,7 @@ import SubtaskController from './components/withSubtaskList';
 import SubtaskList from './components/subtaskList';
 import Suzbtask from './components/subtask';
 import Subtask from './components/subtask';
+import TeamSection from './components/team';
 
 function Tasks() {
   const loaded = useRef(false);
@@ -76,14 +77,17 @@ function Tasks() {
           <RoundedBox className='w-[20%]' >
             {
               currentTask && currentTask.subtasks && (
-                <DynamicSelector
-                  title='subtask'
-                  elements={currentTask.subtasks}
-                  selectedId={tasks.currentSubtask}
-                  onSelect={(id) => setSubTaskId(id)}
-                  onClick={(subtaskName) => addNewSubtask(subtaskName)}
-                  newTabElement={'Crear subtarea'}
-                />
+                <>
+                  <TeamSection/>
+                  <DynamicSelector
+                    title='Tasks'
+                    elements={currentTask.subtasks}
+                    selectedId={tasks.currentSubtask}
+                    onSelect={(id) => setSubTaskId(id)}
+                    onClick={(subtaskName) => addNewSubtask(subtaskName)}
+                    newTabElement={'Crear subtarea'}
+                  />
+                </>
               )
             }
           </RoundedBox>

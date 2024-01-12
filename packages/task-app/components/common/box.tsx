@@ -22,7 +22,9 @@ function RoundedBox({ children, className }: RoundedBoxProps) {
       min-w-[16vw] 
       rounded-2xl 
       shadow-md 
-      m-none'
+      m-none
+      rounded-box
+      '
       `, className && className)}
     >
       { children }
