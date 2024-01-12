@@ -1,4 +1,4 @@
-'useClient';
+w'useClient';
 
 import Button from '@app/components/common/button';
 import React, { useState } from 'react';
@@ -6,6 +6,7 @@ import { useTask } from '@app/hooks/useTasks';
 import { subtaskItem } from '@core/models';
 import { getRandomId } from '@app/utils';
 import Input from '../../../../components/common/input';
+import "./style.css";
 
 interface SubtaskController {
   children: React.ReactNode;
@@ -57,7 +58,7 @@ function SubtaskController({
   };
 
   return (
-    <div className='grow flex flex-col w-[70%] justify-start items-center max-h-[42vh]'>
+    <div className='taskContainer'>
       {
         taskName &&
         <p className='text-blue-200 font-medium'>{taskName}</p>

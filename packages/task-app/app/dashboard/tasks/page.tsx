@@ -19,6 +19,8 @@ import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector'
 import { useTask } from '@app/hooks/useTasks';
 import SubtaskController from './components/withSubtaskList';
 import SubtaskList from './components/subtaskList';
+import Suzbtask from './components/subtask';
+import Subtask from './components/subtask';
 
 function Tasks() {
   const loaded = useRef(false);
@@ -85,22 +87,7 @@ function Tasks() {
               )
             }
           </RoundedBox>
-          <RoundedBox className='w-[50vw]' >
-            {subtask ?
-              <SubtaskController>
-                <SubtaskList subtask={subtask} onChange={handleChange} />
-              </SubtaskController>
-              :
-              <div className='flex flex-col justify-center items-center text-center gap-4 w-full'>
-                <h2 className='text-lg font-medium'>
-                  ¡Oops! Parece que hay un pequeño problema 😅
-                </h2>
-                <p>
-                  📝¡Hola! Todavía no se ha creado ninguna subtarea o no se ha seleccionado ninguna tarea.
-                </p>
-              </div>
-            }
-          </RoundedBox>
+          <Subtask data={subtask} />
           <RoundedBox className='w-[20%]' >
             testing
           </RoundedBox>

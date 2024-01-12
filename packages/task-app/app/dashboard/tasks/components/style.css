@@ -1,0 +1,66 @@
+html {
+  --border-color: #d8d8d8;
+}
+
+.taskContainer {
+}
+
+.task-section {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  width: 60%;
+  flex-grow: 2;
+}
+
+.task-layer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
+  gap: 12px;
+}
+
+.task-header {
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 12px;
+}
+
+.task-header > h3 {
+  font-weight: 600;
+  opacity: .8;
+  font-size: 1.6rem;
+  text-wrap: wrap;
+  width: 30%;
+}
+
+.newsubtask-container {
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  padding: 8px;
+}
+
+.subtask-content {
+  max-height: 100%;
+  overflow: auto;
+  flex: 8;
+}
+
+.task-footer {
+  flex: 1;
+  position: sticky;
+  margin-bottom: 0%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.task-footer > button {
+  height: 42px;
+}

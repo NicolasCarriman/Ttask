@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
+import './style.css';
 //hacer componente layer box
 
 interface BoxComponentProps extends ComponentProps<'div'> {
@@ -27,12 +28,7 @@ function Layer(
 
   return (
     <div
-      className='
-      flex 
-      flex-row 
-      width-full
-      gap-[3%]
-      '
+      className='task-layer'
     >
       { props.children }
     </div>
