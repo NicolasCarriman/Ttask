@@ -16,7 +16,7 @@ type selectableElement = {
 }
 
 interface DynamicSelectorProps {
-  title: React.ReactNode;
+  title?: React.ReactNode;
   elements: selectableElement[];
   // eslint-disable-next-line no-unused-vars
   onSelect: (id: string) => void;
@@ -77,9 +77,17 @@ function DynamicSelector({
     }
   };
 
+  function handleKeyDown (e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.code === 'Enter') {
+      setRender('tabs');
+      if (!onClick) return;
+      onClick(content);
+    }
+  }
+
   return (
     <SelectorContainer>
-      <p>{title}</p>
+      {title && <p>{title}</p>}
       <div
         onAnimationEnd={() => {
           setRender('menu');
@@ -110,7 +118,9 @@ function DynamicSelector({
         isMenu &&
         <TextBox
           onInput={handleInput}
-          className={style.appearAnimation}>
+          className={style.appearAnimation}
+          onKeyDown={handleKeyDown}
+          >
             {newTabElement}
           </TextBox>
       }

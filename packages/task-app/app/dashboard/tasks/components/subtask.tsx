@@ -6,6 +6,7 @@ import RoundedBox from '@app/components/common/box';
 import Button from '@app/components/common/button';
 import { getRandomId } from '@app/utils';
 import Input from '@app/components/common/input';
+import { useTaskContext } from '../../context';
 
 interface Props {
   data?: subtask;
@@ -14,6 +15,7 @@ interface Props {
 function Subtask({ data }: Props) {
   const { setSubtaskItemCheck, addSubtaskItem } = useTask();
   const [showInput, setShowInput] = useState<boolean>(false);
+  const { taskContext, setTaskContext } = useTaskContext(); 
   const [newItem, setNewItem] = useState<subtaskItem>({
     item: '',
     done: false,
@@ -21,7 +23,6 @@ function Subtask({ data }: Props) {
   });
 
   function onChange(checked: boolean, id: string) {
-    console.log('test');
     setSubtaskItemCheck(checked, id);
   }
 
@@ -36,7 +37,9 @@ function Subtask({ data }: Props) {
     setShowInput(false);
   };
 
-  
+  function selectSubtask(id: string) {
+    setTaskContext({ ...taskContext, currentSubtask: id });
+  }
 
   function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -71,6 +74,8 @@ function Subtask({ data }: Props) {
               {
                 data.items.map((subt) => (
                   <Item
+                    isSelected={subt.id === taskContext.currentSubtask }
+                    onItemSelect={selectSubtask}
                     key={subt.id}
                     handleDone={onChange}
                     done={subt.done}

@@ -1,13 +1,14 @@
 import React, { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 import './style.css';
+import ContextProvider from '../../context/provider';
 //hacer componente layer box
 
 interface BoxComponentProps extends ComponentProps<'div'> {
 
 }
 
-export const BoxComponent: React.FC<BoxComponentProps> = ( { className, children, ...rest } ) => {
+export const BoxComponent: React.FC<BoxComponentProps> = ({ className, children, ...rest }) => {
   return (
     <div
       className={twMerge(`
@@ -15,23 +16,25 @@ export const BoxComponent: React.FC<BoxComponentProps> = ( { className, children
         shadow-custom 
         rounded-2xl
       `, className)}
-      { ...rest }
+      {...rest}
     >
-      { children }
+      {children}
     </div>
   );
 };
 
 function Layer(
-  props : ComponentProps<'div'>
-  ){
+  props: ComponentProps<'div'>
+) {
 
   return (
-    <div
-      className='task-layer'
-    >
-      { props.children }
-    </div>
+    <ContextProvider>
+      <div
+        className='task-layer'
+      >
+        {props.children}
+      </div>
+    </ContextProvider>
   );
 }
 

@@ -7,11 +7,11 @@ interface Props {
 
 function ContextProvider({ children }: Props) {
   const [taskContext, setTaskContext] = useState<ITaskTemplate>({
+    currentSubtask: null,
     isNewTeam: false,
     isNewCategory: false,
     taskName: '',
     taskDate: '',
-    taskDescription: '',
     taskCategory: '',
     taskCategoryId: '',
     taskUsersId: [],
@@ -20,7 +20,7 @@ function ContextProvider({ children }: Props) {
     taskId: '',
     taskTeam: '',
     taskTeamId: ''
-  });
+  },);
 
   return (
     <TaskContext.Provider value={{ taskContext, setTaskContext }}>

@@ -22,6 +22,7 @@ import SubtaskList from './components/subtaskList';
 import Suzbtask from './components/subtask';
 import Subtask from './components/subtask';
 import TeamSection from './components/team';
+import Settings from './components/settings';
 
 function Tasks() {
   const loaded = useRef(false);
@@ -93,7 +94,7 @@ function Tasks() {
           </RoundedBox>
           <Subtask data={subtask} />
           <RoundedBox className='w-[20%]' >
-            testing
+            <Settings />
           </RoundedBox>
         </Layer>
       }

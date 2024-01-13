@@ -1,5 +1,6 @@
 'use client';
 
+import './style.css';
 import React, { HTMLAttributes, useCallback, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -7,6 +8,9 @@ interface itemsProps extends HTMLAttributes<HTMLInputElement> {
   item: string;
   itemId: string;
   done: boolean;
+  isSelected: boolean;
+  // eslint-disable-next-line
+  onItemSelect: (id: string) => void;
   // eslint-disable-next-line
   handleDone: (check: boolean, id: string, item: string) => void
 }
@@ -18,6 +22,8 @@ function Item({
   done,
   handleDone,
   className,
+  onItemSelect,
+  isSelected,
   ...rest
 }: itemsProps) {
   const [isChecked, setIsChecked] = useState(done);
@@ -26,6 +32,11 @@ function Item({
     handleDone(!isChecked, itemId, item);
     setIsChecked(!isChecked);
   }, [handleDone, isChecked, itemId, item]);
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    onItemSelect(itemId);
+    e.preventDefault();
+  };
 
   const mergedClassName = useMemo(
     () => twMerge(`
@@ -36,12 +47,14 @@ function Item({
       border 
       rounded 
       p-2
+      item-element
+      ${isSelected ? 'item-selected' : ''}
     `, className && className),
-    [className]
+    [className, isSelected]
   );
 
   return (
-    <div className={mergedClassName}>
+    <div className={mergedClassName} onClick={handleClick}>
       <input
         type="checkbox"
         className=" w-5 h-5 checked:accent-blue-200"

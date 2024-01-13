@@ -1,9 +1,18 @@
-import { HTMLAttributes } from 'react';
+'use client';
+import { HTMLAttributes, useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export const TextBox: React.FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => {
+  const textRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (textRef.current) {
+      textRef.current.focus();
+    }
+  }, []);
+
   return (
     <div
+      ref={textRef}
       className={twMerge(`
       p-2 
       text-white 
@@ -16,6 +25,7 @@ export const TextBox: React.FC<HTMLAttributes<HTMLDivElement>> = ({ className, .
       outline-none 
       `, className)
       }
-      contentEditable={true} {...rest}/>
+      autoFocus
+      contentEditable={true} {...rest} />
   );
 };

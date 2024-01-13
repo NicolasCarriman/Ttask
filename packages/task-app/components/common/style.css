@@ -1,0 +1,7 @@
+.item-element > input {
+  cursor: pointer;
+}
+
+.item-selected {
+  border: solid 1px rgb(0, 174, 255);
+}

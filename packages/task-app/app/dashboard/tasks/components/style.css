@@ -91,6 +91,7 @@ html {
 }
 
 .accordion-header > h3 {
+  cursor: pointer;
   font-weight: 600;
   opacity: .7;
 }
@@ -116,4 +117,10 @@ html {
 
 .accordion-container {
   height: auto;
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
 }

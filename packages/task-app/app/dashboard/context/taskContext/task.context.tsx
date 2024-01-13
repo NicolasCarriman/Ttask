@@ -7,6 +7,7 @@ export interface ITaskTemplate extends ITask {
   taskCategoryId: string;
   taskTeam: string;
   taskTeamId: string;
+  currentSubtask: string | null;
 }
 
 export interface ITaskContext {
@@ -16,6 +17,7 @@ export interface ITaskContext {
 
 export const TaskContext = createContext<ITaskContext>({
   taskContext: {
+    currentSubtask: null,
     isNewTeam: false,
     isNewCategory: false,
     taskName: '',
