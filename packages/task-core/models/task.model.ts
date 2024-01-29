@@ -134,7 +134,7 @@ type Fields = Record<string, string | boolean> & {
   attachments?: string[];
 };
 
-type HistoryType = {
+export type HistoryType = {
   timeStamp: Date,
   value: string | boolean | number;
 }

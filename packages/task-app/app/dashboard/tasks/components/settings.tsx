@@ -4,6 +4,8 @@ import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
 import InputSelector from '@app/components/ui/inputSearch/inputSearch';
 import Accordion from './accordion';
+import ButtonComponent from '@app/components/common/button';
+import { priorityType } from '@core/models';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -74,9 +76,48 @@ const settingsSections: ItemType[] = [
   }
 ];
 
+type ReleastedType = {
+  name: string;
+  id: string;
+}
+
+
+type StepsSettings = {
+  name: string,
+  id: number
+}
+
+interface TaskSettingsBase {
+  users: {
+    id: string,
+    permission: string,
+  }[];
+  relested: ReleastedType[];
+  requeriments: any;
+  target: null | any;
+  from: string | null
+  to: string | null
+  priority: null | priorityType;
+  steps: StepsSettings[]
+}
+
+interface AutomaticSettings extends TaskSettingsBase {
+  type: 'automatic';
+  duration: any;
+  frecuency: any;
+}
+
+interface ManualSettings extends TaskSettingsBase {
+  type: 'manual';
+  taskType: 'upload' | 'analizer' | 'problem';
+  fields?: any[];
+}
+
 function Settings() {
   const [selectedSetting, setSelectedSetting] = useState<string>(settingsSections[0].id);
   const [selectedAccordion, setSelectedAccordion] = useState<string>('ac-s-1');
+  const [steps, setSteps] = useState<number>(0);
+
 
   // eslint-disable-next-line no-unused-vars
   function renderItems({ data, handleClick }: { data: ItemType, handleClick(name: string, id: string): void }) {
@@ -86,6 +127,11 @@ function Settings() {
       </ListItem>
     );
   };
+
+  function addStep(e: React.MouseEvent<HTMLButtonElement>) {
+    console.log(e);
+    setSteps(steps + 1);
+  }
 
   return (
     <RoundedBox className={'settings-container'}>
@@ -106,9 +152,10 @@ function Settings() {
         {
           selectedSetting === 'setting-1' ?
             <>
-              <div>steps: notSetted</div>
-              <div>users: you</div>
-              <div>releasted</div>
+              <StepperSettings />
+              <UsersSettings />
+              <ReleastedSettings />
+              <RequerimentsSettings />
               <div>requeriments: notSetted</div>
             </>
             : null
@@ -130,3 +177,68 @@ function Settings() {
 }
 
 export default Settings;
+
+interface StepperProps {
+  steps: StepsSettings[];
+  setSteps: () => void;
+}
+
+const StepperSettings = (props: StepperProps) => {
+  const { steps, setSteps } = props;
+  const [selected, setSelected] = useState<number>(0);
+
+  function setName(id: number, name: string) {
+    const stepsCopy = [...steps];
+    let modifiedStep = stepsCopy.find((step) => step.id === id);
+    if (modifiedStep === undefined) throw new Error('step not found');
+    modifiedStep.name = name;
+    const result = stepsCopy.map((step) => {
+      if (step.id === id && modifiedStep) {
+        return modifiedStep;
+      } else {
+        return step;
+      }
+    });
+
+    setSteps(result);
+  }
+
+  function deleteStep(id: number) {
+    setSteps(steps.filter((s) => s.id === id));
+  }
+
+  function addStep () {
+    const lastId = steps[steps.length - 1].id;
+    const nextId = lastId + 1;
+    const newStep:StepsSettings = {
+      id: nextId,
+      name: 'new step'
+    };
+    setSteps([...steps, newStep]);
+  }
+
+  function getSelectedStep(id: number) {
+    const selectedStep = steps.find((step) => step.id === id);
+    if (!selectedStep) return steps[0];
+    return selectedStep;
+  }
+
+  return (
+    <div className='step-settings'>
+      {
+        steps.length > 0 &&
+        <>
+          <p>step :</p>
+          <input disabled>{getSelectedStep(selected).name}</input>
+        </>
+      }
+      <div className='button-group'>
+        <ButtonComponent size={'medium'}>
+          add step
+        </ButtonComponent>
+        <ButtonComponent size={'medium'} disabled={steps.length === 0}>
+          delete step
+        </ButtonComponent>
+      </div>
+    </div>);
+};
