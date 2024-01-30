@@ -244,4 +244,4 @@ const StepperSettings = (props: StepperProps) => {
 };
 
 //poder añadir iteraciones a una lista ej por
-//cada ítem realizar una acción 
+//cada ítem realizar una acción que puedas cambiar una etiqueta de una sub tarea automaticamente cuando cambias de tarea ej en un canvas si dejo en la seccion fix su categoria se tendria que ajustar a fix
