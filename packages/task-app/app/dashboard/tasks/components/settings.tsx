@@ -242,3 +242,6 @@ const StepperSettings = (props: StepperProps) => {
       </div>
     </div>);
 };
+
+//poder añadir iteraciones a una lista ej por
+//cada ítem realizar una acción 
