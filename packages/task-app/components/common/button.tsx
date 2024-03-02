@@ -33,7 +33,7 @@ function ButtonComponent({
       width = 'w-24';
       break;
     case 'large':
-      width = 'w-22';
+      width = 'w-full';
       break;
     default:
       width = 'w-32';

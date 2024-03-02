@@ -6,7 +6,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const InputComponent: React.FC<InputProps> = (props) => {
   return (
-    <div className='flex flex-row bg-white rounded-lg shadow-input p-2 gap-2'>
+    <div className='flex flex-row bg-white rounded-lg shadow-input p-2 gap-2 w-full'>
       {
         props.icon &&
         <span className='flex justify-center items-center'>

@@ -35,5 +35,17 @@
     "react-babylonjs": "^3.1.17",
     "react-transition-group": "^4.4.5",
     "styled-components": "^6.0.7"
-  }
+  },
+  "description": "<h1>T-Task</h1>",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicolasCarriman/Ttask.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NicolasCarriman/Ttask/issues"
+  },
+  "homepage": "https://github.com/NicolasCarriman/Ttask#readme"
 }
