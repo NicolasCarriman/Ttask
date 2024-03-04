@@ -42,6 +42,17 @@ interface RequerimentTypes {
   endDate: Date,
 }
 
+interface RequirementConfig {
+  functional: any;
+  notFunctional: any;
+  input: any;
+  output: any;
+  quality: any;
+  resources: any;
+  endDate: any,
+  support: any;
+}
+
 interface ConfigBase {
   name: string;
   type: 'manual' | 'auto';
@@ -100,12 +111,14 @@ type FieldsData<T extends string> = Record<T, string | number | null> & {
   type: FieldsTypes;
 }
 
+type UsersPermissionsNames = 'read' | 'write' | 'validate' | 'verify';
+
 interface TaskSettingsBase {
   users: {
     id: string,
-    permission: string,
+    permission: UsersPermissionsNames,
   }[];
-  time:  (FieldsData<'from'> | FieldsData<'to'> | FieldsData<'duration'> | FieldsData<'frecuency'>)[] | (FieldsData<'from'> | FieldsData<'to'>)[]
+  time: (FieldsData<'from'> | FieldsData<'to'> | FieldsData<'duration'> | FieldsData<'frecuency'>)[] | (FieldsData<'from'> | FieldsData<'to'>)[]
   relested: ReleastedType[];
   requeriments: any;
   target: null | any;
@@ -115,13 +128,80 @@ interface TaskSettingsBase {
 
 interface AutomaticSettings extends TaskSettingsBase {
   type: 'automatic';
-  time: (FieldsData<'from'> | FieldsData<'to'> | FieldsData<'duration'> | FieldsData<'frecuency'>)[]
+  time: (FieldsData<'from'> | FieldsData<'to'> | FieldsData<'duration'> | FieldsData<'frecuency'>)[];
+
 }
 
-type ManualFields = { 
+type ManualFields = {
   type: 'manual';
   taskType: 'upload' | 'analizer' | 'resolver';
   fields?: any[];
+}
+
+
+interface ConfigComponentBase {
+  isAutomatic: boolean;
+}
+
+interface InputFieldProps {
+  type: string;
+  name: string;
+}
+
+const UsersConfigComponent = (props: ConfigComponentBase) => {
+  const [currentUsers, setCurrentUsers] = useState<string | null>(null);
+  const [showUserPanel, setShowUserPanel] = useState<boolean>(false);
+  const { isAutomatic } = props;
+
+  const InputField = (data: InputFieldProps) => {
+    return (
+      <div className='input-field'>
+        <span className='input-label'>{data.name}</span>
+        <InputComponent type={data.type} />
+      </div>
+    )
+  }
+
+  function addUser(id: string) {
+    setCurrentUsers(id);
+  }
+
+  return (
+    <div className='users-container'>
+      <>
+        <InputField type={'default'} name={'user'} />
+        <InputField type={'default'} name={'permission'} />
+      </>
+      <ButtonComponent size='medium' onClick={() => { setShowUserPanel((prev) => !prev) }}>add user</ButtonComponent>
+    </div>
+  );
+}
+
+const TimeConfigComponent = (props: ConfigComponentBase) => {
+  const { isAutomatic } = props;
+
+  const InputField = (data: InputFieldProps) => {
+    return (
+      <div className='input-field'>
+        <span className='input-label'>{data.name}</span>
+        <InputComponent type={data.type} />
+      </div>
+    )
+  }
+
+  return (
+    <div className='time-container'>
+      <InputField name='from' type='date' />
+      <InputField name='to' type='date' />
+      {
+        isAutomatic &&
+        <>
+          <InputField name='duration' type='number' />
+          <InputField name='frecuency' type='number' />
+        </>
+      }
+    </div>
+  );
 }
 
 type ManualSettings = ManualFields & TaskSettingsBase;
@@ -167,7 +247,7 @@ function Settings() {
             <>
               <StepperSettings steps={[]} setSteps={function (): void {
                 throw new Error('Function not implemented.');
-              } } />
+              }} />
               <div>requeriments: notSetted</div>
             </>
             : null
@@ -211,12 +291,12 @@ interface ConfigSection {
   getFields(): TaskSettingsBase['time'] | TaskSettingsBase['users'];
 }
 
-type DataConfig <T = unknown> = T extends ManualSettings ? ManualSettings : AutomaticSettings;
+type DataConfig<T = unknown> = T extends ManualSettings ? ManualSettings : AutomaticSettings;
 
 const defaultSettings: ManualSettings = {
   type: 'manual',
   taskType: 'upload',
-  time: [ {
+  time: [{
     id: '1',
     from: null,
     type: 'date'
@@ -236,7 +316,7 @@ const defaultSettings: ManualSettings = {
 
 const StepperSettings = (props: StepperProps) => {
   const { steps, setSteps } = props;
-  const [ configType, setConfigType ] = useState<'manual' | 'automatic'>('manual');
+  const [configType, setConfigType] = useState<'manual' | 'automatic'>('manual');
   const [selected, setSelected] = useState<number>(0);
 
   function setName(id: number, name: string) {
@@ -259,10 +339,10 @@ const StepperSettings = (props: StepperProps) => {
     setSteps(steps.filter((s) => s.id === id));
   }
 
-  function addStep () {
+  function addStep() {
     const lastId = steps[steps.length - 1].id;
     const nextId = lastId + 1;
-    const newStep:StepsSettings = {
+    const newStep: StepsSettings = {
       id: nextId,
       name: 'new step'
     };
@@ -275,61 +355,6 @@ const StepperSettings = (props: StepperProps) => {
     return selectedStep;
   }
 
-  
-  const TimeConfigData: ConfigSection[] = [{
-    id: 'Time-Config',
-    name: 'Time Config',
-    getFields: function(this: ConfigSection) 
-      {
-        if (configType === 'automatic') {
-          const result: TaskSettingsBase['time'] = [{
-            id: '0',
-            type: 'date',
-            from: null
-          },
-          {
-            id: '1',
-            type: 'date',
-            to: null  
-          },
-          {
-            id: '2',
-            type: 'number',
-            duration: null  
-          },
-          {
-            id: '3',
-            type: 'number',
-            frecuency: null  
-          }
-        ];
-        return result;
-      } else {
-        return [{
-          id: '0',
-          type: 'date',
-          from: null
-        },
-        {
-          id: '1',
-          type: 'date',
-          to: null  
-        }];
-      }
-    }
-  },
-  {
-    id: 're2', 
-    name: 'Users Config',
-    getFields: function(this: ConfigSection) {
-      const result: TaskSettingsBase['users'] = [{
-        id: 'testets',
-        permission: 'none'
-      }];
-      return result;
-    }
-  }
-];
 
   function handleSwitch(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.checked as boolean;
@@ -341,18 +366,14 @@ const StepperSettings = (props: StepperProps) => {
     <div className='step-settings'>
       <InputComponent placeholder='step name' />
       <div className="switch-container">
-        <label  className="switch"><input id='switchInput' type="checkbox" onChange={handleSwitch}/>    <div></div>
+        <label className="switch"><input id='switchInput' type="checkbox" onChange={handleSwitch} />    <div></div>
         </label>
         <label htmlFor='switchInput' className='switch-name'></label>
       </div>
-      <CarrouselComponent
-        data={ TimeConfigData }
-      >
+      <CarrouselComponent isAuto={configType === 'automatic'} >
       </CarrouselComponent>
-      <InputComponent placeholder='TIME CONFIG' />
-      <InputComponent placeholder='USERS CONFIGS' />
       <InputComponent placeholder='REQUIREM,ENT CONFIGS' />
-      <InputComponent placeholder='Releasted config' /> 
+      <InputComponent placeholder='Releasted config' />
       <InputComponent placeholder='priority' />
       <InputComponent placeholder='target' />
       <InputComponent placeholder='IS VALIDATED' />
@@ -362,64 +383,60 @@ const StepperSettings = (props: StepperProps) => {
 };
 
 interface CarrouselProps {
-  data: ConfigSection[];
+  isAuto: boolean;
 }
 
 function CarrouselComponent(props: CarrouselProps) {
-  const { data } = props;
-  const [ configName, setConfigName ] = useState<ConfigNames>('Time Config');
-  const [ fields, setFields ] = useState<{name: string, id: string, type: FieldsTypes}[]>([]);
+  const [currentConfig, setCurrentConfig] = useState<string>('c-time');
+  const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
+  const { isAuto } = props;
 
-  function getFieldsData (configName: ConfigNames) {
-    const currentConfig = data.find((item) => item.name === configName);
-    if (!currentConfig) throw new Error('config name not match');
-    const fields = currentConfig.getFields() as  TaskSettingsBase['time'];
-    const fieldsNames = Object.keys(fields).map((item, index) => {
-        const field = {
-          name: item,
-          id: fields[index].id,
-          type: fields[index].type
-        };
-        return field;
-     });
-    return fieldsNames;
+  const data = [
+    {
+      id: 'c-time',
+      name: 'Time Config'
+    },
+    {
+      id: 'c-user',
+      name: 'Users Config'
+    },
+    {
+      id: 'c-requeriments',
+      name: 'Requeriments Config'
+    },
+  ];
+
+  const mappedConfig: { [key: string]: React.ReactNode } = {
+    'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
+    'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />
   }
 
-  function handleClick (name: ConfigNames, id: string, callback: any) {
+  function handleClick(name: string, id: string, callback: (name: string, id?: string) => void) {
     callback(name, id);
-    setConfigName(name);
+    setCurrentConfig(id);
   }
-
-  useEffect(() => {
-    setFields(getFieldsData(configName));
-  }, [configName, data]);
-
-  console.log(fields);
 
   return (
     <div className='dynamic-config-container'>
       <InputSelector
-          style='slider'
-          placeHolder="team"
-          data={data}
-          render={(data, callback) => (
-            <ListItem key={data.id} onClick={() => handleClick(data.name, data.id, callback)}>
-              {data.name}
-            </ListItem>
-          )}
-        />
-        {
-          fields.length > 0 &&
-          fields.map(data => (
-            <InputComponent key={data.id} type={data.type} />
-          ))
-        }
-        <ButtonComponent size='large'>Save</ButtonComponent>
+        style='slider'
+        placeHolder="team"
+        action={setCurrentConfig}
+        data={data}
+        render={(data, callback) => (
+          <ListItem key={data.id} onClick={() => callback(data.name, data.id)}>
+            {data.name}
+          </ListItem>
+        )}
+      />
+      {
+        mappedConfig[currentConfig]
+      }
+      <ButtonComponent size='large'>Save</ButtonComponent>
     </div>
   );
 }
 
+
 //poder añadir iteraciones a una lista ej por
 //cada ítem realizar una acción que puedas cambiar una etiqueta de una sub tarea automaticamente cuando cambias de tarea ej en un canvas si dejo en la seccion fix su categoria se tendria que ajustar a fix
-
-

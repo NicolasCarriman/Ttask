@@ -17,11 +17,13 @@ interface Props {
   placeHolder: string;
   name?: string;
   type?: 'default' | 'userPicker';
-  style?: 'default' | 'slider'
+  style?: 'default' | 'slider';
+  action?: ((id:string) => void ) | null;
 }
 
 function InputSelector({
   data,
+  action = null,
   disabled = false,
   render,
   placeHolder,
@@ -41,7 +43,11 @@ function InputSelector({
       const nextIndex = selectedIndex + 1;
       const hasNextItem = nextIndex < data.length;
       if(!hasNextItem) return;
-
+      
+      if (action) {
+        action(data[nextIndex].id)
+      }
+      
       setSelectedIndex(nextIndex);
     },
     prev: () => {
@@ -49,6 +55,10 @@ function InputSelector({
       const hasPrevItems = prevIndex >= 0;
       if(!hasPrevItems) return;
 
+      if (action) {
+        action(data[prevIndex].id)
+      }
+    
       setSelectedIndex(prevIndex);
     }
   } : null;
