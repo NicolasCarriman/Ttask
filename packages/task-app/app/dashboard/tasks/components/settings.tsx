@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import './style.css';
 import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
-import InputSelector from '@app/components/ui/inputSearch/inputSearch';
+import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
+import FloatInputSelector from '@app/components/ui/inputSearch/inputSearch'
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
 import { priorityType } from '@core/models';
@@ -13,6 +14,9 @@ import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
 import ButtonIcon from '@app/components/ui/button-icon/buttonIcon';
 import './carrousel.css';
 import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector';
+import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from "react-icons/md";
+import { FiTarget } from "react-icons/fi";
+
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -28,14 +32,6 @@ interface IHistory {
   timeStamp: HistoryTimeStamp;
   getCurrentDuration(): string;
 }
-
-type Fields = Record<string, string | boolean> & {
-  href?: string,
-  isRequired: boolean,
-  type: string,
-  value: string | boolean | number,
-  attachments?: string[];
-};
 
 interface RequerimentTypes {
   maxElements: number,
@@ -202,6 +198,181 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
       }
     </div>
   );
+}
+
+type FormFieldsConfig = Record<'input' | 'output', boolean>;
+
+function RequerimentConfig() {
+  const [selectedId, setSelectedId] = useState<string>('');
+  const requeriments = [{
+    id: '1',
+    name: 'inputs'
+  },
+  {
+    id: '2',
+    name: 'output'
+  },
+  {
+    id: '3',
+    name: 'verifications'
+  }
+  ];
+
+  type TaskInputTypes = 'text' | 'check' | 'number' | 'file' | 'date'
+
+  type Fields = {
+    href?: string,
+    isRequired: boolean,
+    type: TaskInputTypes,
+    value: string | boolean | number,
+    attachments?: string[];
+  };
+
+  function addInputField(config: Omit<Fields, 'value'>) {
+
+  }
+
+  function VerificationForm() {
+
+
+
+    return (
+      <form className='verification-form'>
+
+      </form>
+    )
+  }
+
+
+
+  function InputForm() {
+    const [fields, setFields] = useState<Fields[]>([]);
+    const inputDataTypes = [
+      {
+        id: 'text-1',
+        name: 'Text'
+      },
+      {
+        id: 'check-2',
+        name: 'Check'
+      },
+      {
+        id: 'number-3',
+        name: 'Number'
+      },
+      {
+        id: 'file-4',
+        name: 'File'
+      },
+      {
+        id: 'date-5',
+        name: 'Date'
+      }
+    ];
+
+    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+      const data = new FormData(e.target as HTMLFormElement);
+      console.log(data.entries);
+    }
+
+
+
+    return (
+      <form className='tt-l-col-m' onSubmit={handleSubmit}>
+        <ul className='tt-ul'>
+          <li>
+            <InputComponent name='f-name' placeholder='field name' />
+          </li>
+          <li>
+            <FloatInputSelector
+              placeHolder='field type'
+              data={inputDataTypes}
+              render={(item: any, arg: onClickCallBack) => (
+                <ListItem>
+                  <p>{item.name}</p>
+                </ListItem>
+              )} />
+          </li>
+          <li>
+            <InputComponent name='f-attachment' placeholder='attachment' />
+          </li>
+          <li>
+            <InputComponent name='f-required' placeholder='isRequired ?' />
+          </li>
+        </ul>
+        <ButtonComponent type='submit' size={'large'} >Add Input</ButtonComponent>
+      </form>
+    );
+  }
+
+  function handleAccordion(id: string) {
+    if (selectedId !== id) {
+      setSelectedId(id);
+      return;
+    }
+    setSelectedId('');
+  }
+
+  return (
+    <div className='requeriment-contaien tt-l-col-m w-[100%]'>
+      <RoundedBox>
+        <header className='step-displayer'>
+          <ul className='step-ul'>
+            <li className='li-active' id='input-step'> <MdInput /> </li>
+            <li id='target-step'> <FiTarget /> </li>
+            <li id='output-step'> <MdOutlineOutput /></li>
+            <li id='validation-step'> <MdOutlineVerifiedUser /> </li>
+          </ul>
+        </header>
+        <h3 className='requeriment-section-name'>Inputs</h3>
+        <span className='tt-divider'></span>
+        <main>
+          <InputForm />
+        </main>
+        <ButtonComponent size={'large'} >Next</ButtonComponent>
+      </RoundedBox>
+
+      {/* <Accordion
+        label='Input'
+        showContent={selectedId === '1'}
+        handleShow={handleAccordion}
+        id='1'
+      >
+        <InputForm />
+      </Accordion>
+      <Accordion
+        label='output'
+        showContent={selectedId === '2'}
+        handleShow={handleAccordion}
+        id='2'
+      >
+        <div>
+          teste
+        </div>
+      </Accordion>
+      <Accordion
+        label='verification'
+        showContent={selectedId === '3'}
+        handleShow={handleAccordion}
+        id='3'
+      >
+        <div>
+          teste
+        </div>
+      </Accordion>
+      <Accordion
+        label='target'
+        showContent={selectedId === '4'}
+        handleShow={handleAccordion}
+        id='4'
+      >
+        <div>
+          targetConfig
+        </div>
+      </Accordion> */}
+    </div>
+  )
 }
 
 type ManualSettings = ManualFields & TaskSettingsBase;
@@ -371,7 +542,10 @@ const StepperSettings = (props: StepperProps) => {
         <label htmlFor='switchInput' className='switch-name'></label>
       </div>
       <CarrouselComponent isAuto={configType === 'automatic'} >
+
       </CarrouselComponent>
+      <InputComponent placeholder='add fields' />
+      <ButtonComponent size={'large'} >Add Step</ButtonComponent>
       <InputComponent placeholder='REQUIREM,ENT CONFIGS' />
       <InputComponent placeholder='Releasted config' />
       <InputComponent placeholder='priority' />
@@ -391,6 +565,7 @@ function CarrouselComponent(props: CarrouselProps) {
   const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
   const { isAuto } = props;
 
+
   const data = [
     {
       id: 'c-time',
@@ -408,7 +583,8 @@ function CarrouselComponent(props: CarrouselProps) {
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
-    'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />
+    'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
+    'c-requeriments': <RequerimentConfig />
   }
 
   function handleClick(name: string, id: string, callback: (name: string, id?: string) => void) {
@@ -432,7 +608,6 @@ function CarrouselComponent(props: CarrouselProps) {
       {
         mappedConfig[currentConfig]
       }
-      <ButtonComponent size='large'>Save</ButtonComponent>
     </div>
   );
 }

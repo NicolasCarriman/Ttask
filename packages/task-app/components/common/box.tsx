@@ -10,7 +10,7 @@ function RoundedBox({ children, className }: RoundedBoxProps) {
   return (
     <div
       className={twMerge(`
-      'relative 
+      relative 
       p-4 
       flex 
       flex-col 
@@ -24,7 +24,7 @@ function RoundedBox({ children, className }: RoundedBoxProps) {
       shadow-md 
       m-none
       rounded-box
-      '
+      
       `, className && className)}
     >
       { children }

@@ -73,7 +73,7 @@ export const SidebarHead: React.FC<SidebarHead> = ({ children }) => {
 export const SidebarMainContainer: React.FC<SidebarProps> = ({ children }) => {
   return (
     <div
-      className='hidden sm:flex flex-col gap-[12px] justify-center items-start relative max-w-min'
+      className='sm:flex flex-col gap-[12px] justify-center items-start relative max-w-min'
     >
       {children}
     </div>

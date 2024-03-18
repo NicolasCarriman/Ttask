@@ -1,25 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SideBarContainer, SidebarComponent, SidebarFooter, SidebarHead, SidebarMainContainer } from './sidebar.styled';
-import ButtonIcon from '../button-icon/buttonIcon';
 import AvatarComponent from '../../common/avatar';
-import SideBarLink from '@app/components/common/link';
 import Link from 'next/link';
-import Burger from '@app/components/common/burger';
+import './sidebar.css';
+import {
+  MdNotificationsActive,
+  MdWork,
+  MdCalendarToday,
+  MdContacts
+} from 'react-icons/md';
+import {
+  IoIosBuild,
+  IoIosStats
+} from 'react-icons/io';
 
 /**
  * todo: fix navigation structure
- * navigation structure should be composed by li component
+ * navigation structure should be composed by li, a
  */
 
 function Sidebar() {
   const [active, setActive] = useState(false);
-  const [responsiveMenu, setResponsiveMenu] = useState(false);
-
-  const handleClick = () => {
-    setResponsiveMenu((state) => !state);
-  };
 
   const onHover = () => {
     setActive(true);
@@ -29,46 +31,48 @@ function Sidebar() {
     setActive(false);
   };
 
+
   return (
-    <SideBarContainer>
-      <SidebarComponent onHover={onHover} onLeave={onLeave}>
-        <SidebarHead>
-          <Link href='./dashboard' className='w-full font-bold text-start'>
-            My Company
-          </Link>
-        </SidebarHead>
-        <SidebarMainContainer>
-          <SideBarLink href={'./dashboard/tasks'} >
-            <ButtonIcon type='task' showText={active} />
-          </SideBarLink>
-          <ButtonIcon type='stats' showText={active} disabled={true} />
-          <ButtonIcon type='notifications' showText={active} disabled />
-          <ButtonIcon type='projects' showText={active} disabled />
-          <ButtonIcon type='team' showText={active} disabled />
-          <ButtonIcon type='calendar' showText={active} disabled />
-        </SidebarMainContainer>
-        <SidebarFooter spanLabel={'Emily Brown'}>
+    <aside
+      className={`sidebar-container ${active ? 'sb-active' : 'sb-disabled'}`}
+      onMouseEnter={() => onHover()}
+      onMouseLeave={() => onLeave()}
+    >
+      <nav className='sidebar-content'>
+        <h1>My Company</h1>
+        <ul className='tt-ul'>
+          <li className='tt-li'>
+            <Link href={'./dashboard/tasks'} >
+              <IoIosBuild />
+              <i className='tt-li-info'>tasks</i>
+            </Link>
+          </li>
+          <li className='tt-li'>
+            <Link href={'./dashboard'} >
+              <MdWork />
+              <i className='tt-li-info'>project</i>
+            </Link>
+          </li>
+          <li className='tt-li'>
+            <MdCalendarToday />
+            <i className='tt-li-info'>tasks</i>
+          </li>
+          <li className='tt-li'>
+            <MdNotificationsActive />
+            <i className='tt-li-info'>notifications</i>
+          </li>
+          <li className='tt-li'>
+            <IoIosStats />
+          </li>
+          <li className='tt-li'>
+            <MdContacts />
+          </li>
+        </ul>
+        <article className='sidebar-footer'>
           <AvatarComponent isCurrentUser={true} label={'Emily Brown'} />
-        </SidebarFooter>
-        <Burger
-          onClick={handleClick}
-          isOpen={responsiveMenu}
-        />
-      </SidebarComponent>
-      {
-        responsiveMenu &&
-        <div className='relative bottom-6 bg-white z-[300]'>
-          <SideBarLink href={'./dashboard/tasks'} >
-            <ButtonIcon type='task' showText={true} />
-          </SideBarLink>
-          <ButtonIcon type='stats' showText={true} disabled={true} />
-          <ButtonIcon type='notifications' showText={true} disabled />
-          <ButtonIcon type='projects' showText={true} disabled />
-          <ButtonIcon type='team' showText={true} disabled />
-          <ButtonIcon type='calendar' showText={true} disabled />
-        </div>
-      }
-    </SideBarContainer>
+        </article>
+      </nav>
+    </aside>
   );
 }
 

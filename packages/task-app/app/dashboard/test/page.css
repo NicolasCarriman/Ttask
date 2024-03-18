@@ -1,0 +1,17 @@
+.test-section {
+  width: 18vw;
+  height: 30vh;
+}
+
+.test-section>div {
+  justify-content: start;
+}
+
+.tt-divider {
+  width: 100%;
+  display: block;
+  height: 3px;
+  padding: 0;
+  background-color: #75757554;
+  border-bottom: 2px solid #efefef;
+}

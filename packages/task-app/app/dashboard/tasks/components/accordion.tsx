@@ -16,7 +16,7 @@ function Accordion(props: Props) {
   const { label, children, id, handleShow, showContent } = props;
 
   return (
-    <RoundedBox className='accordion-container'>
+    <RoundedBox className='min-w-[8vw] accordion-container '>
       <header className='accordion-header' onClick={() => handleShow(id)}>
         <SlArrowDown className={ showContent ? 'accordion-active' : 'accordion-desactive'} />
         <h3>{label}</h3>
