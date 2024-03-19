@@ -1,0 +1,44 @@
+html {
+  --tt-primary-color: #17354e;
+}
+
+.tt-ul {
+  margin: none;
+  padding: 8px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background-color: white !important;
+  z-index: 300;
+  border-radius: 12px;
+}
+
+.dis-none {
+  display: none !important;
+  position: relative !important;
+}
+
+.dis-active {
+  display: inline-block !important;
+  position: absolute !important;
+  margin: auto !important;
+  top: 18rem !important;
+}
+
+.tt-li-item {
+  color: #17354e;
+  cursor: pointer;
+  display: flex;
+  padding: .4rem;
+  border-radius: 8px;
+  padding-left: 1rem;
+  flex-direction: row !important;
+  justify-content: start !important;
+  align-items: start;
+  align-items: center;
+}
+
+.tt-li-item:hover {
+  color: white;
+  background-color: var(--tt-primary-color);
+}

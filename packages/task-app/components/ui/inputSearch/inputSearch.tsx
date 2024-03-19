@@ -1,8 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react';
 import List from '@app/components/common/list';
-import FloatingLabelInput from '@app/components/common/inputLabel';
-import { InputComponent } from '@app/components/common';
+import { FloatInput, InputComponent } from '@app/components/common';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import './inputSearch.css';
 
@@ -30,9 +29,9 @@ function InputSelector({
   style = 'default',
   type = 'default'
 }: Props) {
-  const [value, setValue] = useState('');
-  const [showList, setShowList] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(style === "slider" ? 0 : null);
+  const [ value, setValue ] = useState('');
+  const [ showList, setShowList ] = useState(false);
+  const [ selectedIndex, setSelectedIndex ] = useState<number | null>(style === "slider" ? 0 : null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isDefaultType = type === 'default';
   const handleShow = () => setShowList((state) => !state);
@@ -75,27 +74,14 @@ const handleClick = (name: string, id?: string) => {
   setShowList(false);
 };
 
-useEffect(() => {
-  function handleClickOutside(event: { target: any; }) {
-    if (containerRef.current && !containerRef.current.contains(event.target)) {
-      setShowList(false);
-    }
-  }
-
-  document.addEventListener('mousedown', handleClickOutside);
-  return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
-  };
-}, []);
-
 return (
-  <div className="flex flex-col relative w-full" ref={containerRef}>
+  <fieldset className="flex flex-col relative w-full">
     {
       selectorConfig ?
         <SliderSelector config={selectorConfig} />
         :
-        <FloatingLabelInput
-          placeholder={placeHolder}
+        <FloatInput
+          label={placeHolder}
           onClick={handleShow}
           value={value}
           onChange={(v) => setValue(v.currentTarget.value)}
@@ -111,23 +97,17 @@ return (
         />
         <List
           key={showList.toString()}
-          className={`custom-list-item-spacing ${showList ? 'absolute z-[101] mt-[5.7rem] p-1' : 'hidden'} bg-white w-full`}
+          className={`custom-list-item-spacing ${showList ? 'absolute z-[101] mt-[2.7rem] p-1' : 'hidden'} bg-white w-full`}
           data={data}
           renderedItem={(item) => render(item, handleClick)}
         />
       </>
     )}
-    <style jsx>{`
-        .custom-list-item-spacing :global(div) {
-            margin: 0.05rem 0;
-        }
-      `}</style>
-  </div>
+  </fieldset>
 );
 }
 
 export default InputSelector;
-
 
 type ItemType = {
   name: string,
@@ -148,6 +128,7 @@ interface SlideSelectorProps {
 
 function SliderSelector({ config }: SlideSelectorProps) {
   const { prev, next, handleClick, selected } = config;
+
   return (
     <div className='selector-container'>
       <SlArrowLeft onClick={prev} />

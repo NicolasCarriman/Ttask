@@ -1,9 +1,9 @@
-import React, { HTMLAttributes } from 'react';
+import React, { ComponentProps, HTMLAttributes } from 'react';
 import { twMerge } from 'tailwind-merge';
+import './list.css';
 
 interface ListProps extends HTMLAttributes<HTMLDivElement> {
-  data: any[];
-  // eslint-disable-next-line no-unused-vars
+  data: { id: string, name: string }[];
   renderedItem: (item: any) => React.ReactNode;
   className?: string;
 }
@@ -40,8 +40,25 @@ function List({
 
 export default List;
 
+interface Props extends ComponentProps<'li'> {
+  data: { id: string; name: string; }[];
+  active: boolean;
+}
 
+export const ListComponent: React.FC<Props> = (props) => {
+  const { data, active } = props;
 
-
-
-
+  return (
+    <ul className={`tt-ul ${active ? 'dis-active' : 'dis-none'}`} >
+      {
+        data.map((item) => (
+          <li className='tt-li-item' key={item.id} {...props}>
+            <span className='txt-gray-500'>
+              { item.name }
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  );
+}

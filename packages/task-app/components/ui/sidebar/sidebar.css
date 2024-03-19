@@ -58,7 +58,7 @@
 }
 
 .tt-li:hover {
-  justify-content: start;
+  justify-content: center;
   padding-left: 1rem;
   background-color: #17354E;
 }

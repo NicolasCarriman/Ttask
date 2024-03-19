@@ -1,5 +1,9 @@
 html {
   --border-color: #d8d8d8;
+  --tt-gray-300: #E0E0E0;
+  --tt-gray-400: #b5b5b5;
+  --tt-gray-500: rgb(149 149 149);
+  --tt-gray-50: #FAFAFA;
 }
 
 .task-section {
@@ -29,7 +33,7 @@ html {
   gap: 12px;
 }
 
-.task-header > h3 {
+.task-header>h3 {
   font-weight: 600;
   opacity: .8;
   font-size: 1.6rem;
@@ -58,11 +62,11 @@ html {
   align-items: center;
 }
 
-.task-footer > button {
+.task-footer>button {
   height: 42px;
 }
 
-.task-layer > .rounded-box:first-child > .dymanic-selector:nth-child(2) {
+.task-layer>.rounded-box:first-child>.dymanic-selector:nth-child(2) {
   flex: 1;
 }
 
@@ -73,7 +77,7 @@ html {
   align-items: center;
 }
 
-.userpicker-header > h3 {
+.userpicker-header>h3 {
   font-weight: 600;
   opacity: .8;
 }
@@ -90,7 +94,7 @@ html {
   gap: 12px;
 }
 
-.accordion-header > h3 {
+.accordion-header>h3 {
   cursor: pointer;
   font-weight: 600;
   opacity: .7;
@@ -109,7 +113,7 @@ html {
 .accordion-visible {
   display: flex;
   flex-direction: column;
-  
+
 }
 
 .accordion-hide {
@@ -137,7 +141,7 @@ html {
   color: #5f5f5f;
 }
 
-.requeriment-contaienr > .accordion-container > .accordion-visible {
+.requeriment-contaienr>.accordion-container>.accordion-visible {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -158,6 +162,11 @@ html {
   gap: 1.2rem;
 }
 
+.tt-l-row-m {
+  display: flex;
+  flex-direction: row !important;
+  gap: 1rem;
+}
 
 .step-displayer {
   height: 5vh;
@@ -170,7 +179,7 @@ html {
   height: 100%;
 }
 
-.step-ul > li {
+.step-ul>li {
   position: relative;
   height: 100%;
   width: 100%;
@@ -197,7 +206,7 @@ html {
   z-index: 0;
 }
 
-.step-ul > li > svg {
+.step-ul>li>svg {
   height: 48px;
   width: 48px;
   padding: 12px;
@@ -207,7 +216,32 @@ html {
   z-index: 2;
 }
 
-.li-active > svg {
+.li-active>svg {
   background-color: #17354E !important;
   fill: white;
+}
+
+.tt-ul > li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+  /*--UUTILIS--*/
+.txt-gray-4 {
+  color: var(--tt-gray-400);
+}
+
+.txt-gray-5 {
+  color: var(--tt-gray-500);
+}
+
+.box-container {
+  z-index: 300;
+  background-color: white;
+  color: white;
+  background-color: var(--tt-primary-color);
+  height: auto;
+  width: auto;
+  padding: 12px;
 }

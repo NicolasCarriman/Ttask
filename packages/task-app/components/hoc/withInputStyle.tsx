@@ -1,22 +1,23 @@
 import React, { ReactNode } from 'react';
 import '../../app/style/animate.module.css';
+import { twMerge } from 'tailwind-merge';
 interface StyledWrapperProps {
   children: ReactNode;
+  className?: string;
 }
 
 //todo: turn this component into high order component
 
-const StyledWrapper: React.FC<StyledWrapperProps> = ({ children }) => (
+const StyledWrapper: React.FC<StyledWrapperProps> = ({ children, className }) => (
   <div
-    className="
-    flex 
+    className={twMerge(`flex 
     items-center
     w-full 
     gap-4 
     border
     rounded-lg 
     h-auto
-    p-[2.5vh]
+    p-[8px]
     bg-gray-50 
     shadow-md
     hover:shadow-lg
@@ -25,8 +26,7 @@ const StyledWrapper: React.FC<StyledWrapperProps> = ({ children }) => (
     transform
     hover:translate-y-1 
     z-20
-    mb-4
-    "
+    `, className && className)}
     >
     {children}
   </div>

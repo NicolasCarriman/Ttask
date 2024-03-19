@@ -1,0 +1,109 @@
+html {
+  --tt-gray-300:#E0E0E0;
+  --tt-gray-50:#FAFAFA;
+  --tt-shadow-m: 2px 3px 14px #e7e7e7;
+  --tt-shadow-l: 2px 2px 14px #b5b5b5;
+  --tt-radius-m: 8px;
+  --tt-color-active: #3182ce;
+}
+
+
+.tt_input-field-float {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: auto;
+  padding: 8px;
+  transition: all .2s ease-in;
+  box-shadow: var(--tt-shadow-m);
+  border: 1px solid var(--tt-gray-300);
+  border-radius: var(--tt-radius-m);
+}
+
+.tt_input-field:hover, .tt_input-field-float:hover {
+  box-shadow: var(--tt-shadow-l);
+  transform: translateY(2px);
+}
+
+.tt_input {
+  height: 3vh;
+  width: 100%;
+  font-size: 1rem;
+  padding-left: 12px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.tt_input-field-float > .tt_input {
+  background-color: var(--tt-gray-50) !important;
+  box-shadow: none !important;
+  color: var(--tt-color-active);
+}
+
+.tt_input_label {
+  position: absolute;
+  transition: all 0.5s;
+  pointer-events: none;
+  font-size: 1rem;
+  color: var(--tt-gray-500);
+  transition: all .3s ease-in-out;
+}
+
+.tt_input:focus + .tt_input_label{
+  font-size: .8rem;
+  color: var(--tt-color-active);
+  transform: translateY(-2.2rem);
+}
+
+.tt_input-field {
+  display: flex;
+  flex-direction: row;
+  transition: all 0.5s;
+  background-color: white;
+  border-radius: var(--tt-radius-m);
+  box-shadow: var(--tt-shadow-m);
+  padding: 8px;
+  gap: 4px;
+}
+
+.tt_input-field-float:active + .tt_input_label, .tt_input:not([value=""]) + .tt_input_label {
+  transform: translateY(-2.1rem) scale(1);
+  color: var(--tt-color-active);
+}
+
+.tt_input-field-float:has(input:not([value=""])) {
+  border: 1px solid var(--tt-color-active);
+}
+
+.inp-gp-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-top: 1.2rem;
+}
+
+.tt_checkbox-field {
+  display: flex;
+  flex-direction: row;
+  width: min-content;
+  padding-left: 8px;
+  gap: 12px;
+  border-radius: 8px;
+  padding: 4px;
+  padding-left: 12px;
+  align-items: center;
+  justify-content: start;
+  cursor: pointer;
+}
+
+.tt_checkbox-field > .tt_input {
+  width: 20px;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.tt_checkbox-field > .tt_inp_label {
+  user-select: none !important;
+  text-wrap: nowrap;
+}

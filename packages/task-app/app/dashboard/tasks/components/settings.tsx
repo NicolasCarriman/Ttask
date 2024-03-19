@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './style.css';
 import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
@@ -9,14 +9,14 @@ import FloatInputSelector from '@app/components/ui/inputSearch/inputSearch'
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
 import { priorityType } from '@core/models';
-import { InputComponent } from '@app/components/common';
+import { CheckboxInput, FloatInput, InputComponent, SliderSelector } from '@app/components/common';
 import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
 import ButtonIcon from '@app/components/ui/button-icon/buttonIcon';
 import './carrousel.css';
 import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from "react-icons/md";
 import { FiTarget } from "react-icons/fi";
-
+import Item from '@app/components/common/items';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -234,8 +234,6 @@ function RequerimentConfig() {
 
   function VerificationForm() {
 
-
-
     return (
       <form className='verification-form'>
 
@@ -247,6 +245,7 @@ function RequerimentConfig() {
 
   function InputForm() {
     const [fields, setFields] = useState<Fields[]>([]);
+
     const inputDataTypes = [
       {
         id: 'text-1',
@@ -276,32 +275,21 @@ function RequerimentConfig() {
       console.log(data.entries);
     }
 
-
-
     return (
       <form className='tt-l-col-m' onSubmit={handleSubmit}>
-        <ul className='tt-ul'>
+        <ul className='tt-ul inp-gp-col'>
           <li>
-            <InputComponent name='f-name' placeholder='field name' />
+            <FloatInput name='f-name' type='text' label='Field name' />
           </li>
           <li>
-            <FloatInputSelector
-              placeHolder='field type'
-              data={inputDataTypes}
-              render={(item: any, arg: onClickCallBack) => (
-                <ListItem>
-                  <p>{item.name}</p>
-                </ListItem>
-              )} />
+            <label className='txt-gray-4 '>Field type</label>
+            <SliderSelector data={ inputDataTypes } />
           </li>
           <li>
-            <InputComponent name='f-attachment' placeholder='attachment' />
-          </li>
-          <li>
-            <InputComponent name='f-required' placeholder='isRequired ?' />
-          </li>
+            <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true}/>
+          </li> 
         </ul>
-        <ButtonComponent type='submit' size={'large'} >Add Input</ButtonComponent>
+        <ButtonComponent variant='filter' type='submit' size={'medium'} >Add Field</ButtonComponent>
       </form>
     );
   }
@@ -333,7 +321,9 @@ function RequerimentConfig() {
         <ButtonComponent size={'large'} >Next</ButtonComponent>
       </RoundedBox>
 
-      {/* <Accordion
+      {/*
+      
+      <Accordion
         label='Input'
         showContent={selectedId === '1'}
         handleShow={handleAccordion}
@@ -487,8 +477,8 @@ const defaultSettings: ManualSettings = {
 
 const StepperSettings = (props: StepperProps) => {
   const { steps, setSteps } = props;
-  const [configType, setConfigType] = useState<'manual' | 'automatic'>('manual');
-  const [selected, setSelected] = useState<number>(0);
+  const [ configType, setConfigType ] = useState<'manual' | 'automatic'>('manual');
+  const [ selected, setSelected ] = useState<number>(0);
 
   function setName(id: number, name: string) {
     const stepsCopy = [...steps];

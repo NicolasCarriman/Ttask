@@ -3,7 +3,7 @@ import React, { HTMLAttributes } from 'react';
 function ListItem(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className="
+    className="
     flex 
     flex-row 
     gap-2 
