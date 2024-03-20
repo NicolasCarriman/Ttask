@@ -38,14 +38,13 @@
 .tt-ul {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem; 
+  gap: 2rem; 
   width: 100%;
 }
 
 .tt-li {
   transition: all .5s ease-in-out;
-  min-height: 3rem;
-  min-width: 3rem;
+  min-height: 5vh;
   height: 100%;
   width: 100%;
   align-items: center;
