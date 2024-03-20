@@ -7,7 +7,7 @@ html {
   padding: 8px !important;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: .4rem;
   background-color: white !important;
   z-index: 300;
   border-radius: 12px;
