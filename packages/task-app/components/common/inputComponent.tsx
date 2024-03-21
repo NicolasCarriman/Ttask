@@ -42,11 +42,11 @@ export const FloatInput: React.FC<FloatInputProps> = (props) => {
 interface CheckboxProps extends Omit<InputProps, 'icon' | 'type'> {
   id: string;
   label: string;
-  isChecked: boolean;
+  ischecked: boolean;
 }
 
 export const CheckboxInput: React.FC<CheckboxProps> = (props) => {
-  const [checked, setChecked] = useState<boolean>(props.isChecked);
+  const [checked, setChecked] = useState<boolean>(props.ischecked);
 
   function handleChange() {
     setChecked((checked) => !checked);
@@ -118,7 +118,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
       <InputComponent
         value={data[selected].name}
         onClick={() => handleClick(selected)}
-        onChange={() => { }}
+        onChange={() => {}}
         style={{ cursor: 'pointer' }}
         {...rest}
         readOnly
@@ -128,7 +128,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
         className={`${showList ? 'fixed inset-0 z-[100]  backdrop-brightness-[0.9] transition-all' : 'hidden'}`}
         onClick={() => setShowList(false)}
       />
-        <ListComponent active={showList}  data={data} />
+        <ListComponent onselect={handleSelect} active={showList}  data={data} />
     </div>
   )
 }

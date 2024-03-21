@@ -125,7 +125,7 @@ function DynamicSelector({
           </TextBox>
       }
       </div>
-      <Button variant='animated' onClick={handleClick} size={'small'}>
+      <Button type='button' variant='animated' onClick={handleClick} size={'small'}>
         {
            isTabs && <IoIosAddCircle className='h-8 w-8'  />
         }

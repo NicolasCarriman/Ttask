@@ -17,6 +17,7 @@ import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector'
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from "react-icons/md";
 import { FiTarget } from "react-icons/fi";
 import Item from '@app/components/common/items';
+import { getRandomId } from '@app/utils';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -173,6 +174,20 @@ const UsersConfigComponent = (props: ConfigComponentBase) => {
   );
 }
 
+const ObjectiveConfig = () => {
+  return (
+    <form>
+      <FloatInput label='Action' type='text' />
+      <FloatInput label='Unity' type='text' />
+      <FloatInput label='Description' type='text' />
+      <h3>Target</h3>
+      <span className='tt-divider' />
+      <FloatInput label='Ubication' type='text' />
+      <FloatInput label='Context' type='text' />
+    </form> 
+  );
+};
+
 const TimeConfigComponent = (props: ConfigComponentBase) => {
   const { isAutomatic } = props;
 
@@ -203,49 +218,78 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
 type FormFieldsConfig = Record<'input' | 'output', boolean>;
 
 function RequerimentConfig() {
-  const [selectedId, setSelectedId] = useState<string>('');
-  const requeriments = [{
-    id: '1',
-    name: 'inputs'
-  },
-  {
-    id: '2',
-    name: 'output'
-  },
-  {
-    id: '3',
-    name: 'verifications'
+
+  const [fields, setFields] = useState<ConcreteInputField[]>([]);
+  const [ indicators, setIndicators] = useState<{ id: string, name: string }[]>([]);
+  const [step, setStep] = useState<number>(0);
+  const steps = {
+    isTarget: step === 0,
+    isInput: step === 1,
+    isOutput: step === 2,
+    isValidation: step == 3
   }
-  ];
+  const maxStep = 3;
+  const stepName: Record<string, string> = {
+    isTarget: 'Target',
+    isInput: 'Input',
+    isOutput: 'Output',
+    isValidation: 'Validation'
+  };
+  const currentStep = Object.entries(steps).find((step) => step[1] === true);
 
   type TaskInputTypes = 'text' | 'check' | 'number' | 'file' | 'date'
+  type InputFieldsNames = 'name' | 'type' | 'mode' | 'isRequired';
+  type ConcreteInputField = Record<InputFieldsNames, string | undefined | boolean>;
 
   type Fields = {
+    name: string,
     href?: string,
+    mode: 'single' | 'list'
     isRequired: boolean,
     type: TaskInputTypes,
-    value: string | boolean | number,
+    value: string | boolean | number | undefined,
     attachments?: string[];
   };
 
-  function addInputField(config: Omit<Fields, 'value'>) {
+  function addInputField(input: ConcreteInputField) {
+    setFields((prevState) => [...prevState, input]);
+  }
 
+  function addIndicator(name: string) {
+    const indicator = {
+      name,
+      id: getRandomId(),
+    };
+
+    setIndicators((indi) => [...indi, indicator ]);
+  }
+
+  function next() {
+    if (step < maxStep) {
+      setStep(step + 1)
+    }
+  }
+
+  function prev() {
+    if (step > 0) {
+      setStep(step - 1);
+    }
   }
 
   function VerificationForm() {
-
     return (
       <form className='verification-form'>
 
       </form>
-    )
+    );
   }
 
+  interface InputFormProps {
+    addInput(input: ConcreteInputField): void;
+  }
 
-
-  function InputForm() {
-    const [fields, setFields] = useState<Fields[]>([]);
-
+  function InputForm({ addInput }: InputFormProps) {
+    const [formError, setFormError] = useState<boolean>(false);
     const inputDataTypes = [
       {
         id: 'text-1',
@@ -266,40 +310,88 @@ function RequerimentConfig() {
       {
         id: 'date-5',
         name: 'Date'
+      },
+      {
+        id: 'list-6',
+        name: 'List'
       }
     ];
+    const inputMode = [{ id: 'single-1', name: 'Single' }, { id: 'list-2', name: 'List' }];
 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
       e.preventDefault();
       const data = new FormData(e.target as HTMLFormElement);
-      console.log(data.entries);
+      const values: ConcreteInputField = {
+        name: data.get('name')?.toString(),
+        type: data.get('type')?.toString().toLowerCase(),
+        mode: data.get('mode')?.toString().toLowerCase(),
+        isRequired: data.get('isRequired') ? true : false
+      }
+
+      function validateValues(values: ConcreteInputField) {
+        let result = true;
+
+        for (let key in values) {
+          const currentValue = values[key as InputFieldsNames];
+          if (currentValue !== undefined) continue;
+          setFormError(true);
+          result = false;
+        }
+
+        return result;
+      }
+      const isValidated = validateValues(values);
+
+      if (!isValidated) return;
+      addInput(values);
     }
 
     return (
       <form className='tt-l-col-m' onSubmit={handleSubmit}>
         <ul className='tt-ul inp-gp-col'>
           <li>
-            <FloatInput name='f-name' type='text' label='Field name' />
+            <FloatInput name='name' type='text' label='Field name' />
           </li>
           <li>
-            <label className='txt-gray-4 '>Field type</label>
-            <SliderSelector data={ inputDataTypes } />
+            <label className='txt-gray-4 '>Field Mode</label>
+            <SliderSelector name='type' data={inputMode} />
           </li>
           <li>
-            <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true}/>
-          </li> 
+            <label className='txt-gray-4 '>Field Type</label>
+            <SliderSelector name='mode' data={inputDataTypes} />
+          </li>
+          <li>
+            <CheckboxInput name='isRequired' id={'inp-required'} label={'Is required?'} ischecked={true} />
+          </li>
         </ul>
         <ButtonComponent variant='filter' type='submit' size={'medium'} >Add Field</ButtonComponent>
       </form>
     );
   }
 
-  function handleAccordion(id: string) {
-    if (selectedId !== id) {
-      setSelectedId(id);
-      return;
-    }
-    setSelectedId('');
+  interface TargetProps {
+    indicators: { id: string, name: string }[];
+    addIndicators(id:string): void;
+  }
+
+  function TargetForm(props: TargetProps) {
+
+    return (
+      <form>
+        <ul className='tt-ul inp-gp-col'>
+          <li><FloatInput name='name' type='text' label='Target Name' /></li>       
+          <li><FloatInput name='description' type='text' label='Description' /></li>       
+          <li>
+            <DynamicSelector
+              onSelect={() => {}}
+              elements={props.indicators}
+              title='Indicators'
+              onClick={props.addIndicators}
+              selectedId={undefined} />
+          </li>       
+        </ul>
+      </form>
+    )
   }
 
   return (
@@ -307,22 +399,25 @@ function RequerimentConfig() {
       <RoundedBox>
         <header className='step-displayer'>
           <ul className='step-ul'>
-            <li className='li-active' id='input-step'> <MdInput /> </li>
-            <li id='target-step'> <FiTarget /> </li>
-            <li id='output-step'> <MdOutlineOutput /></li>
-            <li id='validation-step'> <MdOutlineVerifiedUser /> </li>
+            <li className={steps.isTarget ? 'li-active' : ''} id='target-step'><FiTarget /></li>
+            <li className={steps.isInput ? 'li-active' : ''} id='input-step'><MdInput /></li>
+            <li className={steps.isOutput ? 'li-active' : ''} id='output-step'><MdOutlineOutput /></li>
+            <li className={steps.isValidation ? 'li-active' : ''} id='validation-step'><MdOutlineVerifiedUser /></li>
           </ul>
         </header>
-        <h3 className='requeriment-section-name'>Inputs</h3>
+        <h3 className='requeriment-section-name'>{currentStep ? stepName[currentStep[0]] : 'Target'}</h3>
         <span className='tt-divider'></span>
         <main>
-          <InputForm />
+          {steps.isInput ? <InputForm addInput={addInputField} /> : null}
+          {steps.isTarget ? <TargetForm addIndicators={addIndicator} indicators={indicators}  /> : null}
         </main>
-        <ButtonComponent size={'large'} >Next</ButtonComponent>
+        <div className='btn-grp'>
+          {step > 0 ? <ButtonComponent onClick={() => prev()} size={'large'} >Prev</ButtonComponent> : null}
+          <ButtonComponent size={'large'} onClick={() => next()} >Next</ButtonComponent>
+        </div>
       </RoundedBox>
 
       {/*
-      
       <Accordion
         label='Input'
         showContent={selectedId === '1'}
@@ -370,7 +465,7 @@ type ManualSettings = ManualFields & TaskSettingsBase;
 function Settings() {
   const [selectedSetting, setSelectedSetting] = useState<string>(settingsSections[0].id);
   const [selectedAccordion, setSelectedAccordion] = useState<string>('ac-s-1');
-  const [steps, setSteps] = useState<number>(0);
+  const [steps, setStep] = useState<number>(0);
 
 
   // eslint-disable-next-line no-unused-vars
@@ -381,11 +476,6 @@ function Settings() {
       </ListItem>
     );
   };
-
-  function addStep(e: React.MouseEvent<HTMLButtonElement>) {
-    console.log(e);
-    setSteps(steps + 1);
-  }
 
   return (
     <RoundedBox className={'settings-container'}>
@@ -477,8 +567,8 @@ const defaultSettings: ManualSettings = {
 
 const StepperSettings = (props: StepperProps) => {
   const { steps, setSteps } = props;
-  const [ configType, setConfigType ] = useState<'manual' | 'automatic'>('manual');
-  const [ selected, setSelected ] = useState<number>(0);
+  const [configType, setConfigType] = useState<'manual' | 'automatic'>('manual');
+  const [selected, setSelected] = useState<number>(0);
 
   function setName(id: number, name: string) {
     const stepsCopy = [...steps];
@@ -574,7 +664,8 @@ function CarrouselComponent(props: CarrouselProps) {
   const mappedConfig: { [key: string]: React.ReactNode } = {
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
-    'c-requeriments': <RequerimentConfig />
+    'c-requeriments': <RequerimentConfig />,
+    'c-Objetive': <ObjectiveConfig />
   }
 
   function handleClick(name: string, id: string, callback: (name: string, id?: string) => void) {

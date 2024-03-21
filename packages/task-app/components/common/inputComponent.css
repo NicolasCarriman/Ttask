@@ -13,7 +13,8 @@ html {
   display: flex;
   align-items: center;
   height: auto;
-  padding: 8px;
+  padding: 6px;
+  padding-left: 8px;
   transition: all .2s ease-in;
   box-shadow: var(--tt-shadow-m);
   border: 1px solid var(--tt-gray-300);
@@ -79,7 +80,7 @@ html {
 .inp-gp-col {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.4rem;
   padding-top: 1.2rem;
 }
 
