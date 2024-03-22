@@ -251,3 +251,9 @@ html {
   flex-direction: row;
   gap: 12px;
 }
+
+.objetive_form {
+  padding-top: 18px;
+  width: 100%;
+  gap: 24px;
+}

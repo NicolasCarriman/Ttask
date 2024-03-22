@@ -4,19 +4,15 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './style.css';
 import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
-import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
-import FloatInputSelector from '@app/components/ui/inputSearch/inputSearch'
+import InputSelector from '@app/components/ui/inputSearch/inputSearch';
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
 import { priorityType } from '@core/models';
 import { CheckboxInput, FloatInput, InputComponent, SliderSelector } from '@app/components/common';
-import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
-import ButtonIcon from '@app/components/ui/button-icon/buttonIcon';
 import './carrousel.css';
 import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from "react-icons/md";
 import { FiTarget } from "react-icons/fi";
-import Item from '@app/components/common/items';
 import { getRandomId } from '@app/utils';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
@@ -95,20 +91,18 @@ type ReleastedType = {
   id: string;
 }
 
-
 type StepsSettings = {
   name: string,
   id: number
 }
 
 type FieldsTypes = 'date' | 'checkbox' | 'default' | 'number';
+type UsersPermissionsNames = 'read' | 'write' | 'validate' | 'verify';
 
 type FieldsData<T extends string> = Record<T, string | number | null> & {
   id: string;
   type: FieldsTypes;
 }
-
-type UsersPermissionsNames = 'read' | 'write' | 'validate' | 'verify';
 
 interface TaskSettingsBase {
   users: {
@@ -120,13 +114,12 @@ interface TaskSettingsBase {
   requeriments: any;
   target: null | any;
   priority: null | priorityType;
-  steps: StepsSettings[]
+  steps: StepsSettings[];
 }
 
 interface AutomaticSettings extends TaskSettingsBase {
   type: 'automatic';
   time: (FieldsData<'from'> | FieldsData<'to'> | FieldsData<'duration'> | FieldsData<'frecuency'>)[];
-
 }
 
 type ManualFields = {
@@ -134,7 +127,6 @@ type ManualFields = {
   taskType: 'upload' | 'analizer' | 'resolver';
   fields?: any[];
 }
-
 
 interface ConfigComponentBase {
   isAutomatic: boolean;
@@ -174,17 +166,34 @@ const UsersConfigComponent = (props: ConfigComponentBase) => {
   );
 }
 
-const ObjectiveConfig = () => {
+const ObjetiveConfig = () => {
+
+  const mesurableUnities = [
+    { id: "1", name: "Horas" },
+    { id: "2", name: "%" },
+    { id: "3", name: "$" },
+    { id: "4", name: "Kg" }, 
+    { id: "5", name: "m" }, 
+    { id: "6", name: "L" }, 
+    { id: "7", name: "°C" }, 
+    { id: "8", name: "bar" }
+  ];
+
   return (
-    <form>
+    <form className='tt-l-col-m objetive_form' >
       <FloatInput label='Action' type='text' />
-      <FloatInput label='Unity' type='text' />
+      <InputSelector
+        data={mesurableUnities}
+        render={(item) => <p className='txt-gray-4'>{item.name}</p>}
+        placeHolder='Unity'
+      />
       <FloatInput label='Description' type='text' />
       <h3>Target</h3>
       <span className='tt-divider' />
       <FloatInput label='Ubication' type='text' />
       <FloatInput label='Context' type='text' />
-    </form> 
+      <ButtonComponent size='large'  label='Save'/>
+    </form>
   );
 };
 
@@ -220,7 +229,7 @@ type FormFieldsConfig = Record<'input' | 'output', boolean>;
 function RequerimentConfig() {
 
   const [fields, setFields] = useState<ConcreteInputField[]>([]);
-  const [ indicators, setIndicators] = useState<{ id: string, name: string }[]>([]);
+  const [indicators, setIndicators] = useState<{ id: string, name: string }[]>([]);
   const [step, setStep] = useState<number>(0);
   const steps = {
     isTarget: step === 0,
@@ -261,7 +270,7 @@ function RequerimentConfig() {
       id: getRandomId(),
     };
 
-    setIndicators((indi) => [...indi, indicator ]);
+    setIndicators((indi) => [...indi, indicator]);
   }
 
   function next() {
@@ -371,7 +380,7 @@ function RequerimentConfig() {
 
   interface TargetProps {
     indicators: { id: string, name: string }[];
-    addIndicators(id:string): void;
+    addIndicators(id: string): void;
   }
 
   function TargetForm(props: TargetProps) {
@@ -379,16 +388,16 @@ function RequerimentConfig() {
     return (
       <form>
         <ul className='tt-ul inp-gp-col'>
-          <li><FloatInput name='name' type='text' label='Target Name' /></li>       
-          <li><FloatInput name='description' type='text' label='Description' /></li>       
+          <li><FloatInput name='name' type='text' label='Target Name' /></li>
+          <li><FloatInput name='description' type='text' label='Description' /></li>
           <li>
             <DynamicSelector
-              onSelect={() => {}}
+              onSelect={() => { }}
               elements={props.indicators}
               title='Indicators'
               onClick={props.addIndicators}
               selectedId={undefined} />
-          </li>       
+          </li>
         </ul>
       </form>
     )
@@ -409,7 +418,7 @@ function RequerimentConfig() {
         <span className='tt-divider'></span>
         <main>
           {steps.isInput ? <InputForm addInput={addInputField} /> : null}
-          {steps.isTarget ? <TargetForm addIndicators={addIndicator} indicators={indicators}  /> : null}
+          {steps.isTarget ? <TargetForm addIndicators={addIndicator} indicators={indicators} /> : null}
         </main>
         <div className='btn-grp'>
           {step > 0 ? <ButtonComponent onClick={() => prev()} size={'large'} >Prev</ButtonComponent> : null}
@@ -659,13 +668,17 @@ function CarrouselComponent(props: CarrouselProps) {
       id: 'c-requeriments',
       name: 'Requeriments Config'
     },
+    {
+      id: 'c-Objetive',
+      name: 'Objetive Config'
+    }
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
     'c-requeriments': <RequerimentConfig />,
-    'c-Objetive': <ObjectiveConfig />
+    'c-Objetive': <ObjetiveConfig />
   }
 
   function handleClick(name: string, id: string, callback: (name: string, id?: string) => void) {
@@ -692,7 +705,6 @@ function CarrouselComponent(props: CarrouselProps) {
     </div>
   );
 }
-
 
 //poder añadir iteraciones a una lista ej por
 //cada ítem realizar una acción que puedas cambiar una etiqueta de una sub tarea automaticamente cuando cambias de tarea ej en un canvas si dejo en la seccion fix su categoria se tendria que ajustar a fix

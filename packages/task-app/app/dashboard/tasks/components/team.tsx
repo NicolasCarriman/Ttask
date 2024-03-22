@@ -3,10 +3,11 @@ import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector'
 import InputSelector from '@app/components/ui/inputSearch/inputSearch';
 import { useAppSelector } from '@app/hooks/redux';
 import React, { useState } from 'react';
-import './style.css';
 import Accordion from './accordion';
 import { teamSelector } from '@core/redux/reducers/teamSlice/team.selector';
 import { useTeam } from '@app/hooks/useTeam';
+import { SliderSelector } from '@app/components/common/inputComponent';
+import './style.css';
 
 type ItemType = {
   name: string,
@@ -45,16 +46,7 @@ function TeamSection() {
   return (
     <>
       <section className='team-container'>
-        <InputSelector
-          style='slider'
-          placeHolder="team"
-          data={teams}
-          render={(data, handleClick) => (
-            <ListItem key={data.id} onClick={() => handleClick(data.name, data.id)}>
-              {data.name}
-            </ListItem>
-          )}
-        />
+        <SliderSelector data={teams} />
       </section>
       {
         <Accordion

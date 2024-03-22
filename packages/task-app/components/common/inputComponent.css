@@ -7,14 +7,12 @@ html {
   --tt-color-active: #3182ce;
 }
 
-
 .tt_input-field-float {
   width: 100%;
   display: flex;
   align-items: center;
   height: auto;
   padding: 6px;
-  padding-left: 8px;
   transition: all .2s ease-in;
   box-shadow: var(--tt-shadow-m);
   border: 1px solid var(--tt-gray-300);
@@ -44,9 +42,10 @@ html {
 
 .tt_input_label {
   position: absolute;
+  margin-left: .4rem;
   transition: all 0.5s;
   pointer-events: none;
-  font-size: 1rem;
+  font-size: .8rem;
   color: var(--tt-gray-500);
   transition: all .3s ease-in-out;
 }

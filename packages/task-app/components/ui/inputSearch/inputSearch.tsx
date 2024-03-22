@@ -20,6 +20,8 @@ interface Props {
   action?: ((id:string) => void ) | null;
 }
 
+//todo: fix selector types coupling 
+
 function InputSelector({
   data,
   action = null,
@@ -35,7 +37,7 @@ function InputSelector({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isDefaultType = type === 'default';
   const handleShow = () => setShowList((state) => !state);
-  const selectorConfig: SliderSelector | null = selectedIndex !== null ? {
+  const selectorConfig: ISliderSelector | null = selectedIndex !== null ? {
     selected: data[selectedIndex].name,
     handleClick: () => { setShowList(true) },
     next: () => {
@@ -114,7 +116,7 @@ type ItemType = {
   id: string
 }
 
-export interface SliderSelector {
+export interface ISliderSelector {
   selected: string;
   index?: number;
   handleClick: (e: React.MouseEvent) => void;
@@ -123,10 +125,10 @@ export interface SliderSelector {
 }
 
 interface SlideSelectorProps {
-  config: SliderSelector;
+  config: ISliderSelector;
 }
 
-function SliderSelector({ config }: SlideSelectorProps) {
+export const SliderSelector = ({ config }: SlideSelectorProps) => {
   const { prev, next, handleClick, selected } = config;
 
   return (
