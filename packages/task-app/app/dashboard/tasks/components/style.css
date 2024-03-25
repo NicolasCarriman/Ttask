@@ -228,6 +228,7 @@ html {
 }
 
   /*--UUTILIS--*/
+
 .txt-gray-4 {
   color: var(--tt-gray-400);
 }
@@ -244,4 +245,20 @@ html {
   height: auto;
   width: auto;
   padding: 12px;
+}
+
+.btn-grp {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.objetive_form {
+  padding-top: 18px;
+  width: 100%;
+  gap: 28px;
+}
+
+#textarea_legend {
+  margin-bottom: 8px;
 }

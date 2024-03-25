@@ -1,5 +1,5 @@
-import { subtask, subtaskItem } from '@core/models';
 import React, { useState } from 'react';
+import { subtask, subtaskItem } from '@core/models';
 import Item from '@app/components/common/items';
 import { useTask } from '@app/hooks/useTasks';
 import RoundedBox from '@app/components/common/box';
@@ -32,7 +32,6 @@ function Subtask({ data }: Props) {
       return;
     }
     // validate if input is showing else add to list a new item
-
     addSubtaskItem(newItem);
     setShowInput(false);
   };

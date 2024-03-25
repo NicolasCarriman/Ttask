@@ -7,13 +7,12 @@ html {
   --tt-color-active: #3182ce;
 }
 
-
 .tt_input-field-float {
   width: 100%;
   display: flex;
   align-items: center;
   height: auto;
-  padding: 8px;
+  padding: 6px;
   transition: all .2s ease-in;
   box-shadow: var(--tt-shadow-m);
   border: 1px solid var(--tt-gray-300);
@@ -43,9 +42,10 @@ html {
 
 .tt_input_label {
   position: absolute;
+  margin-left: .4rem;
   transition: all 0.5s;
   pointer-events: none;
-  font-size: 1rem;
+  font-size: .8rem;
   color: var(--tt-gray-500);
   transition: all .3s ease-in-out;
 }
@@ -79,7 +79,7 @@ html {
 .inp-gp-col {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.4rem;
   padding-top: 1.2rem;
 }
 
@@ -106,4 +106,38 @@ html {
 .tt_checkbox-field > .tt_inp_label {
   user-select: none !important;
   text-wrap: nowrap;
+}
+
+.tt_textarea {
+  border: 1px solid var(--tt-gray-300);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: var(--tt-shadow-m);
+  width: 100%;
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tt_textarea:focus {
+ outline: none; 
+ border: 1px solid var(--tt-color-active);
+ color: var(--tt-color-active);
+}
+
+.tt_input-select {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tt_input-selec > ul {
+  margin-top: 8vh !important;
+}
+
+#textarea_legend {
+  transition: all 1s ease-in-out;
+}
+
+.tt_textarea-container:has(.tt_textarea:focus) > #textarea_legend {
+  color: #3182ce;
 }

@@ -1,4 +1,3 @@
-
 import { ITask, priorityType, statusType, subtaskItem, subtask } from '../../models/index';
 import { getRandomId } from '../getRandomId';
 
@@ -10,7 +9,7 @@ import { getRandomId } from '../getRandomId';
 class TaskBase {
 
   protected task: ITask;
-  
+
   constructor(task: ITask) {
     this.task = JSON.parse(JSON.stringify(task));
   }
@@ -100,7 +99,7 @@ export class Subtask {
   }
 
   private setSubtaskItem(item: subtaskItem): void {
-    
+
     this.items = this.items.map(it => {
       if (it.id === item.id) {
         return item;
@@ -119,15 +118,12 @@ export class Subtask {
 
   public getSubtaskItem(id: string) {
     const currentItem = this.items.find(item => item.id === id);
-
     if (!currentItem) {
       throw new Error('item not found');
     } else {
       return currentItem;
     }
   };
-
-
 
   public editSubtaskItemName(id: string, name: string): void {
     const item = this.getSubtaskItem(id);
@@ -139,9 +135,7 @@ export class Subtask {
     }
 
     this.setSubtaskItem(item);
-
     this.updateSubtask(this.getSubtask());
-
   }
 
   public editSubtaskItemCheck(id: string, status: boolean): void {
@@ -149,7 +143,6 @@ export class Subtask {
 
     item.done = status;
     this.setSubtaskItem(item);
-
     this.updateSubtask(this.getSubtask());
   }
 
@@ -159,6 +152,19 @@ export class Subtask {
 
     this.updateSubtask(this.getSubtask());
   }
+
+  private generateSubtask(id: string, name: string): subtaskItem {
+
+    const data: subtaskItem = {
+      item: name,
+      done: false,
+      id: id
+    };
+    this.items.push(data);
+
+    return this.items[this.items.length - 1];
+  }
+
 }
 
 /**
@@ -168,10 +174,10 @@ export class Subtask {
 
 export class TaskClass extends TaskBase {
 
-  public updateSubtask(subtask: subtask):void {
+  public updateSubtask(subtask: subtask): void {
     const subtasks = this.getTask().subtasks;
     if (!subtasks) {
-      throw new Error ('subtask not found');
+      throw new Error('subtask not found');
     }
 
     const updatedSubtask = subtasks.map((s) => {
@@ -196,6 +202,7 @@ export class TaskClass extends TaskBase {
   public getSubtask(subtaskId: string): Subtask {
     // return a new Subtask class to get the current methods
     const subtasks = this.getTask().subtasks;
+
     if (!subtasks) {
       throw new Error('subtasks not found');
     }
@@ -203,8 +210,8 @@ export class TaskClass extends TaskBase {
     const subtask = subtasks.find((s) => s.id === subtaskId);
     if (!subtask) {
       throw new Error('subtask not found');
-    } else {
-
+    }
+    else {
       const foundSubtask = new Subtask(subtask.name, subtask.id, subtask.items, this.updateSubtask.bind(this));
       return foundSubtask;
     }

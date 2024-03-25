@@ -40,19 +40,25 @@ function List({
 
 export default List;
 
-interface Props extends ComponentProps<'li'> {
+export interface ListComponentProps extends ComponentProps<'li'> {
   data: { id: string; name: string; }[];
   active: boolean;
+  onselect(item: { id: string; name: string; }): void;
 }
 
-export const ListComponent: React.FC<Props> = (props) => {
-  const { data, active } = props;
+export const ListComponent: React.FC<ListComponentProps> = (props) => {
+  const { data, active, onselect, onClick } = props;
+
+  function handleClick(e: React.MouseEvent<HTMLLIElement>, item: { id: string, name: string }) {
+    onselect(item);
+    onClick && onClick(e);
+  }
 
   return (
     <ul className={`tt-ul ${active ? 'dis-active' : 'dis-none'}`} >
       {
         data.map((item) => (
-          <li className='tt-li-item' key={item.id} {...props}>
+          <li onClick={(e) => handleClick(e, item)} className='tt-li-item' key={item.id} {...props}>
             <span className='txt-gray-500'>
               { item.name }
             </span>
