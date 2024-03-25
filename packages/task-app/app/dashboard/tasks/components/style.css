@@ -228,6 +228,7 @@ html {
 }
 
   /*--UUTILIS--*/
+
 .txt-gray-4 {
   color: var(--tt-gray-400);
 }
@@ -255,5 +256,9 @@ html {
 .objetive_form {
   padding-top: 18px;
   width: 100%;
-  gap: 24px;
+  gap: 28px;
+}
+
+#textarea_legend {
+  margin-bottom: 8px;
 }

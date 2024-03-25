@@ -1,8 +1,8 @@
 'use-client';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
+import { InputHTMLAttributes, useState } from 'react';
 import './inputComponent.css';
-import List, { ListComponent } from "./list";
+import { ListComponent, ListComponentProps } from "./list";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
@@ -118,7 +118,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
       <InputComponent
         value={data[selected].name}
         onClick={() => handleClick(selected)}
-        onChange={() => {}}
+        onChange={() => { }}
         style={{ cursor: 'pointer' }}
         {...rest}
         readOnly
@@ -128,7 +128,61 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
         className={`${showList ? 'fixed inset-0 z-[100]  backdrop-brightness-[0.9] transition-all' : 'hidden'}`}
         onClick={() => setShowList(false)}
       />
-        <ListComponent onselect={handleSelect} active={showList}  data={data} />
+      <ListComponent onselect={handleSelect} active={showList} data={data} />
     </div>
   )
+}
+
+interface TextAreaProps extends React.ComponentProps<'textarea'> {
+
+}
+
+export const TextArea: React.FC<TextAreaProps> = (props) => {
+
+  return (
+    <fieldset className="flex-col tt_textarea-container">
+      <legend id='textarea_legend' className="txt-gray-4">Description</legend>
+      <textarea rows={5} placeholder="Write a description for this purpose..." className="tt_textarea" {...props}></textarea>
+    </fieldset>
+  );
+}
+
+type InputSelectorProps = FloatInputProps & Pick<ListComponentProps, 'onselect' | 'data'>;
+
+export const DropdownInput = (props: InputSelectorProps) => {
+  const [ value, setValue ] = useState<string>('');
+  const [ showMenu, setShowMenu ] = useState<boolean>(false);
+
+  const handleShow = () => { setShowMenu((prevState) => (!prevState)); };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentValue = e.target.value;
+    setValue(currentValue);
+  }
+
+  const inputSetup = {
+    label: props.label,
+    onClick: handleShow,
+    onChange: handleChange,
+    value: value,
+  }
+
+  function handleSelect (item: {id: string, name: string} ) {
+    setValue(item.name);
+
+    props.onselect(item);
+    setShowMenu(false);
+  }
+
+  const menuConfig = {
+    data: props.data,
+    active: showMenu,
+    onselect: handleSelect
+  }
+
+  return (
+    <fieldset className="tt_input-selec">
+      <FloatInput {...inputSetup} {...props}/>
+      <ListComponent {...menuConfig} />
+    </fieldset>
+  );
 }

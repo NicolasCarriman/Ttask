@@ -40,13 +40,13 @@ function List({
 
 export default List;
 
-interface Props extends ComponentProps<'li'> {
+export interface ListComponentProps extends ComponentProps<'li'> {
   data: { id: string; name: string; }[];
   active: boolean;
   onselect(item: { id: string; name: string; }): void;
 }
 
-export const ListComponent: React.FC<Props> = (props) => {
+export const ListComponent: React.FC<ListComponentProps> = (props) => {
   const { data, active, onselect, onClick } = props;
 
   function handleClick(e: React.MouseEvent<HTMLLIElement>, item: { id: string, name: string }) {

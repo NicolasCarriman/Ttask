@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import './style.css';
 import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
@@ -8,11 +8,10 @@ import InputSelector from '@app/components/ui/inputSearch/inputSearch';
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
 import { priorityType } from '@core/models';
-import { CheckboxInput, FloatInput, InputComponent, SliderSelector } from '@app/components/common';
+import { CheckboxInput, FloatInput, TextArea, InputComponent, SliderSelector, DropdownInput } from '@app/components/common';
 import './carrousel.css';
 import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from "react-icons/md";
-import { FiTarget } from "react-icons/fi";
 import { getRandomId } from '@app/utils';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
@@ -70,6 +69,8 @@ interface ItemType {
   name: string,
   id: string
 }
+
+type UnvalidatedFieldData = Record<string, string | number | undefined | boolean>;
 
 const settingsSections: ItemType[] = [
   {
@@ -167,33 +168,112 @@ const UsersConfigComponent = (props: ConfigComponentBase) => {
 }
 
 const ObjetiveConfig = () => {
+  const [ formStep, setFormStep ] = useState(0);
+  const [ storedValue, setStoredValue ] = useState<Record<string, string | boolean>>({});
+  const [ formError, setFormError ] = useState<boolean>(false);
+  const [ metrics, setMetrics ] = useState<{id: string, name: string}[]>([]);
+
+  function addIndicators(value: string) {
+    setMetrics((prevState) => ([...prevState, { name: value, id: getRandomId()} ]))
+  }
 
   const mesurableUnities = [
     { id: "1", name: "Horas" },
     { id: "2", name: "%" },
     { id: "3", name: "$" },
-    { id: "4", name: "Kg" }, 
-    { id: "5", name: "m" }, 
-    { id: "6", name: "L" }, 
-    { id: "7", name: "°C" }, 
+    { id: "4", name: "Kg" },
+    { id: "5", name: "m" },
+    { id: "6", name: "L" },
+    { id: "7", name: "°C" },
     { id: "8", name: "bar" }
   ];
 
+  function handleUnity(item: { id: string, name: string}) {
+    console.log(item);
+  }
+
+  function validateValues(values: UnvalidatedFieldData) {
+    let result = true;
+
+    for (let key in values) {
+      const currentValue = values[key];
+      if (currentValue !== undefined) continue;
+      alert('false :' + key)
+      setFormError(true);
+      result = false;
+    }
+
+    return result;
+  }
+
+  function handleNext(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = new FormData(e.target as HTMLFormElement);
+    const values: UnvalidatedFieldData = {
+      'action': data.get('action')?.toString(),
+      'unity': data.get('unity')?.toString(),
+      'description': data.get('description')?.toString(),
+    }
+
+    const isValidated = validateValues(values);
+    if (!isValidated) {
+      setFormError(true);
+      return;
+    }
+
+    setStoredValue(values as Record<string, string>);
+    setFormStep(1);
+    formError && setFormError(false);
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = new FormData(e.target as HTMLFormElement);
+    const values: UnvalidatedFieldData = {
+      name: data.get('ubication')?.toString().toLowerCase(),
+      type: data.get('context')?.toString().toLowerCase(),
+    }
+
+    const isValidated = validateValues(values);
+    if (!isValidated) {
+      setFormError(true);
+      return;
+    }
+
+    setStoredValue({ ...storedValue, ...values } as Record<string, string>);
+    formError && setFormError(false);
+    setFormStep(0);
+  }
+
+  const selectorConfig = {
+    onSelect: () => { },
+    elements: metrics,
+    titole: 'Target Indicators',
+    onClick: addIndicators,
+    selectedId: undefined
+  }
+
   return (
-    <form className='tt-l-col-m objetive_form' >
-      <FloatInput label='Action' type='text' />
-      <InputSelector
-        data={mesurableUnities}
-        render={(item) => <p className='txt-gray-4'>{item.name}</p>}
-        placeHolder='Unity'
-      />
-      <FloatInput label='Description' type='text' />
-      <h3>Target</h3>
-      <span className='tt-divider' />
-      <FloatInput label='Ubication' type='text' />
-      <FloatInput label='Context' type='text' />
-      <ButtonComponent size='large'  label='Save'/>
-    </form>
+    <>
+      {
+        formStep === 0 ?
+          <form className='tt-l-col-m objetive_form' onSubmit={handleNext} >
+            <FloatInput label='Action' type='text' name='action' />
+            <DropdownInput onselect={handleUnity} label='Unity' data={mesurableUnities} name='unity' />
+            <TextArea name='description' />
+            <ButtonComponent type='submit' size='large' variant='filter' >Next</ButtonComponent>
+          </form>
+          :
+          <form className='tt-l-col-m objetive_form' onSubmit={handleSubmit}>
+            <h3>Target</h3>
+            <span className='tt-divider' />
+            <FloatInput label='Ubication' name='ubication' type='text' />
+            <FloatInput label='Context' type='text' name='context' />
+            <DynamicSelector {...selectorConfig} />
+            <ButtonComponent size='large' label='Save' />
+          </form>
+      }
+    </>
   );
 };
 
@@ -232,14 +312,12 @@ function RequerimentConfig() {
   const [indicators, setIndicators] = useState<{ id: string, name: string }[]>([]);
   const [step, setStep] = useState<number>(0);
   const steps = {
-    isTarget: step === 0,
-    isInput: step === 1,
-    isOutput: step === 2,
-    isValidation: step == 3
+    isInput: step === 0,
+    isOutput: step === 1,
+    isValidation: step == 2
   }
   const maxStep = 3;
   const stepName: Record<string, string> = {
-    isTarget: 'Target',
     isInput: 'Input',
     isOutput: 'Output',
     isValidation: 'Validation'
@@ -385,20 +463,17 @@ function RequerimentConfig() {
 
   function TargetForm(props: TargetProps) {
 
+    const selectorConfig = {
+      onSelect: () => { },
+      elements: props.indicators,
+      titole: 'Target Indicators',
+      onClick: props.addIndicators,
+      selectedId: undefined
+    }
+
     return (
       <form>
-        <ul className='tt-ul inp-gp-col'>
-          <li><FloatInput name='name' type='text' label='Target Name' /></li>
-          <li><FloatInput name='description' type='text' label='Description' /></li>
-          <li>
-            <DynamicSelector
-              onSelect={() => { }}
-              elements={props.indicators}
-              title='Indicators'
-              onClick={props.addIndicators}
-              selectedId={undefined} />
-          </li>
-        </ul>
+        <DynamicSelector {...selectorConfig} />
       </form>
     )
   }
@@ -408,7 +483,6 @@ function RequerimentConfig() {
       <RoundedBox>
         <header className='step-displayer'>
           <ul className='step-ul'>
-            <li className={steps.isTarget ? 'li-active' : ''} id='target-step'><FiTarget /></li>
             <li className={steps.isInput ? 'li-active' : ''} id='input-step'><MdInput /></li>
             <li className={steps.isOutput ? 'li-active' : ''} id='output-step'><MdOutlineOutput /></li>
             <li className={steps.isValidation ? 'li-active' : ''} id='validation-step'><MdOutlineVerifiedUser /></li>
@@ -418,7 +492,6 @@ function RequerimentConfig() {
         <span className='tt-divider'></span>
         <main>
           {steps.isInput ? <InputForm addInput={addInputField} /> : null}
-          {steps.isTarget ? <TargetForm addIndicators={addIndicator} indicators={indicators} /> : null}
         </main>
         <div className='btn-grp'>
           {step > 0 ? <ButtonComponent onClick={() => prev()} size={'large'} >Prev</ButtonComponent> : null}
@@ -426,7 +499,7 @@ function RequerimentConfig() {
         </div>
       </RoundedBox>
 
-      {/*
+      {/* 
       <Accordion
         label='Input'
         showContent={selectedId === '1'}
@@ -650,10 +723,9 @@ interface CarrouselProps {
 }
 
 function CarrouselComponent(props: CarrouselProps) {
-  const [currentConfig, setCurrentConfig] = useState<string>('c-time');
-  const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
+  const [ currentConfig, setCurrentConfig ] = useState<string>('c-time');
+  const [ fields, setFields ] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
   const { isAuto } = props;
-
 
   const data = [
     {
@@ -694,7 +766,7 @@ function CarrouselComponent(props: CarrouselProps) {
         action={setCurrentConfig}
         data={data}
         render={(data, callback) => (
-          <ListItem key={data.id} onClick={() => callback(data.name, data.id)}>
+          <ListItem key={data.id} onClick={() => handleClick(data.name, data.id, callback)}>
             {data.name}
           </ListItem>
         )}
