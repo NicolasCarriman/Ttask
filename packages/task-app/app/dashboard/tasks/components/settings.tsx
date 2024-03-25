@@ -248,7 +248,7 @@ const ObjetiveConfig = () => {
   const selectorConfig = {
     onSelect: () => { },
     elements: metrics,
-    titole: 'Target Indicators',
+    title: 'Target Indicators',
     onClick: addIndicators,
     selectedId: undefined
   }
@@ -305,9 +305,7 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
 }
 
 type FormFieldsConfig = Record<'input' | 'output', boolean>;
-
 function RequerimentConfig() {
-
   const [fields, setFields] = useState<ConcreteInputField[]>([]);
   const [indicators, setIndicators] = useState<{ id: string, name: string }[]>([]);
   const [step, setStep] = useState<number>(0);
@@ -687,7 +685,6 @@ const StepperSettings = (props: StepperProps) => {
     if (!selectedStep) return steps[0];
     return selectedStep;
   }
-
 
   function handleSwitch(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.checked as boolean;

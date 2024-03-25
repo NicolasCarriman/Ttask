@@ -12,11 +12,7 @@ interface ITaskCreator {
   closeModal(): void;
 }
 
-function TaskCreator(
-  {
-    closeModal
-  }: ITaskCreator
-) {
+function TaskCreator({ closeModal }: ITaskCreator) {
 
   const cubeProps = {
     firstFace: <FirstFacePreview />,
