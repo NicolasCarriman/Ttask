@@ -33,7 +33,7 @@ export const FloatInput: React.FC<FloatInputProps> = (props) => {
 
   return (
     <fieldset className='tt_input-field-float'>
-      <input className="tt_input" onChange={handleChange} value={value} {...props} />
+      <input className='tt_input' onChange={handleChange} value={value} {...props} />
       <label className='tt_input_label'>{props.label}</label>
     </fieldset>
   );

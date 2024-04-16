@@ -24,6 +24,8 @@ function Visualizer() {
   function ObjetiveVisualizer() {
     const [ objetiveData, setObjetiveData ] = useState<IObjetiveVisualizer | null>(null);
 
+    
+
     return (
       <main>
         
