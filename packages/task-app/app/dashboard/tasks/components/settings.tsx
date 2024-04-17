@@ -5,18 +5,13 @@ import './style.css';
 import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
 import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
-import FloatInputSelector from '@app/components/ui/inputSearch/inputSearch'
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
 import { priorityType } from '@core/models';
 import { CheckboxInput, FloatInput, InputComponent, SliderSelector } from '@app/components/common';
-import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
-import ButtonIcon from '@app/components/ui/button-icon/buttonIcon';
 import './carrousel.css';
-import DynamicSelector from '@app/components/ui/dynamicSelector/dynamicSelector';
-import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from "react-icons/md";
-import { FiTarget } from "react-icons/fi";
-import Item from '@app/components/common/items';
+import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md';
+import { FiTarget } from 'react-icons/fi';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -155,8 +150,8 @@ const UsersConfigComponent = (props: ConfigComponentBase) => {
         <span className='input-label'>{data.name}</span>
         <InputComponent type={data.type} />
       </div>
-    )
-  }
+    );
+  };
 
   function addUser(id: string) {
     setCurrentUsers(id);
@@ -168,10 +163,10 @@ const UsersConfigComponent = (props: ConfigComponentBase) => {
         <InputField type={'default'} name={'user'} />
         <InputField type={'default'} name={'permission'} />
       </>
-      <ButtonComponent size='medium' onClick={() => { setShowUserPanel((prev) => !prev) }}>add user</ButtonComponent>
+      <ButtonComponent size='medium' onClick={() => { setShowUserPanel((prev) => !prev); }}>add user</ButtonComponent>
     </div>
   );
-}
+};
 
 const TimeConfigComponent = (props: ConfigComponentBase) => {
   const { isAutomatic } = props;
@@ -182,8 +177,8 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
         <span className='input-label'>{data.name}</span>
         <InputComponent type={data.type} />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className='time-container'>
@@ -198,7 +193,7 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
       }
     </div>
   );
-}
+};
 
 type FormFieldsConfig = Record<'input' | 'output', boolean>;
 
@@ -238,7 +233,7 @@ function RequerimentConfig() {
       <form className='verification-form'>
 
       </form>
-    )
+    );
   }
 
 
@@ -362,7 +357,7 @@ function RequerimentConfig() {
         </div>
       </Accordion> */}
     </div>
-  )
+  );
 }
 
 type ManualSettings = ManualFields & TaskSettingsBase;
@@ -575,7 +570,7 @@ function CarrouselComponent(props: CarrouselProps) {
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
     'c-requeriments': <RequerimentConfig />
-  }
+  };
 
   function handleClick(name: string, id: string, callback: (name: string, id?: string) => void) {
     callback(name, id);

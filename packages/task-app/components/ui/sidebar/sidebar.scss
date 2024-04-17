@@ -1,0 +1,80 @@
+$icon-color: rgb(47, 47, 47);
+$icon-size: 24px;
+$primary: #17354E;
+
+svg {
+  width: $icon-size;
+  height: $icon-size;
+  fill: $icon-color;
+}
+
+.sidebar-container {
+  height: 95vh;
+  display: flex;
+  h1 {
+    position: relative;
+    display: none;
+  }
+  .tt-ul {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .tt-li {
+      border-radius: 8px;
+      padding: 0;
+      padding-top: .2rem;
+      padding-bottom: .2rem;
+      transition: padding .2s;
+      a {
+        display: flex;
+        flex-direction: row;
+        gap: .5rem;
+        text-decoration: none;
+        align-items: center;
+
+        i {
+          color: $icon-color;
+          display: none;
+        }
+      }
+
+    }
+  }
+}
+
+.sidebar-container:hover {
+  h1 {
+    position: relative;
+  }
+
+  .tt-ul {
+    .tt-li {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      a {
+        font-weight: 500;
+        padding: .2rem;
+
+        i {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.tt-li:hover {
+  background: $primary;
+
+  a {
+    svg {
+      fill: white;
+    }
+
+    i {
+      color: white !important;
+    }
+  }
+}

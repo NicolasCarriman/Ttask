@@ -1,6 +1,6 @@
 'use client';
 
-import './style.css';
+import './style.scss';
 import React, { HTMLAttributes, useCallback, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 

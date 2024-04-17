@@ -2,17 +2,6 @@ html {
   --tt-primary-color: #17354e;
 }
 
-.tt-ul {
-  margin: none;
-  padding: 8px !important;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  background-color: white !important;
-  z-index: 300;
-  border-radius: 12px;
-}
-
 .dis-none {
   display: none !important;
   position: relative !important;

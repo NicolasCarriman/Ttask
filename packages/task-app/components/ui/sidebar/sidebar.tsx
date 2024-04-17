@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import AvatarComponent from '../../common/avatar';
 import Link from 'next/link';
-import './sidebar.css';
+import './sidebar.scss';
 import {
   MdNotificationsActive,
   MdWork,
@@ -21,22 +21,10 @@ import {
  */
 
 function Sidebar() {
-  const [active, setActive] = useState(false);
-
-  const onHover = () => {
-    setActive(true);
-  };
-
-  const onLeave = () => {
-    setActive(false);
-  };
-
 
   return (
     <aside
-      className={`sidebar-container ${active ? 'sb-active' : 'sb-disabled'}`}
-      onMouseEnter={() => onHover()}
-      onMouseLeave={() => onLeave()}
+      className={'tt-box sidebar-container'}
     >
       <nav className='sidebar-content'>
         <h1>My Company</h1>
@@ -55,11 +43,11 @@ function Sidebar() {
           </li>
           <li className='tt-li'>
             <MdCalendarToday />
-            <i className='tt-li-info'>tasks</i>
+            <i className='tt-li-info'></i>
           </li>
           <li className='tt-li'>
             <MdNotificationsActive />
-            <i className='tt-li-info'>notifications</i>
+            <i className='tt-li-info'></i>
           </li>
           <li className='tt-li'>
             <IoIosStats />

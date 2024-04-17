@@ -6,7 +6,7 @@ interface DashboardProps {
 export const DashboardComponent: React.FC<DashboardProps> = ({ children }) => {
   return (
     <main
-      className='flex flex-row mt-4 w-full sm:w-[100%] h-[96vh] rounded-lg p-4 shadow-custom'
+      className='container-full'
     >
       {children}
     </main>

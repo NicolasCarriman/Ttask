@@ -57,7 +57,7 @@ function Subtask({ data }: Props) {
   };
 
   return (
-    <RoundedBox className='task-section'>
+    <RoundedBox className='grid-item-3 tt-flex-col'>
       {
         data ?
           <>

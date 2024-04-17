@@ -30,7 +30,7 @@ function Layer(
   return (
     <ContextProvider>
       <div
-        className='task-layer'
+        className='container-large tt-grid-column'
       >
         {props.children}
       </div>
