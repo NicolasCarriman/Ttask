@@ -17,7 +17,7 @@ export default function RootLayout({
             }
         `}
         </style>
-        <div className='tt-flex-row'>
+        <div className='tt-flex-row g-1'>
           <Sidebar/>
           <DashboardComponent>
             {children}
