@@ -1,0 +1,12 @@
+.tt_input-field {
+  outline: none;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  transition: all 0.5s;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 2px 3px 14px #e7e7e7;
+  padding: 8px;
+  gap: 4px;
+}

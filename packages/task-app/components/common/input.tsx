@@ -1,4 +1,5 @@
 'use client';
+import './input.scss';
 import { InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

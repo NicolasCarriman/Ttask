@@ -7,16 +7,29 @@ $gray-500: rgb(149 149 149);
 $max-width: calc(100vw);
 $rad-m: 8px;
 
+h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+fieldset {
+  border: none;
+}
+
 body {
-  background-color: $gray-100 !important;
+  background-color: #f3f3f3 !important;
   font-style: normal;
 }
 
 .tt-box {
   background: #FFFFFF;
-  box-shadow: 0px 1px 4px #00000085;
   border-radius: $rad-m;
   padding: 1rem;
+  box-shadow: 4px 8px 16px 7px #00000012;
+}
+
+.shadow-m {
+  box-shadow: 4px 8px 16px 7px #00000012;
 }
 
 .container-full {
@@ -37,7 +50,6 @@ body {
 }
 
 .grid-item-3 {
-  width: 100%;
   grid-column: span 3;
 }
 

@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './style.css';
+import './settings.scss';
 import RoundedBox from '@app/components/common/box';
 import ListItem from '@app/components/common/listItem';
 import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';

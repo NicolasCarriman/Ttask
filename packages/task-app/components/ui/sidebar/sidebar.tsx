@@ -24,7 +24,7 @@ function Sidebar() {
 
   return (
     <aside
-      className={'tt-box sidebar-container'}
+      className={'tt-box shadow-m sidebar-container'}
     >
       <nav className='sidebar-content'>
         <h1>My Company</h1>
