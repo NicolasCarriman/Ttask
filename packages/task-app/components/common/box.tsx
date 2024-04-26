@@ -8,7 +8,7 @@ interface RoundedBoxProps {
 function RoundedBox({ children, className }: RoundedBoxProps) {
   return (
     <div
-      className={`tt-box ${className && className}`}
+      className={`tt-box shadow-m ${className && className}`}
     >
       { children }
     </div>

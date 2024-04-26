@@ -30,7 +30,7 @@ function Layer(
   return (
     <ContextProvider>
       <div
-        className='container-large tt-grid-column tt-box shadow-m'
+        className='container-large tt-grid-column tt-box shadow-m gray-6'
       >
         {props.children}
       </div>

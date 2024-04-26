@@ -114,7 +114,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
 
   return (
     <div className='selector-container'>
-      <SlArrowLeft onClick={prev} />
+      <SlArrowLeft height={'2vh'} onClick={prev} />
       <InputComponent
         value={data[selected].name}
         onClick={() => handleClick(selected)}
@@ -123,7 +123,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
         {...rest}
         readOnly
       />
-      <SlArrowRight onClick={next} />
+      <SlArrowRight height={'2vh'} onClick={next} />
       <div
         className={`${showList ? 'fixed inset-0 z-[100]  backdrop-brightness-[0.9] transition-all' : 'hidden'}`}
         onClick={() => setShowList(false)}

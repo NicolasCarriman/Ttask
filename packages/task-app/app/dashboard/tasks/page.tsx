@@ -75,7 +75,7 @@ function Tasks() {
       {
         loaded.current &&
         <Layer>
-          <RoundedBox className='w-[30%]' >
+          <RoundedBox className='w-[30%] tt-flex-col' >
             {
               currentTask && currentTask.subtasks && (
                 <>

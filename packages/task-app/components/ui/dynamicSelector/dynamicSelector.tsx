@@ -9,6 +9,7 @@ import Button from '@app/components/common/button';
 import { IoIosAddCircle } from 'react-icons/io';
 import { HiCheck } from 'react-icons/hi';
 import { TextBox } from '@app/components/common/textBox';
+import RoundedBox from '@app/components/common/box';
 
 type selectableElement = {
   id: string;
@@ -43,7 +44,7 @@ function DynamicSelector({
   newTabElement,
   selectedId
 }: DynamicSelectorProps) {
-  const [content, setContent ] = useState('');
+  const [content, setContent] = useState('');
   const [slide, setSlide] = useState(false);
   const [render, setRender] = useState('tabs');
   // use hook to manage the transition between tabs and menu
@@ -77,7 +78,7 @@ function DynamicSelector({
     }
   };
 
-  function handleKeyDown (e: React.KeyboardEvent<HTMLDivElement>) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.code === 'Enter') {
       setRender('tabs');
       if (!onClick) return;
@@ -86,20 +87,20 @@ function DynamicSelector({
   }
 
   return (
-    <SelectorContainer>
-      {title && <p>{title}</p>}
+    <RoundedBox className='tt-box'>
+      {
+        title &&
+        <header className='dynamic-header'>
+          <h3>{title}</h3>
+        </header>
+      }
       <div
         onAnimationEnd={() => {
           setRender('menu');
-          setSlide(false);  
+          setSlide(false);
         }}
-        className={twMerge(`
-        overflow-hidden
-        w-full
-        h-full
-        `, slide && style.slideY
-      )}>
-      {isTabs &&
+        className=''>
+        {isTabs &&
           <TabsContainer >
             {
               elements.map((el) => (
@@ -113,27 +114,29 @@ function DynamicSelector({
               ))
             }
           </TabsContainer>
-      }
-      {
-        isMenu &&
-        <TextBox
-          onInput={handleInput}
-          className={style.appearAnimation}
-          onKeyDown={handleKeyDown}
+        }
+        {
+          isMenu &&
+          <TextBox
+            onInput={handleInput}
+            className={style.appearAnimation}
+            onKeyDown={handleKeyDown}
           >
             {newTabElement}
           </TextBox>
-      }
+        }
       </div>
-      <Button variant='animated' onClick={handleClick} size={'small'}>
-        {
-           isTabs && <IoIosAddCircle className='h-8 w-8'  />
-        }
-        {
-           isMenu && <HiCheck className='h-8 w-8 '  />
-        }
-      </Button>
-    </SelectorContainer>
+      <div className='layer-centered tt-flex-row'>
+        <Button variant='animated' onClick={handleClick} size={'small'}>
+          {
+            isTabs && <IoIosAddCircle className='h-8 w-8' />
+          }
+          {
+            isMenu && <HiCheck className='h-8 w-8 ' />
+          }
+        </Button>
+      </div>
+    </RoundedBox >
   );
 }
 

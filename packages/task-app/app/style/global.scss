@@ -4,8 +4,10 @@ $gray-200: #FAFAFA;
 $gray-300: #E0E0E0;
 $gray-400: #b5b5b5;
 $gray-500: rgb(149 149 149);
+$gray-600: #ffffff66;
 $max-width: calc(100vw);
 $rad-m: 8px;
+$shadow-m: 1px 3px 5px 0px #00000026;
 
 h3 {
   margin: 0;
@@ -14,6 +16,11 @@ h3 {
 
 fieldset {
   border: none;
+}
+
+button {
+  border: none;
+  background: none;
 }
 
 body {
@@ -25,15 +32,9 @@ body {
   background: #FFFFFF;
   border-radius: $rad-m;
   padding: 1rem;
-  box-shadow: 4px 8px 16px 7px #00000012;
-}
-
-.shadow-m {
-  box-shadow: 4px 8px 16px 7px #00000012;
 }
 
 .container-full {
-
   width: $max-width;
   height: 100%;
 }
@@ -53,6 +54,11 @@ body {
   grid-column: span 3;
 }
 
+.layer-centered {
+  justify-content: center;
+  align-items: center;
+}
+
 .tt-grid-column {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -62,6 +68,7 @@ body {
 .tt-flex-col {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 .tt-flex-row {
@@ -71,4 +78,16 @@ body {
 
 .g-1 {
   gap: 1rem;
+}
+
+.gray-6 {
+  background-color: $gray-600;
+}
+
+.shadow-m {
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }

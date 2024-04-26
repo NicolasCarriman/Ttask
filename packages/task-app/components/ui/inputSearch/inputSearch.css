@@ -10,4 +10,5 @@
 
 .selector-container > svg {
   cursor: pointer;
+  height: 1rem;
 }
