@@ -139,6 +139,29 @@ interface InputFieldProps {
   type: string;
   name: string;
 }
+function TargetConfig() {
+
+  return (
+  <form>
+    <FloatInput name='f-name' type='text' label='Description' />
+    <FloatInput name='f-name' type='text' label='Specifications' />
+    <fieldset className='tt-flex-col'>
+      <label>unit type</label>
+      <InputComponent />
+    </fieldset>
+    <h3>target :</h3>
+    <FloatInput name='f-name' type='text' label='Country/Location' />
+    <FloatInput name='f-name' type='text' label='Demography' />
+    <FloatInput name='f-name' type='text' label='Product Preferences' />
+    <p>List</p>
+    <div className='flex-col'>
+      <button>Create New List</button>
+      <button>Select From Existent</button>
+    </div>
+    <p>Aditional Fields</p>
+    <FloatInput name='f-name' type='text' label='inputs' />
+  </form>);
+}
 
 const UsersConfigComponent = (props: ConfigComponentBase) => {
   const [currentUsers, setCurrentUsers] = useState<string | null>(null);
@@ -195,8 +218,6 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
     </div>
   );
 };
-
-type FormFieldsConfig = Record<'input' | 'output', boolean>;
 
 function RequerimentConfig() {
   const [selectedId, setSelectedId] = useState<string>('');
@@ -554,6 +575,10 @@ function CarrouselComponent(props: CarrouselProps) {
 
   const data = [
     {
+      id: 'c-target',
+      name: 'Target Config'
+    },
+    {
       id: 'c-time',
       name: 'Time Config'
     },
@@ -564,33 +589,28 @@ function CarrouselComponent(props: CarrouselProps) {
     {
       id: 'c-requeriments',
       name: 'Requeriments Config'
-    },
+    }
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
+    'c-target': <TargetConfig />,
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
     'c-requeriments': <RequerimentConfig />
   };
 
-  function handleClick(name: string, id: string, callback: (name: string, id?: string) => void) {
-    callback(name, id);
-    setCurrentConfig(id);
-  }
+  function handleClick(_: React.MouseEvent<HTMLLIElement>, item: ItemType) {
+    setCurrentConfig(item.id);
+  };
+
+  function handleChange (index: number) {
+    const currentItem = data[index];
+    setCurrentConfig(currentItem.id);
+  };
 
   return (
     <div className='dynamic-config-container'>
-      <InputSelector
-        style='slider'
-        placeHolder="team"
-        action={setCurrentConfig}
-        data={data}
-        render={(data, callback) => (
-          <ListItem key={data.id} onClick={() => callback(data.name, data.id)}>
-            {data.name}
-          </ListItem>
-        )}
-      />
+      <SliderSelector data={data} onChange={handleChange} onClick={handleClick} />
       {
         mappedConfig[currentConfig]
       }

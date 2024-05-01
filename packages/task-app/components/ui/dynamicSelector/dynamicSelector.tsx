@@ -101,7 +101,7 @@ function DynamicSelector({
         }}
         className=''>
         {isTabs &&
-          <TabsContainer >
+          <ul className='tt-ul'>
             {
               elements.map((el) => (
                 <Tab
@@ -113,7 +113,7 @@ function DynamicSelector({
                 </Tab>
               ))
             }
-          </TabsContainer>
+          </ul>
         }
         {
           isMenu &&

@@ -15,32 +15,35 @@ svg {
     position: relative;
     display: none;
   }
-  .tt-ul {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+}
 
-    .tt-li {
-      border-radius: 8px;
-      padding: 0;
-      padding-top: .2rem;
-      padding-bottom: .2rem;
-      transition: padding .2s;
-      a {
-        display: flex;
-        flex-direction: row;
-        gap: .5rem;
-        text-decoration: none;
-        align-items: center;
+.tt-ul {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
-        i {
-          color: $icon-color;
-          display: none;
-        }
+  .tt-li {
+    border-radius: 8px;
+    padding: .4rem;
+    transition: padding .2s;
+    a {
+      display: flex;
+      flex-direction: row;
+      gap: .5rem;
+      text-decoration: none;
+      align-items: center;
+
+      i {
+        color: $icon-color;
+        display: none;
       }
-
     }
+
+    p {
+      margin: .2rem;
+    }
+
   }
 }
 
@@ -66,8 +69,7 @@ svg {
 }
 
 .tt-li:hover {
-  background: $primary;
-
+  background: black;
   a {
     svg {
       fill: white;
@@ -76,5 +78,10 @@ svg {
     i {
       color: white !important;
     }
+  }
+  p {
+    margin: .2rem;
+    color: white;
+    cursor: pointer;
   }
 }

@@ -1,6 +1,6 @@
 'use-client';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
 import './inputComponent.css';
 import List, { ListComponent } from "./list";
 
@@ -68,7 +68,7 @@ interface ItemType {
 interface SliderProps extends Omit<InputProps, 'onChange' | 'onClick'> {
   data: ItemType[];
   selectedIndex?: number;
-  onClick?: (nmber: number) => void;
+  onClick?: (e: React.MouseEvent<HTMLLIElement>, selectedItem: ItemType) => void;
   onChange?: (nmber: number) => void;
 }
 
@@ -99,36 +99,35 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
     setSelected(nextIndex);
   }
 
-  function handleClick(selectedIndex: number) {
-    onClick && onClick(selectedIndex);
-    onChange && onChange(selectedIndex);
+  function handleClick() {
     setShowList((show) => !show);
   }
 
-  function handleSelect(selectedItem: ItemType) {
+  function handleSelect(e: React.MouseEvent<HTMLLIElement>, selectedItem: ItemType) {
     const currentIndex = data.findIndex(item => selectedItem.id === item.id);
     if (currentIndex === -1) return;
     setSelected(currentIndex);
     setShowList(false);
+    onClick && onClick(e, selectedItem);
   }
 
   return (
-    <div className='selector-container'>
-      <SlArrowLeft height={'2vh'} onClick={prev} />
-      <InputComponent
-        value={data[selected].name}
-        onClick={() => handleClick(selected)}
-        onChange={() => { }}
-        style={{ cursor: 'pointer' }}
-        {...rest}
-        readOnly
-      />
-      <SlArrowRight height={'2vh'} onClick={next} />
-      <div
-        className={`${showList ? 'fixed inset-0 z-[100]  backdrop-brightness-[0.9] transition-all' : 'hidden'}`}
-        onClick={() => setShowList(false)}
-      />
-        <ListComponent active={showList}  data={data} />
-    </div>
-  )
-}
+    <>
+      <div className={`${showList ? 'background' : 'hidden'}`} onClick={() => setShowList(false)} ></div>
+      <div className='selector-container'>
+        <SlArrowLeft height={'2vh'} onClick={prev} />
+        <InputComponent
+          value={data[selected].name}
+          onClick={() => handleClick()}
+          onChange={() => { }}
+          style={{ cursor: 'pointer' }}
+          {...rest}
+          readOnly
+        />
+        <SlArrowRight height={'2vh'} onClick={next} />
+        <ListComponent active={showList} data={data} selectitem={handleSelect} />
+      </div>
+    </>
+  );
+};
+
