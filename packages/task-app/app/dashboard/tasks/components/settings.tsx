@@ -121,7 +121,6 @@ interface TaskSettingsBase {
 interface AutomaticSettings extends TaskSettingsBase {
   type: 'automatic';
   time: (FieldsData<'from'> | FieldsData<'to'> | FieldsData<'duration'> | FieldsData<'frecuency'>)[];
-
 }
 
 type ManualFields = {
@@ -129,7 +128,6 @@ type ManualFields = {
   taskType: 'upload' | 'analizer' | 'resolver';
   fields?: any[];
 }
-
 
 interface ConfigComponentBase {
   isAutomatic: boolean;
@@ -139,28 +137,33 @@ interface InputFieldProps {
   type: string;
   name: string;
 }
-function TargetConfig() {
+function ObjetiveConfig() {
 
   return (
-  <form>
-    <FloatInput name='f-name' type='text' label='Description' />
-    <FloatInput name='f-name' type='text' label='Specifications' />
-    <fieldset className='tt-flex-col'>
-      <label>unit type</label>
-      <InputComponent />
-    </fieldset>
-    <h3>target :</h3>
-    <FloatInput name='f-name' type='text' label='Country/Location' />
-    <FloatInput name='f-name' type='text' label='Demography' />
-    <FloatInput name='f-name' type='text' label='Product Preferences' />
-    <p>List</p>
-    <div className='flex-col'>
-      <button>Create New List</button>
-      <button>Select From Existent</button>
-    </div>
-    <p>Aditional Fields</p>
-    <FloatInput name='f-name' type='text' label='inputs' />
-  </form>);
+    <form>
+      <FloatInput name='f-name' type='text' label='Specification' />
+      <p>Target: </p>
+      <FloatInput name='f-name' type='text' label='Country/Location' />
+      <FloatInput name='f-name' type='text' label='Demography' />
+      <FloatInput name='f-name' type='text' label='Product Preferences' />
+      <div className='tt-flex-row'>
+        <ButtonComponent size={'medium'} label='Releasted List' />
+        <ButtonComponent size={'medium'} label='Create List'/>
+      </div>
+      <div className='tt-flex-col'>
+        <p>Metrics</p>
+        <div className='tt-flex-row'>
+          <FloatInput name='f-name' type='text' label='Name' />
+          <select placeholder='select unit'>
+            <option value={0}>cm</option>
+            <option value={1}>$</option>
+            <option value={2}>$/hs</option>
+          </select>
+        </div>
+        <ButtonComponent size={'medium'}>Add Metric</ButtonComponent>
+      </div>
+   </form>
+  );
 }
 
 const UsersConfigComponent = (props: ConfigComponentBase) => {
@@ -300,13 +303,13 @@ function RequerimentConfig() {
           </li>
           <li>
             <label className='txt-gray-4 '>Field type</label>
-            <SliderSelector data={ inputDataTypes } />
+            <SliderSelector data={inputDataTypes} />
           </li>
           <li>
-            <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true}/>
-          </li> 
+            <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true} />
+          </li>
         </ul>
-        <ButtonComponent variant='filter' type='submit' size={'medium'} >Add Field</ButtonComponent>
+        <ButtonComponent variant='primary' type='submit' size={'medium'} >Add Field</ButtonComponent>
       </form>
     );
   }
@@ -337,47 +340,6 @@ function RequerimentConfig() {
         </main>
         <ButtonComponent size={'large'} >Next</ButtonComponent>
       </RoundedBox>
-
-      {/*
-      
-      <Accordion
-        label='Input'
-        showContent={selectedId === '1'}
-        handleShow={handleAccordion}
-        id='1'
-      >
-        <InputForm />
-      </Accordion>
-      <Accordion
-        label='output'
-        showContent={selectedId === '2'}
-        handleShow={handleAccordion}
-        id='2'
-      >
-        <div>
-          teste
-        </div>
-      </Accordion>
-      <Accordion
-        label='verification'
-        showContent={selectedId === '3'}
-        handleShow={handleAccordion}
-        id='3'
-      >
-        <div>
-          teste
-        </div>
-      </Accordion>
-      <Accordion
-        label='target'
-        showContent={selectedId === '4'}
-        handleShow={handleAccordion}
-        id='4'
-      >
-        <div>
-          targetConfig
-        </div>
-      </Accordion> */}
     </div>
   );
 }
@@ -494,8 +456,8 @@ const defaultSettings: ManualSettings = {
 
 const StepperSettings = (props: StepperProps) => {
   const { steps, setSteps } = props;
-  const [ configType, setConfigType ] = useState<'manual' | 'automatic'>('manual');
-  const [ selected, setSelected ] = useState<number>(0);
+  const [configType, setConfigType] = useState<'manual' | 'automatic'>('manual');
+  const [selected, setSelected] = useState<number>(0);
 
   function setName(id: number, name: string) {
     const stepsCopy = [...steps];
@@ -553,13 +515,6 @@ const StepperSettings = (props: StepperProps) => {
       </CarrouselComponent>
       <InputComponent placeholder='add fields' />
       <ButtonComponent size={'large'} >Add Step</ButtonComponent>
-      <InputComponent placeholder='REQUIREM,ENT CONFIGS' />
-      <InputComponent placeholder='Releasted config' />
-      <InputComponent placeholder='priority' />
-      <InputComponent placeholder='target' />
-      <InputComponent placeholder='IS VALIDATED' />
-      <InputComponent placeholder='add step' />
-      <InputComponent placeholder='save step' />
     </div>);
 };
 
@@ -575,8 +530,8 @@ function CarrouselComponent(props: CarrouselProps) {
 
   const data = [
     {
-      id: 'c-target',
-      name: 'Target Config'
+      id: 'c-objetive',
+      name: 'Objetive Config'
     },
     {
       id: 'c-time',
@@ -593,7 +548,7 @@ function CarrouselComponent(props: CarrouselProps) {
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
-    'c-target': <TargetConfig />,
+    'c-objetive': <ObjetiveConfig />,
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
     'c-requeriments': <RequerimentConfig />
@@ -603,7 +558,7 @@ function CarrouselComponent(props: CarrouselProps) {
     setCurrentConfig(item.id);
   };
 
-  function handleChange (index: number) {
+  function handleChange(index: number) {
     const currentItem = data[index];
     setCurrentConfig(currentItem.id);
   };
