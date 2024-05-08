@@ -1,7 +1,21 @@
-.item-element > input {
+.item-element>input {
   cursor: pointer;
 }
 
 .item-selected {
   border: solid 1px rgb(0, 174, 255);
+}
+
+.tt-text-box {
+  max-width: calc(100% - 1.2rem);
+  width: 100%;
+  min-height: 8vh;
+  max-height: 8vh;
+  width: 100%;
+  padding: .6rem;
+  height: 6rem;
+  outline: none;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+  box-shadow: 1px 1px 7px #8080802b;
 }

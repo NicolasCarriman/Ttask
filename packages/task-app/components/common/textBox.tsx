@@ -1,5 +1,6 @@
 'use client';
 import { HTMLAttributes, useEffect, useRef } from 'react';
+import './style.scss';
 import { twMerge } from 'tailwind-merge';
 
 export const TextBox: React.FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => {
@@ -27,5 +28,19 @@ export const TextBox: React.FC<HTMLAttributes<HTMLDivElement>> = ({ className, .
       }
       autoFocus
       contentEditable={true} {...rest} />
+  );
+};
+
+interface TextBoxProps extends HTMLAttributes<HTMLTextAreaElement> {
+  label: string;
+}
+
+export const FloatTextBox: React.FC<TextBoxProps> = (props) => {
+
+  return (
+    <section className='tt-flex-col g-m'>
+      <label className='txt-gray-6'>{props.label}</label>
+      <textarea className='tt-text-box' {...props}></textarea>
+    </section>
   );
 };

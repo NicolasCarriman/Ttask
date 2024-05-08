@@ -9,7 +9,7 @@ html {
 }
 
 .tt_input-field-float {
-  width: 100%;
+  width: calc(100% - 16px);
   display: flex;
   align-items: center;
   height: auto;
@@ -29,7 +29,7 @@ html {
   height: 2vh;
   width: 100%;
   font-size: 1rem;
-  padding-left: 12px;
+  padding-left: 6px;
   background-color: transparent;
   border: none;
   outline: none;
@@ -45,7 +45,7 @@ html {
   position: absolute;
   transition: all 0.5s;
   pointer-events: none;
-  font-size: 1rem;
+  font-size: .8rem;
   color: var(--tt-gray-500);
   transition: all .3s ease-in-out;
 }
@@ -53,7 +53,7 @@ html {
 .tt_input:focus + .tt_input_label{
   font-size: .8rem;
   color: var(--tt-color-active);
-  transform: translateY(-2.2rem);
+  transform: translateY(-1.6rem);
 }
 
 .tt_input-field {
@@ -63,12 +63,12 @@ html {
   background-color: white;
   border-radius: var(--tt-radius-m);
   box-shadow: var(--tt-shadow-m);
-  padding: 8px;
+  padding: 4px;
   gap: 4px;
 }
 
 .tt_input-field-float:active + .tt_input_label, .tt_input:not([value=""]) + .tt_input_label {
-  transform: translateY(-2.1rem) scale(1);
+  transform: translateY(-1.6rem);
   color: var(--tt-color-active);
 }
 

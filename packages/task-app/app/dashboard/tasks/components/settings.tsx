@@ -13,6 +13,7 @@ import { CheckboxInput, FloatInput, InputComponent, SliderSelector } from '@app/
 import './carrousel.css';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md';
 import { FiTarget } from 'react-icons/fi';
+import { FloatTextBox } from '@app/components/common/textBox';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -137,32 +138,33 @@ interface InputFieldProps {
   type: string;
   name: string;
 }
-function ObjetiveConfig() {
+function GoalConfigComponent() {
 
   return (
-    <form>
-      <FloatInput name='f-name' type='text' label='Specification' />
-      <p>Target: </p>
-      <FloatInput name='f-name' type='text' label='Country/Location' />
-      <FloatInput name='f-name' type='text' label='Demography' />
-      <FloatInput name='f-name' type='text' label='Product Preferences' />
+    <form className='tt-flex-col'>
+      <FloatTextBox label={'Specifications'} />
+      <p className='txt-gray-6 text-deco'>Target: </p>
+      <section className='tt-flex-col g-xl'>
+        <FloatInput name='f-name' type='text' label='Country/Location' />
+        <FloatInput name='f-name' type='text' label='Demography' />
+        <FloatInput name='f-name' type='text' label='Product Preferences' />
+      </section>
       <div className='tt-flex-row'>
-        <ButtonComponent size={'medium'} label='Releasted List' />
-        <ButtonComponent size={'medium'} label='Create List'/>
+        <ButtonComponent type='button' size={'medium'} label='Create List' />
       </div>
       <div className='tt-flex-col'>
-        <p>Metrics</p>
+        <p className='txt-gray-6 text-deco'>Metrics</p>
         <div className='tt-flex-row'>
-          <FloatInput name='f-name' type='text' label='Name' />
-          <select placeholder='select unit'>
+          <select className='tt_input-field'>
             <option value={0}>cm</option>
             <option value={1}>$</option>
             <option value={2}>$/hs</option>
           </select>
+          <FloatInput name='f-name' type='text' label='Name' />
         </div>
-        <ButtonComponent size={'medium'}>Add Metric</ButtonComponent>
+        <ButtonComponent  type='button' size={'medium'}>Add Metric</ButtonComponent>
       </div>
-   </form>
+    </form>
   );
 }
 
@@ -367,7 +369,7 @@ function Settings() {
   }
 
   return (
-    <RoundedBox className={'settings-container'}>
+    <RoundedBox className={'tt-flex-col g-m'}>
       <h3>settings</h3>
       <section className='team-container'>
         <InputSelector
@@ -388,7 +390,6 @@ function Settings() {
               <StepperSettings steps={[]} setSteps={function (): void {
                 throw new Error('Function not implemented.');
               }} />
-              <div>requeriments: notSetted</div>
             </>
             : null
         }
@@ -513,7 +514,6 @@ const StepperSettings = (props: StepperProps) => {
       <CarrouselComponent isAuto={configType === 'automatic'} >
 
       </CarrouselComponent>
-      <InputComponent placeholder='add fields' />
       <ButtonComponent size={'large'} >Add Step</ButtonComponent>
     </div>);
 };
@@ -523,15 +523,15 @@ interface CarrouselProps {
 }
 
 function CarrouselComponent(props: CarrouselProps) {
-  const [currentConfig, setCurrentConfig] = useState<string>('c-time');
+  const [currentConfig, setCurrentConfig] = useState<string>('c-goal');
   const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
   const { isAuto } = props;
 
 
   const data = [
     {
-      id: 'c-objetive',
-      name: 'Objetive Config'
+      id: 'c-goal',
+      name: 'Goal Config'
     },
     {
       id: 'c-time',
@@ -548,7 +548,7 @@ function CarrouselComponent(props: CarrouselProps) {
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
-    'c-objetive': <ObjetiveConfig />,
+    'c-goal': <GoalConfigComponent />,
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
     'c-requeriments': <RequerimentConfig />
@@ -564,7 +564,7 @@ function CarrouselComponent(props: CarrouselProps) {
   };
 
   return (
-    <div className='dynamic-config-container'>
+    <div className='tt-flex-col'>
       <SliderSelector data={data} onChange={handleChange} onClick={handleClick} />
       {
         mappedConfig[currentConfig]
@@ -572,7 +572,3 @@ function CarrouselComponent(props: CarrouselProps) {
     </div>
   );
 }
-
-
-//poder añadir iteraciones a una lista ej por
-//cada ítem realizar una acción que puedas cambiar una etiqueta de una sub tarea automaticamente cuando cambias de tarea ej en un canvas si dejo en la seccion fix su categoria se tendria que ajustar a fix

@@ -10,11 +10,12 @@ function ButtonComponent({
   size,
   variant = 'primary',
   label,
+  children,
   ...rest
 }: Props) {
 
   const variantStyle: Record<Required<Props>['variant'], string> = {
-    'primary': `btn btn-primary btn-${size}`,
+    'primary': `tt-btn-primary btn-${size}`,
     'secondary': `btn btn-secondary btn-${size}`
   }
 
@@ -24,6 +25,7 @@ function ButtonComponent({
     {...rest}
   >
     {label && label}
+    {children && children}
   </button>
   );
 }
