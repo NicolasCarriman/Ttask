@@ -34,8 +34,16 @@ body {
   font-style: normal;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .over-auto {
   overflow: auto;
+}
+
+.relative {
+  position: relative !important;
 }
 
 .tt-box {
@@ -46,6 +54,14 @@ body {
 
 .txt-gray-6 {
   color: rgb(0 0 0 / 50%);
+}
+
+.txt-bold {
+  font-weight: 600;
+}
+
+.unselectable {
+  user-select: none;
 }
 
 .container-full {

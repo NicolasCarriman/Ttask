@@ -14,6 +14,7 @@ import './carrousel.css';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md';
 import { FiTarget } from 'react-icons/fi';
 import { FloatTextBox } from '@app/components/common/textBox';
+import TabNavigator from '@app/components/ui/tab/tab';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -139,10 +140,21 @@ interface InputFieldProps {
   name: string;
 }
 function GoalConfigComponent() {
+  const [ currentTab, setCurrentTab ] = useState('t-target');
+
+  const tabs = [
+    { content: 'Target', id: 't-target' },
+    { content: 'Metrics', id: 't-metrics' },
+  ];
+
+  useEffect(() => {
+    console.log(currentTab);
+  }, [currentTab]);
 
   return (
     <form className='tt-flex-col'>
       <FloatTextBox label={'Specifications'} />
+      <TabNavigator labels={tabs} selectedId='t-target' onselect={(e, item) => setCurrentTab(item.id)} />
       <p className='txt-gray-6 text-deco'>Target: </p>
       <section className='tt-flex-col g-xl'>
         <FloatInput name='f-name' type='text' label='Country/Location' />
