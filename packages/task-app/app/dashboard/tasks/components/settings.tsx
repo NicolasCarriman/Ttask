@@ -140,42 +140,46 @@ interface InputFieldProps {
   name: string;
 }
 function GoalConfigComponent() {
-  const [ currentTab, setCurrentTab ] = useState('t-target');
+  const [currentTab, setCurrentTab] = useState('t-target');
 
   const tabs = [
     { content: 'Target', id: 't-target' },
     { content: 'Metrics', id: 't-metrics' },
   ];
 
-  useEffect(() => {
-    console.log(currentTab);
-  }, [currentTab]);
-
   return (
     <form className='tt-flex-col'>
       <FloatTextBox label={'Specifications'} />
-      <TabNavigator labels={tabs} selectedId='t-target' onselect={(e, item) => setCurrentTab(item.id)} />
-      <p className='txt-gray-6 text-deco'>Target: </p>
-      <section className='tt-flex-col g-xl'>
-        <FloatInput name='f-name' type='text' label='Country/Location' />
-        <FloatInput name='f-name' type='text' label='Demography' />
-        <FloatInput name='f-name' type='text' label='Product Preferences' />
+      <TabNavigator labels={tabs} selectedId='t-target' onselect={(_, item) => setCurrentTab(item.id)} />
+      <section id='goalSection' className='tt-flex-col g-l p-l'>
+        {
+          currentTab === 't-target' &&
+          <>
+            <section className='tt-flex-col g-xl'>
+              <FloatInput name='f-name' type='text' label='Country/Location' />
+              <FloatInput name='f-name' type='text' label='Demography' />
+              <FloatInput name='f-name' type='text' label='Product Preferences' />
+            </section>
+            <div className='tt-flex-row'>
+              <ButtonComponent type='button' size={'medium'} label='Create List' />
+            </div>
+          </>
+        }
+        {
+          currentTab === 't-metrics' &&
+          <>
+            <div className='tt-flex-row'>
+              <select className='tt_input-field'>
+                <option value={0}>cm</option>
+                <option value={1}>$</option>
+                <option value={2}>$/hs</option>
+              </select>
+              <FloatInput name='f-name' type='text' label='Name' />
+            </div>
+            <ButtonComponent type='button' size={'medium'}>Add Metric</ButtonComponent>
+          </>
+        }
       </section>
-      <div className='tt-flex-row'>
-        <ButtonComponent type='button' size={'medium'} label='Create List' />
-      </div>
-      <div className='tt-flex-col'>
-        <p className='txt-gray-6 text-deco'>Metrics</p>
-        <div className='tt-flex-row'>
-          <select className='tt_input-field'>
-            <option value={0}>cm</option>
-            <option value={1}>$</option>
-            <option value={2}>$/hs</option>
-          </select>
-          <FloatInput name='f-name' type='text' label='Name' />
-        </div>
-        <ButtonComponent  type='button' size={'medium'}>Add Metric</ButtonComponent>
-      </div>
     </form>
   );
 }

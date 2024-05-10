@@ -1,21 +1,29 @@
-$primary: #17354E;
+$selected: rgb(0, 174, 255);
 
-.tab-container {
-  position: relative;
-  width: calc(100% - .4rem);
-  padding: .4rem;
-
-  ul {
-    border: 1px solid #b9b9b9;
-    border-radius: 4px;
-    padding: .5rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+ul#tabNavigator {
+  border: 1px solid #b9b9b9;
+  border-radius: 4px;
+  padding: .8rem;
+  margin: 0;
+  li {
+    cursor: pointer;
+    .tab-content {
+      transition: all .4s ease;
+    }
+  }
+  li:hover {
+    .tab-content {
+      color: black;
+    }
   }
 }
 
+.tab-active {
+  color: $selected !important;
+} 
+
 .indicator {
-  background-color: $primary;
+  background-color: $selected;
   height: .2rem;
   position: absolute;
   bottom: 0;

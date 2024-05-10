@@ -1,3 +1,4 @@
+$selected: rgb(16, 160, 255);
 $primary: #17354E;
 $gray-100: #d8d8d8;
 $gray-200: #FAFAFA;
@@ -129,11 +130,15 @@ ul {
   box-shadow: inset 0px -1px 0px 0px #e9e9e9;
 }
 
+.txt-selected {
+  color: $selected;
+}
+
 .g-xl {
   gap: 1.2rem !important;
 }
 
-.g-1 {
+.g-l {
   gap: 1rem;
 }
 
@@ -143,6 +148,10 @@ ul {
 
 .p-s {
   padding: .3rem !important;
+}
+
+.p-l {
+  padding: 1rem;
 }
 
 .gray-6 {
