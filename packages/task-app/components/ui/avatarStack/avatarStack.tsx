@@ -1,7 +1,7 @@
 'use client';
 
 import  AvatarComponent from '@app/components/common/avatar';
-import { IUser } from '@core/models';
+import { IConcreteUser } from '@core/models';
 import { useUsers } from '../hooks/useUsers';
 import { useAppSelector } from '@app/hooks/redux';
 import { userSelector } from '@core/redux/reducers/userSlice/user.selector';
@@ -29,7 +29,7 @@ export const AvatarStack: React.FC<IAvatars> = ({ usersId, label=true }) => {
       className='flex flex-row items-center font-medium text-sm gap-4'
     >
       {
-        currentUsers && currentUsers.map((user: IUser) => (
+        currentUsers && currentUsers.map((user: IConcreteUser) => (
           <div
             key={user.id}
             className='flex flex-col justify-center items-center '

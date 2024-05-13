@@ -6,7 +6,7 @@ import ListItem from '@app/components/common/listItem';
 import { TaskPriority, TaskTags } from '@app/components/common/taskItem';
 import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
 import useTaskBuilder from '../hooks/useTaskBuilder';
-import { IUser, ProjectTeam, category, priorityType } from '@core/models';
+import { IConcreteUser, ProjectTeam, category, priorityType } from '@core/models';
 import useValidateTaskForm from '../hooks/useValidateTaskForm';
 
 type itemType = {
@@ -93,7 +93,7 @@ export const FirstInputView: React.FC<IFirstInputView> = (props) => {
 };
 
 interface ISecondInputView {
-  users: IUser[];
+  users: IConcreteUser[];
   teams: ProjectTeam[];
   isNewTeam: boolean;
   categories: (category | undefined)[];

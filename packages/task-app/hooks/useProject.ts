@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { projectSelector } from '@core/redux/reducers/projectSlice/project.selector';
 import { useAppDispatch, useAppSelector } from './redux';
-import { IProject, IUser, ProjectTeam } from '@core/models';
+import { IProject, IConcreteUser, ProjectTeam } from '@core/models';
 import { addTeam } from '@core/redux/reducers/projectSlice/project.slice';
 
 interface IProjectHook {
   project: Partial<IProject>;
   addNewTeam(team: ProjectTeam): void;
   getProjectTeams: () => ProjectTeam[];
-  getUsersProject: () => IUser[];
+  getUsersProject: () => IConcreteUser[];
 }
 
 export const useProject = (): IProjectHook => {
@@ -20,7 +20,7 @@ export const useProject = (): IProjectHook => {
   };
 
   const getUsersProject = () => {
-    return project.users as IUser[];
+    return project.users as IConcreteUser[];
   };
 
   const addNewTeam = (t: ProjectTeam) => {

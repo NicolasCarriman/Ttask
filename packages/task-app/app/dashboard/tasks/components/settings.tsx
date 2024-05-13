@@ -15,6 +15,8 @@ import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md'
 import { FiTarget } from 'react-icons/fi';
 import { FloatTextBox } from '@app/components/common/textBox';
 import TabNavigator from '@app/components/ui/tab/tab';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Resolver } from 'react-hook-form';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -141,6 +143,8 @@ interface InputFieldProps {
 }
 function GoalConfigComponent() {
   const [currentTab, setCurrentTab] = useState('t-target');
+  const { register, handleSubmit, formState }  = useForm();
+  const onSubmit: SubmitHandler<any> = (data) => console.log(data);
 
   const tabs = [
     { content: 'Target', id: 't-target' },
@@ -148,7 +152,7 @@ function GoalConfigComponent() {
   ];
 
   return (
-    <form className='tt-flex-col'>
+    <form onSubmit={onSubmit} className='tt-flex-col'>
       <FloatTextBox label={'Specifications'} />
       <TabNavigator labels={tabs} selectedId='t-target' onselect={(_, item) => setCurrentTab(item.id)} />
       <section id='goalSection' className='tt-flex-col g-l p-l'>
@@ -180,6 +184,7 @@ function GoalConfigComponent() {
           </>
         }
       </section>
+      <ButtonComponent size={'large'} >Next </ButtonComponent>
     </form>
   );
 }

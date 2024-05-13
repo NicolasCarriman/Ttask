@@ -1,5 +1,5 @@
 import { ITask } from "./task.model"
-import { IUser } from "./user.model"
+import { IConcreteUser } from "./user.model"
 
 export type category = {
   name: string,
@@ -16,6 +16,6 @@ export interface IProject {
   name: string
   description: string
   teams: ProjectTeam[]
-  users: Partial<IUser[]>
+  users: Partial<IConcreteUser[]>
   tasks: ITask[]
 }

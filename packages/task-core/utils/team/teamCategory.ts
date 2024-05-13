@@ -1,4 +1,4 @@
-import { ITeamCategory, IUser } from "../../models";
+import { ITeamCategory } from "../../models";
 
 export class TeamCategory {
   private name: string;

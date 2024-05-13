@@ -1,4 +1,4 @@
-import { ITask, ITeam, ITeamCategory, IUser, taskId } from '@core/models';
+import { ITask, ITeam, ITeamCategory, IConcreteUser, taskId } from '@core/models';
 import { useAppDispatch, useAppSelector } from './redux';
 import { teamSelector } from '@core/redux/reducers/teamSlice/team.selector';
 import { taskSelector } from '@core/redux/reducers/taskSlice/task.selector';
@@ -31,7 +31,7 @@ export const useTeam = (): useTeamsHook => {
   const dispatch = useAppDispatch();
   const team = useAppSelector(teamSelector) as ITeam;
   const tasks = useAppSelector(taskSelector);
-  const user = useAppSelector(userSelector) as IUser;
+  const user = useAppSelector(userSelector) as IConcreteUser;
 
   const getCategoryId = (userId: string) => {
     const currentCategory = team.teamCategory.find((c) => c.usersId.includes(userId));

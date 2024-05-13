@@ -2,7 +2,7 @@
 
 import { store } from '@core/redux/store/store';
 import { useRef } from 'react';
-import { ITeam, IUser } from '@core/models';
+import { ITeam, IConcreteUser } from '@core/models';
 import { setProject } from '@core/redux/reducers/projectSlice/project.slice';
 import { setUser } from '@core/redux/reducers/userSlice/user.slice';
 import { setTeam } from '@core/redux/reducers/teamSlice/team.slice';
@@ -11,7 +11,7 @@ import useLocalStorage from '@app/hooks/useLocalStorage';
 
 interface IPreloader {
   tasks?: any;
-  user?: IUser;
+  user?: IConcreteUser;
   project?: any;
   team?: ITeam;
 }
