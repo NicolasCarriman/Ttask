@@ -161,8 +161,10 @@ function GoalConfigComponent() {
           <>
             <section className='tt-flex-col g-xl'>
               <FloatInput name='f-name' type='text' label='Country/Location' />
-              <FloatInput name='f-name' type='text' label='Demography' />
               <FloatInput name='f-name' type='text' label='Product Preferences' />
+              <FloatInput name='f-name' type='text' label='Demography' />
+              <FloatInput name='f-name' type='text' label='Demography' />
+              <FloatInput name='f-name' type='text' label='Demography' />
             </section>
             <div className='tt-flex-row'>
               <ButtonComponent type='button' size={'medium'} label='Create List' />
@@ -184,7 +186,7 @@ function GoalConfigComponent() {
           </>
         }
       </section>
-      <ButtonComponent size={'large'} >Next </ButtonComponent>
+      <ButtonComponent type='button' size={'large'} >Save Config </ButtonComponent>
     </form>
   );
 }
@@ -361,7 +363,7 @@ function RequerimentConfig() {
         <main>
           <InputForm />
         </main>
-        <ButtonComponent size={'large'} >Next</ButtonComponent>
+        <ButtonComponent type='button' size={'large'} >Save Config</ButtonComponent>
       </RoundedBox>
     </div>
   );

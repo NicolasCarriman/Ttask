@@ -9,6 +9,7 @@ html {
 }
 
 .tt_input-field-float {
+  position: relative;
   width: calc(100% - 16px);
   display: flex;
   align-items: center;
