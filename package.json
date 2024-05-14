@@ -32,6 +32,7 @@
     "@babylonjs/loaders": "^6.16.0",
     "@babylonjs/materials": "^6.16.0",
     "babylonjs": "^6.16.0",
+    "numerable": "^0.3.15",
     "react-babylonjs": "^3.1.17",
     "react-hook-form": "^7.51.4",
     "react-transition-group": "^4.4.5",

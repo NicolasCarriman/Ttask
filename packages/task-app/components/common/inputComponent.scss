@@ -4,7 +4,7 @@ html {
   --tt-shadow-s: -1px 1px 3px 2px rgb(0 0 0 / 14%);
   --tt-shadow-l: 2px 2px 14px #b5b5b5;
   --tt-shadow-m: 2px 2px 14px #b5b5b57d;
-  --tt-radius-m: 8px;
+  --tt-radius-m: 4px;
   --tt-color-active: #3182ce;
 }
 
@@ -19,6 +19,9 @@ html {
   box-shadow: var(--tt-shadow-m);
   border: 1px solid var(--tt-gray-300);
   border-radius: var(--tt-radius-m);
+  svg {
+    transition: all .3s ease-in;
+  }
 }
 
 .tt_input-field:hover, .tt_input-field-float:hover {
@@ -54,7 +57,7 @@ html {
 .tt_input:focus + .tt_input_label{
   font-size: .8rem;
   color: var(--tt-color-active);
-  transform: translateY(-1.6rem);
+  transform: translateY(-1.8rem);
 }
 
 .tt_input-field {
@@ -64,17 +67,20 @@ html {
   background-color: white;
   border-radius: var(--tt-radius-m);
   box-shadow: var(--tt-shadow-m);
-  padding: 4px;
+  padding: 6px;
   gap: 4px;
 }
 
 .tt_input-field-float:active + .tt_input_label, .tt_input:not([value=""]) + .tt_input_label {
-  transform: translateY(-1.6rem);
+  transform: translateY(-1.8rem);
   color: var(--tt-color-active);
 }
 
 .tt_input-field-float:has(input:not([value=""])) {
   border: 1px solid var(--tt-color-active);
+  p.icon {
+    color: var(--tt-color-active) !important;
+  }
 }
 
 .inp-gp-col {
@@ -107,4 +113,25 @@ html {
 .tt_checkbox-field > .tt_inp_label {
   user-select: none !important;
   text-wrap: nowrap;
+}
+
+.tt_input-field-float:has(p) {
+  .tt_input_label {
+    transform: translateX(20px);
+  }
+}
+
+.selector-container {
+  .tt_input-field:has(input:not([value=""])) {
+    .tt_input {
+      color: var(--tt-color-active);
+    }
+  }
+  
+}
+
+.tt_selector {
+  height: 2vh;
+  border: none;
+  outline: none;
 }

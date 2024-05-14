@@ -11,6 +11,7 @@ svg {
 .sidebar-container {
   height: 95vh;
   display: flex;
+
   h1 {
     position: relative;
     display: none;
@@ -24,9 +25,10 @@ svg {
   gap: 12px;
 
   .tt-li {
-    border-radius: 8px;
-    padding: .4rem;
+    border-radius: 4px;
+    padding: .6rem;
     transition: padding .2s;
+
     a {
       display: flex;
       flex-direction: row;
@@ -56,6 +58,7 @@ svg {
     .tt-li {
       padding-left: 1rem;
       padding-right: 1rem;
+
       a {
         font-weight: 500;
         padding: .2rem;
@@ -70,6 +73,7 @@ svg {
 
 .tt-li:hover {
   background: black;
+
   a {
     svg {
       fill: white;
@@ -79,6 +83,55 @@ svg {
       color: white !important;
     }
   }
+
+  p {
+    margin: .2rem;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.tt-li-check {
+  border-radius: 4px;
+  padding: .6rem;
+  transition: padding .2s;
+  display: flex;
+  flex-direction: row;
+  input {
+    width: 30%;
+  }
+  
+  a {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    text-decoration: none;
+    align-items: center;
+
+    i {
+      color: $icon-color;
+      display: none;
+    }
+  }
+
+  p {
+    margin: .2rem;
+  }
+}
+
+.tt-li-check:hover {
+  background: black;
+
+  a {
+    svg {
+      fill: white;
+    }
+
+    i {
+      color: white !important;
+    }
+  }
+
   p {
     margin: .2rem;
     color: white;

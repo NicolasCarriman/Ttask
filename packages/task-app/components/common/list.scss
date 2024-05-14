@@ -1,0 +1,137 @@
+$icon-color: rgb(47, 47, 47);
+$icon-size: 24px;
+$primary: #17354E;
+$selected: #3182ce;
+
+html {
+  --tt-primary-color: #17354e;
+}
+
+.dis-none {
+  display: none !important;
+  position: relative !important;
+}
+
+.dis-active {
+  display: inline-block !important;
+  position: absolute !important;
+  margin: auto !important;
+  top: 2.8rem !important;
+}
+
+.tt-li:hover {
+  background: black;
+
+  a {
+    svg {
+      fill: white;
+    }
+
+    i {
+      color: white !important;
+    }
+  }
+
+  p {
+    margin: .2rem;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.tt-li-check {
+  border-radius: 4px;
+  padding: .6rem;
+  transition: padding .2s;
+  display: flex;
+  flex-direction: row !important;
+
+  input {
+    width: 1rem;
+  }
+
+  a {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    text-decoration: none;
+    align-items: center;
+
+    i {
+      color: $icon-color;
+      display: none;
+    }
+  }
+
+  p {
+    margin: .2rem;
+  }
+}
+
+.tt-li-check:hover {
+  background: black;
+
+  a {
+    svg {
+      fill: white;
+    }
+
+    i {
+      color: white !important;
+    }
+  }
+
+  label {
+    color: white;
+  }
+
+  p {
+    margin: .2rem;
+    color: white;
+    cursor: pointer;
+  }
+}
+.tt-ul {
+  max-height: 20vh;
+  overflow: auto;
+  z-index: 300;
+  width: 100%;
+}
+.check-list-container {
+  position: relative;
+  z-index: 200;
+
+  .tt-ul {
+    max-height: 20vh;
+    overflow: auto;
+  }
+
+  fieldset {
+    svg {
+      width: 24px;
+      transition: all .2s ease-in;
+    }
+  }
+}
+
+.check-list-container:has(.dis-active) {
+  fieldset {
+    svg {
+      fill: $selected
+    }
+
+  }
+}
+
+.check-list-container {
+  
+  .tt_input-field:has(input:not([value=""])) {
+    border: 1px solid #3182ce;
+    input.tt_input {
+      color: #3182ce !important;
+    }
+    svg {
+      fill: #3182ce;
+    }
+  }
+}

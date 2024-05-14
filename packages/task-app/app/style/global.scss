@@ -53,8 +53,12 @@ ul {
   padding: .8rem;
 }
 
-.txt-gray-6 {
+.txt-gray-5 {
   color: rgb(0 0 0 / 50%);
+}
+
+.txt-gray-6 {
+  color: rgb(0 0 0 / 80%);
 }
 
 .txt-bold {
@@ -146,8 +150,19 @@ ul {
   gap: .6rem !important;
 }
 
+.g-0 {
+  gap: 0!important;
+}
+.p-0 {
+  padding: 0 !important;
+}
+
 .p-s {
   padding: .3rem !important;
+}
+
+.p-s {
+  padding: .6rem !important;
 }
 
 .p-l {
@@ -156,6 +171,10 @@ ul {
 
 .gray-6 {
   background-color: $gray-600;
+}
+
+.pointer {
+  cursor: pointer !important;
 }
 
 .shadow-m {

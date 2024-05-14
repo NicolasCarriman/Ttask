@@ -1,7 +1,8 @@
 'use-client';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import React, { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
-import './inputComponent.css';
+import './inputComponent.scss';
+import { format } from 'numerable';
 import List, { ListComponent } from "./list";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,6 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const InputComponent: React.FC<InputProps> = (props) => {
+
   return (
     <fieldset className='tt_input-field'>
       {
@@ -21,18 +23,32 @@ export const InputComponent: React.FC<InputProps> = (props) => {
 
 interface FloatInputProps extends Omit<InputProps, 'icon'> {
   label: string;
+  icon?: React.ReactNode;
+  formatType?: 'default' | 'ammount';
 }
 
 export const FloatInput: React.FC<FloatInputProps> = (props) => {
   const [value, setValue] = useState<string>(props.value && props.type === 'text' ? props.value as string : '');
+  const { formatType = 'default' } = props;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setValue(e.target.value);
-    props.onChange && props.onChange(e);
+    let currentValue = e.currentTarget.value;
+    setValue(currentValue);
+  }
+
+  function formattedValue(value: string) {
+    if (value.length === 0) return "";
+    if (formatType === 'ammount') {
+      if (isNaN(Number(value))) return;
+      return format((Number(value) / 100), '0,0.00');
+    }
   }
 
   return (
     <fieldset className='tt_input-field-float'>
+      {
+        props.icon && props.icon
+      }
       <input className="tt_input" onChange={handleChange} value={value} {...props} />
       <label className='tt_input_label'>{props.label}</label>
     </fieldset>
@@ -74,7 +90,7 @@ interface SliderProps extends Omit<InputProps, 'onChange' | 'onClick'> {
 
 export const SliderSelector: React.FC<SliderProps> = (props) => {
   const { data, selectedIndex, onClick, onChange, ...rest } = props;
-  const [selected, setSelected] = useState<number>(selectedIndex ? selectedIndex : 0)
+  const [selected, setSelected] = useState<number | null>(selectedIndex ? selectedIndex : null)
   const [showList, setShowList] = useState<boolean>(false);
 
   function prev() {
@@ -103,12 +119,11 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
     setShowList((show) => !show);
   }
 
-  function handleSelect(e: React.MouseEvent<HTMLLIElement>, selectedItem: ItemType) {
+  function handleSelect(selectedItem: ItemType) {
     const currentIndex = data.findIndex(item => selectedItem.id === item.id);
     if (currentIndex === -1) return;
     setSelected(currentIndex);
     setShowList(false);
-    onClick && onClick(e, selectedItem);
   }
 
   return (
@@ -117,7 +132,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
       <div className='selector-container'>
         <SlArrowLeft height={'2vh'} onClick={prev} />
         <InputComponent
-          value={data[selected].name}
+          value={selected !== null ? data[selected].name : undefined}
           onClick={() => handleClick()}
           onChange={() => { }}
           style={{ cursor: 'pointer' }}
@@ -131,3 +146,23 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
   );
 };
 
+interface SelectProps extends React.ComponentProps<'select'> {
+  data: { id: string, name: string }[];
+}
+
+export function SelectComponent(props: SelectProps) {
+
+  return (
+    <fieldset className="tt_input-field p-m">
+      <select className="tt_selector" {...props}>
+        {
+          props.data.map((option) => (
+            <option className="tt_option" key={option.id}>
+              <p>{option.name}</p>
+            </option>
+          ))
+        }
+      </select>
+    </fieldset>
+  );
+}

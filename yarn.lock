@@ -6574,6 +6574,11 @@ npmlog@^7.0.1:
     gauge "^5.0.0"
     set-blocking "^2.0.0"
 
+numerable@^0.3.15:
+  version "0.3.15"
+  resolved "https://registry.npmjs.org/numerable/-/numerable-0.3.15.tgz"
+  integrity sha512-Cu0dX3OjvXmqIyGveN8HuEnafCIUCz269NORa4JKAERXCa/vWr+pBRlrWxBK4psLV9RuhJ+DPoJPisu2QMW0mg==
+
 "nx@>= 14.1 <= 16", "nx@>=15.5.2 < 16", nx@15.9.4:
   version "15.9.4"
   resolved "https://registry.npmjs.org/nx/-/nx-15.9.4.tgz"

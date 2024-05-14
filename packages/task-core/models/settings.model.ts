@@ -97,11 +97,10 @@ export interface IAutomaticValidation extends Omit<IValidation, 'users'> {
   action: any;
 }
 
-enum Actions {
+export enum Actions {
   'increase',
   'decrease',
   'optimize',
-  'generate report'
 }
 
 enum Targets {
@@ -112,10 +111,31 @@ enum Targets {
 
 export interface IGoalSettings {
   target: Omit<ListItem, 'label'> & { label: keyof typeof Targets }[],
-  list?: ListItem[];
   Metrics: Metric[];
+}
+
+export enum Indicator {
+  'Percentage',
+  'Profit',
+  'Renueve',
+  'Growth',
+  'CustomerSatisfacion',
+  'EmployeeTurnover',
+  'ReturnOnInvestment',
+  'Average',
+  'Volume',
+  'Custommers'
+}
+
+export type IndicatorName = keyof typeof Indicator;
+
+export interface IIndicator {
+  name: IndicatorName | string;
+  id: string | number;
 }
 
 export interface IAutomaticGoalSettings extends IGoalSettings {
   action: Actions;
+  ammount: number;
+  indicator: IIndicator[];
 }
