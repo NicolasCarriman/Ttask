@@ -47,17 +47,24 @@ interface Props extends ComponentProps<'li'> {
   data: { id: string; name: string; }[];
   active: boolean;
   selectitem?: (item: { id: string; name: string; }) => void;
+  textsize?: 'small' | 'medium' | 'large';
 }
 
 export const ListComponent: React.FC<Props> = (props) => {
-  const { data, active, selectitem } = props;
+  const { data, active, selectitem, textsize = 'medium' } = props;
+
+  const textSizes = {
+    'small': 'txt-s',
+    'medium': 'txt-m',
+    'large': 'txt-l'
+  }
 
   return (
     <ul className={`tt-ul ${active ? 'dis-active' : 'dis-none'} p-s shadow-m tt-box`} >
       {
         data.map((item) => (
           <li className='tt-li ' key={item.id} onClick={(e) => selectitem && selectitem(item)}  {...props}>
-            <p className='txt-gray-500'>
+            <p className={`txt-gray-500 ${textSizes[textsize]}`}>
               {item.name}
             </p>
           </li>

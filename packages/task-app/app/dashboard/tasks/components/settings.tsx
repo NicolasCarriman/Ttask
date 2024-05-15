@@ -4,11 +4,9 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './style.css';
 import './settings.scss';
 import RoundedBox from '@app/components/common/box';
-import ListItem from '@app/components/common/listItem';
-import InputSelector, { onClickCallBack } from '@app/components/ui/inputSearch/inputSearch';
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
-import { Actions, Indicator, priorityType } from '@core/models';
+import { Actions, Indicator, Unities, priorityType } from '@core/models';
 import { CheckboxInput, FloatInput, InputComponent, SelectComponent, SliderSelector } from '@app/components/common';
 import './carrousel.css';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md';
@@ -149,15 +147,13 @@ const productPreferences = [
   { id: '11', name: 'Fitness Gear', selected: false }
 ];
 
-interface GoalsProps {
-  isAuto: boolean;
-}
+interface GoalsProps extends ConfigComponentBase { }
 
 function GoalConfigComponent(props: GoalsProps) {
   const [currentTab, setCurrentTab] = useState('t-target');
   const { checkList, selectItem } = useCheckList(productPreferences);
   const { register, handleSubmit, formState } = useForm();
-  const { isAuto } = props;
+  const { isAutomatic } = props;
   const onSubmit: SubmitHandler<any> = (data) => console.log(data);
 
   const tabs = [
@@ -202,27 +198,29 @@ function GoalConfigComponent(props: GoalsProps) {
 
   function AutomaticSpecification() {
 
-    const actionsData = Object.values(Actions).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
-    const indicatorData = Object.values(Indicator).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
+
+    const actionsData = Object.values(Actions).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
+    const indicatorData = Object.values(Indicator).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
+    const unitiesData = Object.values(Unities).filter((u) => isNaN(Number(u))).map((u, index) => ({ name: u.toString(), id: (u + index.toString()) }))
 
     return (<>
 
       <article className='tt-flex-row'>
-        <SelectComponent placeholder='Expected Action' data={actionsData} />
-        <p>the</p>
-        <SelectComponent placeholder='Expected Indicator' data={indicatorData} />
+        <SelectComponent placeholder='Action' data={actionsData} />
+        <p className='tt-flex-col layer-centered'>the</p>
+        <SelectComponent placeholder='Indicator' data={indicatorData} />
       </article>
-      <article className='tt-flex-row'>
-        <SelectComponent placeholder='Expected Indicator' data={indicatorData} />
+      <article id='ammount' className='tt-flex-row'>
+        <SelectComponent placeholder='Unit' data={unitiesData} />
         <FloatInput label={'ammount'} type='number' />
       </article>
     </>)
   }
 
   return (
-    <form onSubmit={onSubmit} className='tt-flex-col'>
+    <form onSubmit={onSubmit} className='tt-flex-col g-xl'>
       {
-        isAuto ?
+        isAutomatic ?
           <AutomaticSpecification />
           :
           <FloatTextBox label={'Specifications'} />
@@ -604,8 +602,6 @@ interface CarrouselProps {
 function CarrouselComponent(props: CarrouselProps) {
   const [currentConfig, setCurrentConfig] = useState<string>('c-goal');
   const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
-  const { isAuto } = props;
-
 
   const data = [
     {
@@ -627,7 +623,7 @@ function CarrouselComponent(props: CarrouselProps) {
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
-    'c-goal': <GoalConfigComponent isAuto={props.isAuto} />,
+    'c-goal': <GoalConfigComponent2 isAutomatic={props.isAuto} />,
     'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
     'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
     'c-requeriments': <RequerimentConfig />
@@ -649,5 +645,144 @@ function CarrouselComponent(props: CarrouselProps) {
         mappedConfig[currentConfig]
       }
     </div>
+  );
+}
+
+
+function GoalConfigComponent2(props: GoalsProps) {
+
+  const tabs = [
+    { content: 'Target', id: 't-target' },
+    { content: 'Metrics', id: 't-metrics' },
+  ];
+
+  interface GoalContentProps {
+    navigationTabs: { id: string; content: string; }[];
+  }
+
+  function GoalSpecification(props: { isAuto: boolean }) {
+    const { isAuto } = props;
+
+    function AutomaticSpecification() {
+      const actionsData = Object.values(Actions).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
+      const indicatorData = Object.values(Indicator).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
+      const unitiesData = Object.values(Unities).filter((u) => isNaN(Number(u))).map((u, index) => ({ name: u.toString(), id: (u + index.toString()) }))
+
+      return (
+        <>
+          <article className='tt-flex-row'>
+            <SelectComponent placeholder='Action' data={actionsData} />
+            <p className='tt-flex-col layer-centered'>the</p>
+            <SelectComponent placeholder='Indicator' data={indicatorData} />
+          </article>
+          <article id='ammount' className='tt-flex-row'>
+            <SelectComponent placeholder='Unit' data={unitiesData} />
+            <FloatInput label={'ammount'} type='number' />
+          </article>
+        </>
+      );
+    }
+    return (
+      <>
+        {
+          isAuto ? <AutomaticSpecification />
+            : <FloatTextBox label={'Specifications'} />
+        }
+      </>
+    )
+  }
+
+  function GoalSections(props: GoalContentProps) {
+    const [currentTab, setCurrentTab] = useState(props.navigationTabs[0].id);
+    const { checkList, selectItem } = useCheckList(productPreferences);
+
+
+    const ageData = [
+      {
+        name: '8-12 years',
+        id: '1'
+      },
+      {
+        name: '13-18 years',
+        id: '2'
+      },
+      {
+        name: '19-25 years',
+        id: '3'
+      },
+      {
+        name: '26-35 years',
+        id: '4'
+      },
+      {
+        name: '36-45 years',
+        id: '5'
+      },
+      {
+        name: '46-55 years',
+        id: '6'
+      },
+      {
+        name: '56-65 years',
+        id: '7'
+      },
+      {
+        name: '66+ years',
+        id: '8'
+      }
+    ];
+
+    return (
+      <section className='tt-flex-col g-l'>
+        <TabNavigator labels={props.navigationTabs} selectedId='t-target' onselect={(_, item) => setCurrentTab(item.id)} />
+        <section id='goalSection' className='tt-flex-col g-l p-s'>
+          {
+            currentTab === 't-target' &&
+            <>
+              <section className='tt-flex-col g-xl'>
+                <FloatInput name='f-name' type='text' label='Country/Location' />
+                <FloatInput icon={<p className='icon'>$</p>} formatType='ammount' type='number' label='Income' />
+                {
+                  checkList !== null &&
+                  <fieldset className='tt-flex-col g-m p-0'>
+                    <CheckableList selectItem={selectItem} label='Product Preferences' checkList={checkList} />
+                  </fieldset>
+                }
+                <fieldset className='tt-flex-col p-0'>
+                  <SliderSelector placeholder='Age' data={ageData} />
+                </fieldset>
+                <fieldset className='tt-flex-col p-0'>
+                  <SliderSelector placeholder='Gender' data={genderList} />
+                </fieldset>
+              </section>
+            </>
+          }
+          {
+            currentTab === 't-metrics' &&
+            <>
+              <div className='tt-flex-row'>
+                <select className='tt_input-field'>
+                  <option value={0}>cm</option>
+                  <option value={1}>$</option>
+                  <option value={2}>$/hs</option>
+                  <option value={2}>%</option>
+                  <option value={2}>V</option>
+                </select>
+                <FloatInput name='f-name' type='text' label='Label' />
+              </div>
+              <ButtonComponent type='button' size={'medium'}>Add Metric</ButtonComponent>
+            </>
+          }
+        </section>
+      </section>
+    );
+  }
+
+  return (
+    <form className='tt-flex-col g-l'>
+      <GoalSpecification isAuto={props.isAutomatic} />
+      <GoalSections navigationTabs={tabs} />
+      <ButtonComponent type='submit' size={'large'} label='Save Goal' />
+    </form>
   );
 }

@@ -127,7 +127,15 @@ export enum Indicator {
   'Custommers'
 }
 
+
 export type IndicatorName = keyof typeof Indicator;
+export enum Unities {
+  'hs',
+  '$',
+  '%',
+  '$/hs',
+}
+export type UnityNames = keyof typeof Unities;
 
 export interface IIndicator {
   name: IndicatorName | string;

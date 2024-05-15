@@ -132,7 +132,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
       <div className='selector-container'>
         <SlArrowLeft height={'2vh'} onClick={prev} />
         <InputComponent
-          value={selected !== null ? data[selected].name : undefined}
+          value={selected !== null ? data[selected].name : ''}
           onClick={() => handleClick()}
           onChange={() => { }}
           style={{ cursor: 'pointer' }}
@@ -146,23 +146,41 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
   );
 };
 
-interface SelectProps extends React.ComponentProps<'select'> {
+interface SelectProps extends React.ComponentProps<'input'> {
   data: { id: string, name: string }[];
 }
 
 export function SelectComponent(props: SelectProps) {
 
+  const { data, onClick, onChange, ...rest } = props;
+  const [selected, setSelected] = useState<number | null>(null)
+  const [showList, setShowList] = useState<boolean>(false);
+
+  function handleClick() {
+    setShowList((show) => !show);
+  }
+
+  function handleSelect(selectedItem: ItemType) {
+    const currentIndex = data.findIndex(item => selectedItem.id === item.id);
+    if (currentIndex === -1) return;
+    setSelected(currentIndex);
+    setShowList(false);
+  }
+
   return (
-    <fieldset className="tt_input-field p-m">
-      <select className="tt_selector" {...props}>
-        {
-          props.data.map((option) => (
-            <option className="tt_option" key={option.id}>
-              <p>{option.name}</p>
-            </option>
-          ))
-        }
-      </select>
-    </fieldset>
+    <>
+      <div className={`${showList ? 'background' : 'hidden'}`} onClick={() => setShowList(false)}></div>
+      <div className='selector-container'>
+        <InputComponent
+          value={selected !== null ? data[selected].name : ''}
+          onClick={() => handleClick()}
+          onChange={() => { }}
+          style={{ cursor: 'pointer' }}
+          {...rest}
+          readOnly
+        />
+        <ListComponent textsize="medium" active={showList} data={data} selectitem={handleSelect} />
+      </div>
+    </>
   );
 }

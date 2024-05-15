@@ -1,6 +1,6 @@
 html {
-  --tt-gray-300:#E0E0E0;
-  --tt-gray-50:#FAFAFA;
+  --tt-gray-300: #E0E0E0;
+  --tt-gray-50: #FAFAFA;
   --tt-shadow-s: -1px 1px 3px 2px rgb(0 0 0 / 14%);
   --tt-shadow-l: 2px 2px 14px #b5b5b5;
   --tt-shadow-m: 2px 2px 14px #b5b5b57d;
@@ -19,12 +19,14 @@ html {
   box-shadow: var(--tt-shadow-m);
   border: 1px solid var(--tt-gray-300);
   border-radius: var(--tt-radius-m);
+
   svg {
     transition: all .3s ease-in;
   }
 }
 
-.tt_input-field:hover, .tt_input-field-float:hover {
+.tt_input-field:hover,
+.tt_input-field-float:hover {
   box-shadow: var(--tt-shadow-l);
   transform: translateY(2px);
 }
@@ -39,7 +41,7 @@ html {
   outline: none;
 }
 
-.tt_input-field-float > .tt_input {
+.tt_input-field-float>.tt_input {
   background-color: var(--tt-gray-50) !important;
   box-shadow: none !important;
   color: var(--tt-color-active);
@@ -54,7 +56,7 @@ html {
   transition: all .3s ease-in-out;
 }
 
-.tt_input:focus + .tt_input_label{
+.tt_input:focus+.tt_input_label {
   font-size: .8rem;
   color: var(--tt-color-active);
   transform: translateY(-1.8rem);
@@ -71,13 +73,15 @@ html {
   gap: 4px;
 }
 
-.tt_input-field-float:active + .tt_input_label, .tt_input:not([value=""]) + .tt_input_label {
+.tt_input-field-float:active+.tt_input_label,
+.tt_input:not([value=""])+.tt_input_label {
   transform: translateY(-1.8rem);
   color: var(--tt-color-active);
 }
 
 .tt_input-field-float:has(input:not([value=""])) {
   border: 1px solid var(--tt-color-active);
+
   p.icon {
     color: var(--tt-color-active) !important;
   }
@@ -104,13 +108,13 @@ html {
   cursor: pointer;
 }
 
-.tt_checkbox-field > .tt_input {
+.tt_checkbox-field>.tt_input {
   width: 20px;
   background-color: transparent !important;
   box-shadow: none !important;
 }
 
-.tt_checkbox-field > .tt_inp_label {
+.tt_checkbox-field>.tt_inp_label {
   user-select: none !important;
   text-wrap: nowrap;
 }
@@ -122,16 +126,16 @@ html {
 }
 
 .selector-container {
+
+  .tt_input-field {
+    border: 1px solid rgb(223, 223, 223) !important;
+  }
+
   .tt_input-field:has(input:not([value=""])) {
+    border: 1px solid var(--tt-color-active) !important;
     .tt_input {
       color: var(--tt-color-active);
     }
   }
-  
-}
 
-.tt_selector {
-  height: 2vh;
-  border: none;
-  outline: none;
 }

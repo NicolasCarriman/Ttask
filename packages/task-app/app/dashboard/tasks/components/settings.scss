@@ -5,3 +5,9 @@
 section#goalSection {
   min-height: 22vh;
 }
+
+article#ammount {
+  .selector-container {
+    flex: 0 0 20%;
+  }
+}

@@ -3,7 +3,7 @@ $selected:  #3182ce;
 ul#tabNavigator {
   border: 1px solid #b9b9b9;
   border-radius: 4px;
-  padding: .8rem;
+  padding: .4rem;
   margin: 0;
   li {
     cursor: pointer;
@@ -24,7 +24,7 @@ ul#tabNavigator {
 
 .indicator {
   background-color: $selected;
-  height: .2rem;
+  height: 2px;
   position: absolute;
   bottom: 0;
   left: 0;
