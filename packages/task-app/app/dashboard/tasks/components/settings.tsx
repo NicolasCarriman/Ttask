@@ -197,24 +197,23 @@ function GoalConfigComponent(props: GoalsProps) {
   ];
 
   function AutomaticSpecification() {
-
-
     const actionsData = Object.values(Actions).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
     const indicatorData = Object.values(Indicator).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
     const unitiesData = Object.values(Unities).filter((u) => isNaN(Number(u))).map((u, index) => ({ name: u.toString(), id: (u + index.toString()) }))
 
-    return (<>
-
-      <article className='tt-flex-row'>
-        <SelectComponent placeholder='Action' data={actionsData} />
-        <p className='tt-flex-col layer-centered'>the</p>
-        <SelectComponent placeholder='Indicator' data={indicatorData} />
-      </article>
-      <article id='ammount' className='tt-flex-row'>
-        <SelectComponent placeholder='Unit' data={unitiesData} />
-        <FloatInput label={'ammount'} type='number' />
-      </article>
-    </>)
+    return (
+      <>
+        <article className='tt-flex-row'>
+          <SelectComponent placeholder='Action' data={actionsData} />
+          <p className='tt-flex-col layer-centered'>the</p>
+          <SelectComponent placeholder='Indicator' data={indicatorData} />
+        </article>
+        <article id='ammount' className='tt-flex-row'>
+          <SelectComponent placeholder='Unit' data={unitiesData} />
+          <FloatInput label={'ammount'} type='number' />
+        </article>
+      </>
+    )
   }
 
   return (
@@ -232,7 +231,7 @@ function GoalConfigComponent(props: GoalsProps) {
           <>
             <section className='tt-flex-col g-xl'>
               <FloatInput name='f-name' type='text' label='Country/Location' />
-              <FloatInput icon={<p className='icon'>$</p>} formatType='ammount' type='number' label='Income' />
+              <FloatInput icon={<p className='icon'>$</p>} type='number' label='Income' />
               {
                 checkList !== null &&
                 <fieldset className='tt-flex-col g-m p-0'>
@@ -240,10 +239,10 @@ function GoalConfigComponent(props: GoalsProps) {
                 </fieldset>
               }
               <fieldset className='tt-flex-col p-0'>
-                <SliderSelector placeholder='Age' data={ageData} />
+                <SliderSelector name='age' placeholder='Age' data={ageData} />
               </fieldset>
               <fieldset className='tt-flex-col p-0'>
-                <SliderSelector placeholder='Gender' data={genderList} />
+                <SliderSelector name='gender' placeholder='Gender' data={genderList} />
               </fieldset>
             </section>
           </>
@@ -406,7 +405,7 @@ function RequerimentConfig() {
           </li>
           <li>
             <label className='txt-gray-4 '>Field type</label>
-            <SliderSelector data={inputDataTypes} />
+            <SliderSelector name='inputTypes' data={inputDataTypes} />
           </li>
           <li>
             <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true} />
@@ -640,7 +639,7 @@ function CarrouselComponent(props: CarrouselProps) {
 
   return (
     <div className='tt-flex-col'>
-      <SliderSelector data={data} placeholder={data[0].name} onChange={handleChange} onClick={handleClick} />
+      <SliderSelector data={data} placeholder={data[0].name} onClick={handleClick} name={'test'} />
       {
         mappedConfig[currentConfig]
       }
@@ -650,6 +649,7 @@ function CarrouselComponent(props: CarrouselProps) {
 
 
 function GoalConfigComponent2(props: GoalsProps) {
+  const { register, handleSubmit, formState } = useForm();
 
   const tabs = [
     { content: 'Target', id: 't-target' },
@@ -671,17 +671,18 @@ function GoalConfigComponent2(props: GoalsProps) {
       return (
         <>
           <article className='tt-flex-row'>
-            <SelectComponent placeholder='Action' data={actionsData} />
+            <SelectComponent placeholder='Action' data={actionsData} {...register('Action')} />
             <p className='tt-flex-col layer-centered'>the</p>
-            <SelectComponent placeholder='Indicator' data={indicatorData} />
+            <SelectComponent placeholder='Indicator' data={indicatorData} {...register('Indicator')} />
           </article>
           <article id='ammount' className='tt-flex-row'>
-            <SelectComponent placeholder='Unit' data={unitiesData} />
-            <FloatInput label={'ammount'} type='number' />
+            <SelectComponent placeholder='Unit' data={unitiesData} {...register('Unit')} />
+            <FloatInput label={'ammount'} type='number' {...register('Ammount')} />
           </article>
         </>
       );
     }
+
     return (
       <>
         {
@@ -693,8 +694,8 @@ function GoalConfigComponent2(props: GoalsProps) {
   }
 
   function GoalSections(props: GoalContentProps) {
-    const [currentTab, setCurrentTab] = useState(props.navigationTabs[0].id);
     const { checkList, selectItem } = useCheckList(productPreferences);
+    const [currentTab, setCurrentTab] = useState(props.navigationTabs[0].id);
 
 
     const ageData = [
@@ -740,8 +741,8 @@ function GoalConfigComponent2(props: GoalsProps) {
             currentTab === 't-target' &&
             <>
               <section className='tt-flex-col g-xl'>
-                <FloatInput name='f-name' type='text' label='Country/Location' />
-                <FloatInput icon={<p className='icon'>$</p>} formatType='ammount' type='number' label='Income' />
+                <FloatInput type='text' label='Country/Location' {...register('location')}/>
+                <FloatInput icon={<p className='icon'>$</p>} type='number' label='Income' {...register('income')}/>
                 {
                   checkList !== null &&
                   <fieldset className='tt-flex-col g-m p-0'>
@@ -749,10 +750,10 @@ function GoalConfigComponent2(props: GoalsProps) {
                   </fieldset>
                 }
                 <fieldset className='tt-flex-col p-0'>
-                  <SliderSelector placeholder='Age' data={ageData} />
+                  <SliderSelector name='age' placeholder='Age' data={ageData} />
                 </fieldset>
                 <fieldset className='tt-flex-col p-0'>
-                  <SliderSelector placeholder='Gender' data={genderList} />
+                  <SliderSelector name='gender' placeholder='Gender' data={genderList} />
                 </fieldset>
               </section>
             </>
@@ -779,7 +780,7 @@ function GoalConfigComponent2(props: GoalsProps) {
   }
 
   return (
-    <form className='tt-flex-col g-l'>
+    <form className='tt-flex-col g-l' onSubmit={handleSubmit((parameter) => console.log(parameter))}>
       <GoalSpecification isAuto={props.isAutomatic} />
       <GoalSections navigationTabs={tabs} />
       <ButtonComponent type='submit' size={'large'} label='Save Goal' />

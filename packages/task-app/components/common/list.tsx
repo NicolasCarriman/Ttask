@@ -63,7 +63,7 @@ export const ListComponent: React.FC<Props> = (props) => {
     <ul className={`tt-ul ${active ? 'dis-active' : 'dis-none'} p-s shadow-m tt-box`} >
       {
         data.map((item) => (
-          <li className='tt-li ' key={item.id} onClick={(e) => selectitem && selectitem(item)}  {...props}>
+          <li className='tt-li' key={item.id} onClick={(e) => selectitem && selectitem(item)}  {...props}>
             <p className={`txt-gray-500 ${textSizes[textsize]}`}>
               {item.name}
             </p>

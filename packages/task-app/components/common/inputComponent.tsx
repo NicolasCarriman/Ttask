@@ -1,9 +1,10 @@
 'use-client';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import React, { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, forwardRef, useEffect, useState } from 'react';
 import './inputComponent.scss';
 import { format } from 'numerable';
 import List, { ListComponent } from "./list";
+import { useController } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
@@ -13,9 +14,7 @@ export const InputComponent: React.FC<InputProps> = (props) => {
 
   return (
     <fieldset className='tt_input-field'>
-      {
-        props.icon && props.icon
-      }
+      {props.icon && props.icon}
       <input className="tt_input" {...props} />
     </fieldset>
   );
@@ -24,36 +23,20 @@ export const InputComponent: React.FC<InputProps> = (props) => {
 interface FloatInputProps extends Omit<InputProps, 'icon'> {
   label: string;
   icon?: React.ReactNode;
-  formatType?: 'default' | 'ammount';
 }
 
-export const FloatInput: React.FC<FloatInputProps> = (props) => {
-  const [value, setValue] = useState<string>(props.value && props.type === 'text' ? props.value as string : '');
-  const { formatType = 'default' } = props;
+export const FloatInput = forwardRef<HTMLInputElement, FloatInputProps>(
+  (props, ref) => {
+    const { ...rest } = props;
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let currentValue = e.currentTarget.value;
-    setValue(currentValue);
-  }
-
-  function formattedValue(value: string) {
-    if (value.length === 0) return "";
-    if (formatType === 'ammount') {
-      if (isNaN(Number(value))) return;
-      return format((Number(value) / 100), '0,0.00');
-    }
-  }
-
-  return (
-    <fieldset className='tt_input-field-float'>
-      {
-        props.icon && props.icon
-      }
-      <input className="tt_input" onChange={handleChange} value={value} {...props} />
-      <label className='tt_input_label'>{props.label}</label>
-    </fieldset>
-  );
-}
+    return (
+      <fieldset className='tt_input-field-float'>
+        {props.icon && props.icon}
+        <input ref={ref} className="tt_input" {...rest} />
+        <label className='tt_input_label'>{props.label}</label>
+      </fieldset>
+    );
+  })
 
 interface CheckboxProps extends Omit<InputProps, 'icon' | 'type'> {
   id: string;
@@ -85,13 +68,14 @@ interface SliderProps extends Omit<InputProps, 'onChange' | 'onClick'> {
   data: ItemType[];
   selectedIndex?: number;
   onClick?: (e: React.MouseEvent<HTMLLIElement>, selectedItem: ItemType) => void;
-  onChange?: (nmber: number) => void;
+  name: string;
 }
 
 export const SliderSelector: React.FC<SliderProps> = (props) => {
-  const { data, selectedIndex, onClick, onChange, ...rest } = props;
+  const { data, selectedIndex, onClick, ...rest } = props;
   const [selected, setSelected] = useState<number | null>(selectedIndex ? selectedIndex : null)
   const [showList, setShowList] = useState<boolean>(false);
+  const { field } = useController({name: props.name});
 
   function prev() {
     if (data.length <= 0) return;
@@ -100,7 +84,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
     if (prevIndex < 0) {
       prevIndex = data.length - 1;
     };
-    onChange && onChange(prevIndex);
+    field.onChange(data[prevIndex].name);
     setSelected(prevIndex);
   }
 
@@ -111,7 +95,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
     if (nextIndex > data.length - 1) {
       nextIndex = 0;
     };
-    onChange && onChange(nextIndex);
+    field.onChange(data[nextIndex].name);
     setSelected(nextIndex);
   }
 
@@ -122,6 +106,7 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
   function handleSelect(selectedItem: ItemType) {
     const currentIndex = data.findIndex(item => selectedItem.id === item.id);
     if (currentIndex === -1) return;
+    field.onChange(data[currentIndex].name);
     setSelected(currentIndex);
     setShowList(false);
   }
@@ -132,11 +117,10 @@ export const SliderSelector: React.FC<SliderProps> = (props) => {
       <div className='selector-container'>
         <SlArrowLeft height={'2vh'} onClick={prev} />
         <InputComponent
-          value={selected !== null ? data[selected].name : ''}
           onClick={() => handleClick()}
-          onChange={() => { }}
           style={{ cursor: 'pointer' }}
           {...rest}
+          {...field}
           readOnly
         />
         <SlArrowRight height={'2vh'} onClick={next} />
