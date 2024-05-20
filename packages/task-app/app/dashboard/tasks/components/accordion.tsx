@@ -5,7 +5,7 @@ import { SlArrowDown } from 'react-icons/sl';
 
 interface Props {
   label: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   showContent: boolean;
   // eslint-disable-next-line no-unused-vars
   handleShow(id:string): void;
@@ -23,7 +23,7 @@ function Accordion(props: Props) {
       </header>
       <div className={showContent ? 'accordion-visible' : 'accordion-hide'}>
         {
-          children
+          children && children
         }
       </div>
     </RoundedBox>

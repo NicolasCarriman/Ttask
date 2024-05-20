@@ -7,16 +7,17 @@ import RoundedBox from '@app/components/common/box';
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
 import { Actions, Indicator, Unities, priorityType } from '@core/models';
-import { CheckboxInput, FloatInput, InputComponent, SelectComponent, SliderSelector } from '@app/components/common';
+import { CheckboxInput, FloatInput, InputComponent } from '@app/components/common';
 import './carrousel.css';
 import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md';
 import { FiTarget } from 'react-icons/fi';
 import { FloatTextBox } from '@app/components/common/textBox';
 import TabNavigator from '@app/components/ui/tab/tab';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Control, FieldValues } from "react-hook-form";
 import { Resolver } from 'react-hook-form';
 import { CheckableList } from '@app/components/common/list';
 import { useCheckList } from '@app/hooks/useList';
+import { SliderSelector, SelectComponent } from '@app/components/common/select';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -120,6 +121,7 @@ type ManualFields = {
 
 interface ConfigComponentBase {
   isAutomatic: boolean;
+  control: Control<FieldValues>;
 }
 
 interface InputFieldProps {
@@ -148,126 +150,6 @@ const productPreferences = [
 ];
 
 interface GoalsProps extends ConfigComponentBase { }
-
-function GoalConfigComponent(props: GoalsProps) {
-  const [currentTab, setCurrentTab] = useState('t-target');
-  const { checkList, selectItem } = useCheckList(productPreferences);
-  const { register, handleSubmit, formState } = useForm();
-  const { isAutomatic } = props;
-  const onSubmit: SubmitHandler<any> = (data) => console.log(data);
-
-  const tabs = [
-    { content: 'Target', id: 't-target' },
-    { content: 'Metrics', id: 't-metrics' },
-  ];
-
-  const ageData = [
-    {
-      name: '8-12 years',
-      id: '1'
-    },
-    {
-      name: '13-18 years',
-      id: '2'
-    },
-    {
-      name: '19-25 years',
-      id: '3'
-    },
-    {
-      name: '26-35 years',
-      id: '4'
-    },
-    {
-      name: '36-45 years',
-      id: '5'
-    },
-    {
-      name: '46-55 years',
-      id: '6'
-    },
-    {
-      name: '56-65 years',
-      id: '7'
-    },
-    {
-      name: '66+ years',
-      id: '8'
-    }
-  ];
-
-  function AutomaticSpecification() {
-    const actionsData = Object.values(Actions).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
-    const indicatorData = Object.values(Indicator).filter((u) => isNaN(Number(u))).map((indicator, index) => ({ name: indicator.toString(), id: (indicator + index.toString()) }));
-    const unitiesData = Object.values(Unities).filter((u) => isNaN(Number(u))).map((u, index) => ({ name: u.toString(), id: (u + index.toString()) }))
-
-    return (
-      <>
-        <article className='tt-flex-row'>
-          <SelectComponent placeholder='Action' data={actionsData} />
-          <p className='tt-flex-col layer-centered'>the</p>
-          <SelectComponent placeholder='Indicator' data={indicatorData} />
-        </article>
-        <article id='ammount' className='tt-flex-row'>
-          <SelectComponent placeholder='Unit' data={unitiesData} />
-          <FloatInput label={'ammount'} type='number' />
-        </article>
-      </>
-    )
-  }
-
-  return (
-    <form onSubmit={onSubmit} className='tt-flex-col g-xl'>
-      {
-        isAutomatic ?
-          <AutomaticSpecification />
-          :
-          <FloatTextBox label={'Specifications'} />
-      }
-      <TabNavigator labels={tabs} selectedId='t-target' onselect={(_, item) => setCurrentTab(item.id)} />
-      <section id='goalSection' className='tt-flex-col g-l p-s'>
-        {
-          currentTab === 't-target' &&
-          <>
-            <section className='tt-flex-col g-xl'>
-              <FloatInput name='f-name' type='text' label='Country/Location' />
-              <FloatInput icon={<p className='icon'>$</p>} type='number' label='Income' />
-              {
-                checkList !== null &&
-                <fieldset className='tt-flex-col g-m p-0'>
-                  <CheckableList selectItem={selectItem} label='Product Preferences' checkList={checkList} />
-                </fieldset>
-              }
-              <fieldset className='tt-flex-col p-0'>
-                <SliderSelector name='age' placeholder='Age' data={ageData} />
-              </fieldset>
-              <fieldset className='tt-flex-col p-0'>
-                <SliderSelector name='gender' placeholder='Gender' data={genderList} />
-              </fieldset>
-            </section>
-          </>
-        }
-        {
-          currentTab === 't-metrics' &&
-          <>
-            <div className='tt-flex-row'>
-              <select className='tt_input-field'>
-                <option value={0}>cm</option>
-                <option value={1}>$</option>
-                <option value={2}>$/hs</option>
-                <option value={2}>%</option>
-                <option value={2}>V</option>
-              </select>
-              <FloatInput name='f-name' type='text' label='Label' />
-            </div>
-            <ButtonComponent type='button' size={'medium'}>Add Metric</ButtonComponent>
-          </>
-        }
-      </section>
-      <ButtonComponent type='button' size={'large'} >Save Goal </ButtonComponent>
-    </form>
-  );
-}
 
 const UsersConfigComponent = (props: ConfigComponentBase) => {
   const [currentUsers, setCurrentUsers] = useState<string | null>(null);
@@ -325,8 +207,9 @@ const TimeConfigComponent = (props: ConfigComponentBase) => {
   );
 };
 
-function RequerimentConfig() {
+function RequerimentConfig(props: ConfigComponentBase) {
   const [selectedId, setSelectedId] = useState<string>('');
+  const { control } = props;
   const requeriments = [{
     id: '1',
     name: 'inputs'
@@ -405,7 +288,7 @@ function RequerimentConfig() {
           </li>
           <li>
             <label className='txt-gray-4 '>Field type</label>
-            <SliderSelector name='inputTypes' data={inputDataTypes} />
+            <SliderSelector control={props.control} name='inputTypes' data={inputDataTypes} />
           </li>
           <li>
             <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true} />
@@ -477,11 +360,10 @@ function Settings() {
       <Accordion
         label={'Automatization'}
         showContent={selectedAccordion === 'ac-s-2'}
-        handleShow={(id) => { setSelectedAccordion(id); }}
+        handleShow={(id) => { setSelectedAccordion(id) }}
         id={'ac-s-2'}
-        children={undefined}>
-      </Accordion>
-    </RoundedBox>
+      />
+    </RoundedBox >
   );
 }
 
@@ -601,6 +483,8 @@ interface CarrouselProps {
 function CarrouselComponent(props: CarrouselProps) {
   const [currentConfig, setCurrentConfig] = useState<string>('c-goal');
   const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
+  const { register, handleSubmit, formState, control } = useForm();
+
 
   const data = [
     {
@@ -622,10 +506,10 @@ function CarrouselComponent(props: CarrouselProps) {
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
-    'c-goal': <GoalConfigComponent2 isAutomatic={props.isAuto} />,
-    'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
-    'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
-    'c-requeriments': <RequerimentConfig />
+    'c-goal': <GoalConfigComponent2 control={control} isAutomatic={props.isAuto} />,
+    'c-time': <TimeConfigComponent control={control} isAutomatic={props.isAuto} />,
+    'c-user': <UsersConfigComponent control={control} isAutomatic={props.isAuto} />,
+    'c-requeriments': <RequerimentConfig control={control} isAutomatic={props.isAuto} />
   };
 
   function handleClick(_: React.MouseEvent<HTMLLIElement>, item: ItemType) {
@@ -639,7 +523,7 @@ function CarrouselComponent(props: CarrouselProps) {
 
   return (
     <div className='tt-flex-col'>
-      <SliderSelector data={data} placeholder={data[0].name} onClick={handleClick} name={'test'} />
+      <SliderSelector control={control} data={data} placeholder={data[0].name} onClick={handleClick} name={'test'} />
       {
         mappedConfig[currentConfig]
       }
@@ -649,7 +533,7 @@ function CarrouselComponent(props: CarrouselProps) {
 
 
 function GoalConfigComponent2(props: GoalsProps) {
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState, control } = useForm();
 
   const tabs = [
     { content: 'Target', id: 't-target' },
@@ -741,8 +625,8 @@ function GoalConfigComponent2(props: GoalsProps) {
             currentTab === 't-target' &&
             <>
               <section className='tt-flex-col g-xl'>
-                <FloatInput type='text' label='Country/Location' {...register('location')}/>
-                <FloatInput icon={<p className='icon'>$</p>} type='number' label='Income' {...register('income')}/>
+                <FloatInput type='text' label='Country/Location' {...register('location')} />
+                <FloatInput icon={<p className='icon'>$</p>} type='number' label='Income' {...register('income')} />
                 {
                   checkList !== null &&
                   <fieldset className='tt-flex-col g-m p-0'>
@@ -750,10 +634,10 @@ function GoalConfigComponent2(props: GoalsProps) {
                   </fieldset>
                 }
                 <fieldset className='tt-flex-col p-0'>
-                  <SliderSelector name='age' placeholder='Age' data={ageData} />
+                  <SliderSelector control={control} name='age' placeholder='Age' data={ageData} />
                 </fieldset>
                 <fieldset className='tt-flex-col p-0'>
-                  <SliderSelector name='gender' placeholder='Gender' data={genderList} />
+                  <SliderSelector control={control} name='gender' placeholder='Gender' data={genderList} />
                 </fieldset>
               </section>
             </>
