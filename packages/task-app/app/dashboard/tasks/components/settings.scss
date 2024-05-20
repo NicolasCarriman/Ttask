@@ -1,5 +1,5 @@
 .time-container {
-  width: 100%;
+  width: calc(100% - var(--padding-value));
 }
 
 section#goalSection {
@@ -11,3 +11,4 @@ article#ammount {
     flex: 0 0 20%;
   }
 }
+

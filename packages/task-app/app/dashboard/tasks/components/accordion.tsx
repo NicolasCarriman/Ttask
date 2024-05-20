@@ -6,6 +6,7 @@ import { SlArrowDown } from 'react-icons/sl';
 interface Props {
   label: string;
   children?: React.ReactNode;
+  className?: string;
   showContent: boolean;
   // eslint-disable-next-line no-unused-vars
   handleShow(id:string): void;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 function Accordion(props: Props) {
-  const { label, children, id, handleShow, showContent } = props;
+  const { label, className, children, id, handleShow, showContent } = props;
 
   return (
     <RoundedBox className='tt-flex-col g-m'>
@@ -21,7 +22,7 @@ function Accordion(props: Props) {
         <SlArrowDown className={ showContent ? 'accordion-active' : 'accordion-desactive'} />
         <h3>{label}</h3>
       </header>
-      <div className={showContent ? 'accordion-visible' : 'accordion-hide'}>
+      <div className={`${className} + ${showContent ? 'accordion-visible' : 'accordion-hide'}`}>
         {
           children && children
         }

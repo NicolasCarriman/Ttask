@@ -75,7 +75,7 @@ function Tasks() {
       {
         loaded.current &&
         <Layer>
-          <RoundedBox className='w-[30%] tt-flex-col' >
+          <RoundedBox className='grid-item-row-1 grid-item-col-2 tt-flex-col g-xl' >
             {
               currentTask && currentTask.subtasks && (
                 <>
@@ -93,7 +93,7 @@ function Tasks() {
             }
           </RoundedBox>
           <Subtask data={subtask} />
-          <RoundedBox className='min-w-[22vw] w-[0%]' >
+          <RoundedBox className='grid-item-row-1 grid-item-col-3' >
             <Settings />
           </RoundedBox>
         </Layer>

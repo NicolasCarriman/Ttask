@@ -7,6 +7,7 @@ import Button from '@app/components/common/button';
 import { getRandomId } from '@app/utils';
 import Input from '@app/components/common/input';
 import { useTaskContext } from '../../context';
+import './subtask.scss';
 
 interface Props {
   data?: subtask;
@@ -57,7 +58,7 @@ function Subtask({ data }: Props) {
   };
 
   return (
-    <RoundedBox className='grid-item-3 tt-flex-col'>
+    <RoundedBox id='subtask' className='grid-item-row-1 tt-flex-col'>
       {
         data ?
           <>
@@ -89,7 +90,6 @@ function Subtask({ data }: Props) {
             </section>
             <footer className='task-footer'>
               <Button
-                variant='filter'
                 size={'medium'}
                 onClick={handleClick}
               >

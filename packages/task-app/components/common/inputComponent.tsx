@@ -19,7 +19,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = 'Input';
-
 export const InputComponent = Input;
 
 interface FloatInputProps extends Omit<InputProps, 'icon'> {
@@ -41,7 +40,6 @@ const FloatInputComponent = forwardRef<HTMLInputElement, FloatInputProps>(
   });
 
 FloatInputComponent.displayName = 'FloatInput';
-
 export const FloatInput = FloatInputComponent;
 
 interface CheckboxProps extends Omit<InputProps, 'icon' | 'type'> {
@@ -50,17 +48,22 @@ interface CheckboxProps extends Omit<InputProps, 'icon' | 'type'> {
   isChecked: boolean;
 }
 
-export const CheckboxInput: React.FC<CheckboxProps> = (props) => {
-  const [checked, setChecked] = useState<boolean>(props.isChecked);
+const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  (props, ref) => {
+    const [checked, setChecked] = useState<boolean>(props.isChecked);
 
-  function handleChange() {
-    setChecked((checked) => !checked);
-  }
+    function handleChange() {
+      setChecked((checked) => !checked);
+    }
 
-  return (
-    <fieldset className='tt_checkbox-field'>
-      <input className='tt_input' onChange={() => handleChange()} checked={checked} type='checkbox' {...props} />
-      <label htmlFor={props.id} className='tt_inp_label txt-gray-5'>{props.label}</label>
-    </fieldset>
-  );
-};
+    return (
+      <fieldset className='tt_checkbox-field'>
+        <input ref={ref} className='tt_input' onChange={() => handleChange()} checked={checked} type='checkbox' {...props} />
+        <label htmlFor={props.id} className='tt_inp_label txt-gray-5'>{props.label}</label>
+      </fieldset>
+    );
+  }  
+);
+
+Checkbox.displayName = 'Checkbox';
+export const CheckboxInput = Checkbox;

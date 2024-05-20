@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 'use client';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { InputComponent, InputProps } from './inputComponent';
 import { ListComponent } from './list';
+import { Control, FieldValues, useController } from 'react-hook-form';
 
 interface ItemType {
   name: string;
@@ -12,15 +13,12 @@ interface ItemType {
 
 interface  ISelectBaseProps extends InputProps {
   data:  ItemType[];
-  onselect?: (selectedItem: ItemType) => void
-}
-
-interface SliderProps extends ISelectBaseProps {
+  onselect?: (selectedItem: ItemType) => void;
   selectedIndex?: number;
 }
 
-const SliderSelectorComponent = forwardRef<HTMLInputElement, SliderProps>(
-  (props) => {
+const SliderSelectorComponent = forwardRef<HTMLInputElement, ISelectBaseProps>(
+  (props, ref) => {
     const { data, selectedIndex, onClick, onselect, ...rest } = props;
     const [selected, setSelected] = useState<number | null>(selectedIndex ? selectedIndex : null);
     const [showList, setShowList] = useState<boolean>(false);
@@ -44,7 +42,6 @@ const SliderSelectorComponent = forwardRef<HTMLInputElement, SliderProps>(
         nextIndex = 0;
       };
       onselect && onselect(data[nextIndex]);
-
       setSelected(nextIndex);
     }
   
@@ -66,8 +63,10 @@ const SliderSelectorComponent = forwardRef<HTMLInputElement, SliderProps>(
         <div className='selector-container'>
           <SlArrowLeft height={'2vh'} onClick={prev} />
           <InputComponent
+            ref={ref}
             onClick={() => handleClick()}
             style={{ cursor: 'pointer' }}
+            value={selected ? data[selected].name : ''}
             {...rest}
             readOnly
           />
@@ -81,11 +80,7 @@ const SliderSelectorComponent = forwardRef<HTMLInputElement, SliderProps>(
 SliderSelectorComponent.displayName = 'SliderSelect';
 export const SliderSelector = SliderSelectorComponent;
 
-interface SelectProps extends ISelectBaseProps {
-  data: { id: string, name: string }[];
-}
-
-const Select = forwardRef<HTMLInputElement, SelectProps>(
+const Select = forwardRef<HTMLInputElement, ISelectBaseProps>(
   (props, ref) => {
     const { data, onselect, ...rest } = props;
     const [selected, setSelected] = useState<number | null>(null);
@@ -98,9 +93,9 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
     function handleSelect(selectedItem: ItemType) {
       const currentIndex = data.findIndex(item => selectedItem.id === item.id);
       if (currentIndex === -1) return;
-      onselect && onselect(data[currentIndex]);
       setSelected(currentIndex);
       setShowList(false);
+      onselect && onselect(data[currentIndex]);
     }
 
     return (
@@ -109,9 +104,8 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
         <div className='selector-container'>
           <InputComponent
             ref={ref}
+            onClick={handleClick}
             value={selected !== null ? data[selected].name : ''}
-            onClick={() => handleClick()}
-            onChange={() => { }}
             style={{ cursor: 'pointer' }}
             {...rest}
             readOnly
@@ -124,5 +118,33 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 );
 
 Select.displayName = 'Select';
-
 export const SelectComponent = Select;
+
+interface IControlledComponent extends ISelectBaseProps {
+  control: Control<FieldValues>;
+  name: string;
+}
+
+function WithControlledComponent(Wrapped: React.ComponentType<ISelectBaseProps>) {
+
+  const EnchantedComponent = ({ onselect, name, control, ...rest }: IControlledComponent) => {
+    const { field } = useController({ name: name, control: control });
+
+    function handleSelect(item: ItemType) {
+      onselect && onselect(item);
+      console.log(item.name);
+      field.onChange(item.name);
+    }
+
+    return (
+      <Wrapped onselect={handleSelect} { ...field } {...rest} ></Wrapped>
+    );
+  }
+
+  return EnchantedComponent;
+}
+
+export default WithControlledComponent;
+
+export const ControlledSelect = WithControlledComponent(SelectComponent);
+export const ControlledSliderSelect = WithControlledComponent(SliderSelector);

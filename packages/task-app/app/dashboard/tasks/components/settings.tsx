@@ -6,18 +6,17 @@ import './settings.scss';
 import RoundedBox from '@app/components/common/box';
 import Accordion from './accordion';
 import ButtonComponent from '@app/components/common/button';
-import { Actions, Indicator, Unities, priorityType } from '@core/models';
+import { Actions, Indicator, Role, Unities, priorityType } from '@core/models';
 import { CheckboxInput, FloatInput, InputComponent } from '@app/components/common';
 import './carrousel.css';
-import { MdInput, MdOutlineOutput, MdOutlineVerifiedUser } from 'react-icons/md';
 import { FiTarget } from 'react-icons/fi';
 import { FloatTextBox } from '@app/components/common/textBox';
 import TabNavigator from '@app/components/ui/tab/tab';
-import { useForm, SubmitHandler, Control, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler, Control, FieldValues, useController } from "react-hook-form";
 import { Resolver } from 'react-hook-form';
 import { CheckableList } from '@app/components/common/list';
 import { useCheckList } from '@app/hooks/useList';
-import { SliderSelector, SelectComponent } from '@app/components/common/select';
+import { SliderSelector, SelectComponent, ControlledSliderSelect, ControlledSelect } from '@app/components/common/select';
 
 type statusType = 'done' | 'inProgress' | 'toDo' | 'toFix' | 'fixed' | 'verified' | 'aprobed';
 
@@ -121,7 +120,6 @@ type ManualFields = {
 
 interface ConfigComponentBase {
   isAutomatic: boolean;
-  control: Control<FieldValues>;
 }
 
 interface InputFieldProps {
@@ -154,104 +152,108 @@ interface GoalsProps extends ConfigComponentBase { }
 const UsersConfigComponent = (props: ConfigComponentBase) => {
   const [currentUsers, setCurrentUsers] = useState<string | null>(null);
   const [showUserPanel, setShowUserPanel] = useState<boolean>(false);
-  const { isAutomatic } = props;
+  const { register, handleSubmit, formState, control } = useForm();
 
-  const InputField = (data: InputFieldProps) => {
-    return (
-      <div className='input-field'>
-        <span className='input-label'>{data.name}</span>
-        <InputComponent type={data.type} />
-      </div>
-    );
-  };
+  const permissionsData = Object.values(Role).filter((r) => isNaN(Number(r))).map((r, i) => ({ id: i.toString(), name: r.toString() }));
 
   function addUser(id: string) {
     setCurrentUsers(id);
   }
 
   return (
-    <div className='users-container'>
+    <form onSubmit={handleSubmit((parameter) => console.log(parameter))} className='users-container tt-flex-col g-xl'>
       <>
-        <InputField type={'default'} name={'user'} />
-        <InputField type={'default'} name={'permission'} />
+        <article className='tt-flex-col p-m g-m'>
+          <p>input uploader</p>
+          <span className='tt-divider '></span>
+        </article>
+        <ControlledSelect control={control} name='permission' placeholder='Select User' data={permissionsData} />
+        <article className='tt-flex-col p-m g-m mb-l'>
+          <p>users and permissions</p>
+          <span className='tt-divider'></span>
+        </article>
+        <FloatInput label={'user'} {...register('user')} />
+        <ControlledSelect control={control} name='permission' placeholder='User Permission' data={permissionsData} />
       </>
       <ButtonComponent size='medium' onClick={() => { setShowUserPanel((prev) => !prev); }}>add user</ButtonComponent>
-    </div>
+    </form>
   );
 };
 
 const TimeConfigComponent = (props: ConfigComponentBase) => {
   const { isAutomatic } = props;
-
-  const InputField = (data: InputFieldProps) => {
-    return (
-      <div className='input-field'>
-        <span className='input-label'>{data.name}</span>
-        <InputComponent type={data.type} />
-      </div>
-    );
-  };
+  const { handleSubmit, register, formState } = useForm();
 
   return (
-    <div className='time-container'>
-      <InputField name='from' type='date' />
-      <InputField name='to' type='date' />
+    <form onSubmit={handleSubmit((parameter) => console.log(parameter))} className='time-container tt-flex-col g-xl p-l'>
+      <FloatInput label='from' type='date' {...register('from')} />
+      <FloatInput label='to' type='date' {...register('to')} />
       {
         isAutomatic &&
         <>
-          <InputField name='duration' type='number' />
-          <InputField name='frecuency' type='number' />
+          <FloatInput label='frecuency' type='number' {...register('frecuency')} />
         </>
       }
-    </div>
+      <ButtonComponent size={'large'} label='Save Config' />
+    </form>
   );
 };
 
 function RequerimentConfig(props: ConfigComponentBase) {
-  const [selectedId, setSelectedId] = useState<string>('');
-  const { control } = props;
+  const [selectedId, setSelectedId] = useState<string>('1');
   const requeriments = [{
     id: '1',
-    name: 'inputs'
+    content: 'inputs'
   },
   {
     id: '2',
-    name: 'output'
+    content: 'output'
   },
   {
     id: '3',
-    name: 'verifications'
+    content: 'verifications'
   }
   ];
 
-  type TaskInputTypes = 'text' | 'check' | 'number' | 'file' | 'date'
+  function InputForm() {
+    const { control, handleSubmit, register } = useForm();
+    const inputDataTypes = [
+      {
+        id: 'text-1',
+        name: 'Text'
+      },
+      {
+        id: 'check-2',
+        name: 'Check'
+      },
+      {
+        id: 'number-3',
+        name: 'Number'
 
-  type Fields = {
-    href?: string,
-    isRequired: boolean,
-    type: TaskInputTypes,
-    value: string | boolean | number,
-    attachments?: string[];
-  };
-
-  function addInputField(config: Omit<Fields, 'value'>) {
-
-  }
-
-  function VerificationForm() {
+      },
+      {
+        id: 'file-4',
+        name: 'File'
+      },
+      {
+        id: 'date-5',
+        name: 'Date'
+      }
+    ];
 
     return (
-      <form className='verification-form'>
-
+      <form className='tt-flex-col p-l mt-l' onSubmit={handleSubmit(value => console.log(value))}>
+        <FloatInput type='text' label='Field name' {...register('name')} />
+        <ControlledSliderSelect control={control} placeholder='input types' name='inputTypes' data={inputDataTypes} />
+        <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true} {...register('isRequired')} />
+        <ButtonComponent variant='primary' type='submit' size={'medium'} >Add Field</ButtonComponent>
       </form>
     );
   }
 
-
-
-  function InputForm() {
-    const [fields, setFields] = useState<Fields[]>([]);
-
+  function OutputForm() {
+    const [selectedId, setSelectedId] = useState<string>('acc1');
+    const { control, handleSubmit, register } = useForm();
     const inputDataTypes = [
       {
         id: 'text-1',
@@ -275,53 +277,81 @@ function RequerimentConfig(props: ConfigComponentBase) {
       }
     ];
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
-      e.preventDefault();
-      const data = new FormData(e.target as HTMLFormElement);
-    }
+    const handleAccordion = (id: string) => {
+      setSelectedId(id)
+    };
 
     return (
-      <form className='tt-l-col-m' onSubmit={handleSubmit}>
-        <ul className='tt-ul inp-gp-col'>
-          <li>
-            <FloatInput name='f-name' type='text' label='Field name' />
-          </li>
-          <li>
-            <label className='txt-gray-4 '>Field type</label>
-            <SliderSelector control={props.control} name='inputTypes' data={inputDataTypes} />
-          </li>
-          <li>
-            <CheckboxInput id={'inp-required'} label={'Is required?'} isChecked={true} />
-          </li>
-        </ul>
-        <ButtonComponent variant='primary' type='submit' size={'medium'} >Add Field</ButtonComponent>
+      <form className='tt-flex-col g-xl p-l ' onSubmit={handleSubmit(value => console.log(value))}>
+        <Accordion
+          label={'Input'}
+          showContent={selectedId === 'acc1'}
+          handleShow={handleAccordion}
+          className='tt-flex-col g-xl p-l'
+          id={'acc1'}
+        >
+          <ControlledSliderSelect control={control} placeholder='Selected Input' name='inputTypes' data={inputDataTypes} />
+          <FloatInput type='Number' label='Expected Value' {...register('name')} />
+          <ButtonComponent variant='primary' type='submit' size={'medium'} >Save Field</ButtonComponent>
+        </Accordion>
+        <Accordion
+          className='tt-flex-col g-xl p-l'
+          label={'Metrics'}
+          showContent={selectedId === 'acc2'}
+          handleShow={handleAccordion}
+          id={'acc2'}
+        >
+          <ControlledSliderSelect control={control} placeholder='Selected Input' name='inputTypes' data={inputDataTypes} />
+          <FloatInput type='Number' label='Expected Value' {...register('name')} />
+          <ButtonComponent variant='primary' type='submit' size={'medium'} >Save Field</ButtonComponent>
+        </Accordion>
+        <Accordion
+          className='tt-flex-col g-xl p-l'
+          label={'Target'}
+          showContent={selectedId === 'acc3'}
+          handleShow={handleAccordion}
+          id={'acc3'}
+        >
+          <ControlledSliderSelect control={control} placeholder='Selected Input' name='inputTypes' data={inputDataTypes} />
+          <FloatInput type='Number' label='Expected Value' {...register('name')} />
+          <ButtonComponent variant='primary' type='submit' size={'medium'} >Save Field</ButtonComponent>
+        </Accordion>
       </form>
     );
   }
 
-  function handleAccordion(id: string) {
-    if (selectedId !== id) {
-      setSelectedId(id);
-      return;
-    }
-    setSelectedId('');
+  function ValidationForm({ isAuto }: { isAuto: boolean }) {
+    const { control, handleSubmit, register } = useForm();
+
+    return (
+      <form className='tt-flex-col p-l mt-l' onSubmit={handleSubmit((data) => console.log(data))}>
+        <FloatInput label={'User'} {...register('user')} />
+        <FloatInput label={'current validation'} {...register('validation')} />
+        {
+          isAuto ?
+            <>
+              <CheckboxInput id={'isTarget'} label={'AutoValidate Target'} isChecked={false} {...register('target')} />
+              <CheckboxInput id={'isTarget'} label={'AutoValidate Metric'} isChecked={false} {...register('metric')} />
+            </>
+            : null
+        }
+        <ButtonComponent size={'small'} label='add validator' />
+      </form>
+    );
+  }
+
+  const sections: Record<string, React.ReactNode> = {
+    '1': <InputForm />,
+    '2': <OutputForm />,
+    '3': <ValidationForm isAuto={props.isAutomatic} />,
   }
 
   return (
     <div className='requeriment-contaien tt-l-col-m w-[100%]'>
       <RoundedBox>
-        <header className='step-displayer'>
-          <ul className='step-ul'>
-            <li className='li-active' id='input-step'> <MdInput /> </li>
-            <li id='target-step'> <FiTarget /> </li>
-            <li id='output-step'> <MdOutlineOutput /></li>
-            <li id='validation-step'> <MdOutlineVerifiedUser /> </li>
-          </ul>
-        </header>
-        <h3 className='requeriment-section-name'>Inputs</h3>
-        <span className='tt-divider'></span>
+        <TabNavigator labels={requeriments} selectedId='1' onselect={(_, item) => setSelectedId(item.id)} />
         <main>
-          <InputForm />
+          {sections[selectedId]}
         </main>
         <ButtonComponent type='button' size={'large'} >Save Config</ButtonComponent>
       </RoundedBox>
@@ -483,7 +513,6 @@ interface CarrouselProps {
 function CarrouselComponent(props: CarrouselProps) {
   const [currentConfig, setCurrentConfig] = useState<string>('c-goal');
   const [fields, setFields] = useState<{ name: string, id: string, type: FieldsTypes }[]>([]);
-  const { register, handleSubmit, formState, control } = useForm();
 
 
   const data = [
@@ -506,24 +535,19 @@ function CarrouselComponent(props: CarrouselProps) {
   ];
 
   const mappedConfig: { [key: string]: React.ReactNode } = {
-    'c-goal': <GoalConfigComponent2 control={control} isAutomatic={props.isAuto} />,
-    'c-time': <TimeConfigComponent control={control} isAutomatic={props.isAuto} />,
-    'c-user': <UsersConfigComponent control={control} isAutomatic={props.isAuto} />,
-    'c-requeriments': <RequerimentConfig control={control} isAutomatic={props.isAuto} />
+    'c-goal': <GoalConfigComponent2 isAutomatic={props.isAuto} />,
+    'c-time': <TimeConfigComponent isAutomatic={props.isAuto} />,
+    'c-user': <UsersConfigComponent isAutomatic={props.isAuto} />,
+    'c-requeriments': <RequerimentConfig isAutomatic={props.isAuto} />
   };
 
-  function handleClick(_: React.MouseEvent<HTMLLIElement>, item: ItemType) {
+  function handleClick(item: ItemType) {
     setCurrentConfig(item.id);
-  };
-
-  function handleChange(index: number) {
-    const currentItem = data[index];
-    setCurrentConfig(currentItem.id);
   };
 
   return (
     <div className='tt-flex-col'>
-      <SliderSelector control={control} data={data} placeholder={data[0].name} onClick={handleClick} name={'test'} />
+      <SliderSelector data={data} placeholder={data[0].name} onselect={handleClick} />
       {
         mappedConfig[currentConfig]
       }
@@ -555,12 +579,12 @@ function GoalConfigComponent2(props: GoalsProps) {
       return (
         <>
           <article className='tt-flex-row'>
-            <SelectComponent placeholder='Action' data={actionsData} {...register('Action')} />
+            <ControlledSelect control={control} name='action' placeholder='Action' data={actionsData} />
             <p className='tt-flex-col layer-centered'>the</p>
-            <SelectComponent placeholder='Indicator' data={indicatorData} {...register('Indicator')} />
+            <ControlledSelect control={control} name='indicator' placeholder='Indicator' data={indicatorData} />
           </article>
           <article id='ammount' className='tt-flex-row'>
-            <SelectComponent placeholder='Unit' data={unitiesData} {...register('Unit')} />
+            <ControlledSelect control={control} name='unit' placeholder='Unit' data={unitiesData} />
             <FloatInput label={'ammount'} type='number' {...register('Ammount')} />
           </article>
         </>
@@ -617,6 +641,10 @@ function GoalConfigComponent2(props: GoalsProps) {
       }
     ];
 
+    useEffect(() => {
+      console.log(checkList?.filter((item) => item.selected === true));
+    }, [checkList]);
+
     return (
       <section className='tt-flex-col g-l'>
         <TabNavigator labels={props.navigationTabs} selectedId='t-target' onselect={(_, item) => setCurrentTab(item.id)} />
@@ -634,10 +662,10 @@ function GoalConfigComponent2(props: GoalsProps) {
                   </fieldset>
                 }
                 <fieldset className='tt-flex-col p-0'>
-                  <SliderSelector control={control} name='age' placeholder='Age' data={ageData} />
+                  <ControlledSliderSelect control={control} name='age' placeholder='Age' data={ageData} />
                 </fieldset>
                 <fieldset className='tt-flex-col p-0'>
-                  <SliderSelector control={control} name='gender' placeholder='Gender' data={genderList} />
+                  <ControlledSliderSelect control={control} name='gender' placeholder='Gender' data={genderList} />
                 </fieldset>
               </section>
             </>
