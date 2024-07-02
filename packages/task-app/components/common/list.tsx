@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import './list.scss';
 import { InputComponent } from './inputComponent';
 import { HiChevronDown } from "react-icons/hi2";
-import {  IUseCheckList } from '@app/hooks/useList';
+import {  CheckableItem, IUseCheckList } from '@app/hooks/useList';
 
 interface ListProps extends HTMLAttributes<HTMLDivElement> {
   data: { id: string, name: string }[];
@@ -45,13 +45,13 @@ export default List;
 
 interface Props extends ComponentProps<'li'> {
   data: { id: string; name: string; }[];
-  active: boolean;
-  selectitem?: (item: { id: string; name: string; }) => void;
+  active: string;
+  selectItem?: (item: { id: string; name: string; }) => void;
   textsize?: 'small' | 'medium' | 'large';
 }
 
 export const ListComponent: React.FC<Props> = (props) => {
-  const { data, active, selectitem, textsize = 'medium' } = props;
+  const { data, active, selectItem, textsize = 'medium', ...rest } = props;
 
   const textSizes = {
     'small': 'txt-s',
@@ -60,10 +60,10 @@ export const ListComponent: React.FC<Props> = (props) => {
   }
 
   return (
-    <ul className={`tt-ul ${active ? 'dis-active' : 'dis-none'} p-s shadow-m tt-box`} >
+    <ul className={`tt-ul ${active === 'true' ? 'dis-active' : 'dis-none'} p-s shadow-m tt-box`} >
       {
         data.map((item) => (
-          <li className='tt-li' key={item.id} onClick={(e) => selectitem && selectitem(item)}  {...props}>
+          <li className='tt-li' key={item.id} onClick={(e) => selectItem && selectItem(item)}  {...rest}>
             <p className={`txt-gray-500 ${textSizes[textsize]}`}>
               {item.name}
             </p>
@@ -74,19 +74,22 @@ export const ListComponent: React.FC<Props> = (props) => {
   );
 }
 
-type CheckListBase = React.ComponentProps<'li'> & IUseCheckList;
+type CheckListBase = React.ComponentProps<'li'> & {
+  checklist: CheckableItem[] | null;
+  onselect: (item: CheckableItem) => void;
+};
 
 export interface CheckableListProps extends CheckListBase {
   label: string;
 }
 
 export const CheckableList = (props: CheckableListProps) => {
-  const { checkList, selectItem, label } = props;
+  const { checklist, onselect, label } = props;
   const [ inputValue, setInputValue ] = React.useState("");
   const [active, setActive] = React.useState(false);
 
   function onclick(e: React.MouseEvent<HTMLLIElement>, item: { id: string, name: string, selected: boolean }) {
-    selectItem && selectItem(item);
+    onselect && onselect(item);
     props.onClick && props.onClick(e);
   }
 
@@ -103,8 +106,8 @@ export const CheckableList = (props: CheckableListProps) => {
       setInputValue(onlySelected[onlySelected.length - 1].name);
     }
 
-    fillInputValue(checkList);
-  }, [checkList])
+    fillInputValue(checklist);
+  }, [checklist])
 
   return (
     <>
@@ -113,8 +116,8 @@ export const CheckableList = (props: CheckableListProps) => {
         <InputComponent icon={<HiChevronDown />} className='txt-gray-5 tt_input pointer' placeholder={label} value={inputValue} onClick={() => setActive(true)} readOnly />
         <ul className={`tt-ul ${active ? 'dis-active' : 'dis-none'} p-s shadow-m tt-box`} >
           {
-            checkList &&
-            checkList.map((item) => (
+            checklist &&
+            checklist.map((item) => (
               <li className='tt-li-check' key={item.id} onClick={(e) => onclick(e, item)}  {...props}>
                 <input id={item.id} type='checkbox' checked={item.selected} readOnly></input>
                 <p className='txt-gray-6 unselectable'>

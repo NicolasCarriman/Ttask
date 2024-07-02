@@ -365,7 +365,6 @@ function Settings() {
   const [selectedAccordion, setSelectedAccordion] = useState<string>('ac-s-1');
   const [steps, setSteps] = useState<number>(0);
 
-
   function addStep(e: React.MouseEvent<HTMLButtonElement>) {
     console.log(e);
     setSteps(steps + 1);
@@ -641,10 +640,6 @@ function GoalConfigComponent2(props: GoalsProps) {
       }
     ];
 
-    useEffect(() => {
-      console.log(checkList?.filter((item) => item.selected === true));
-    }, [checkList]);
-
     return (
       <section className='tt-flex-col g-l'>
         <TabNavigator labels={props.navigationTabs} selectedId='t-target' onselect={(_, item) => setCurrentTab(item.id)} />
@@ -658,7 +653,7 @@ function GoalConfigComponent2(props: GoalsProps) {
                 {
                   checkList !== null &&
                   <fieldset className='tt-flex-col g-m p-0'>
-                    <CheckableList selectItem={selectItem} label='Product Preferences' checkList={checkList} />
+                    <CheckableList onselect={selectItem} label='Product Preferences' checklist={checkList} />
                   </fieldset>
                 }
                 <fieldset className='tt-flex-col p-0'>

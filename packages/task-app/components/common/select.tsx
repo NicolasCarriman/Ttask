@@ -71,7 +71,7 @@ const SliderSelectorComponent = forwardRef<HTMLInputElement, ISelectBaseProps>(
             readOnly
           />
           <SlArrowRight height={'2vh'} onClick={next} />
-          <ListComponent active={showList} data={data} selectitem={handleSelect} />
+          <ListComponent active={`${showList}`} data={data} selectItem={handleSelect} />
         </div>
       </>
     );
@@ -110,7 +110,7 @@ const Select = forwardRef<HTMLInputElement, ISelectBaseProps>(
             {...rest}
             readOnly
           />
-          <ListComponent textsize="medium" active={showList} data={data} selectitem={handleSelect} />
+          <ListComponent textsize="medium" active={`${showList}`} data={data} selectItem={handleSelect} />
         </div>
       </>
     );

@@ -6,6 +6,9 @@ const nextConfig = {
     appDir: true
   },
   transpilePackages: ['task-core', 'lodash-es'],
+  env: {
+    locations: process.env.API_LOCATION
+  }
 };
 
 module.exports = nextConfig;
